@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode url="" title="首页"  description="" >
+    <!--<siteMapNode url="~/" title="后台首页"  description="" />-->
+    <siteMapNode url="" title="个人管理"  description="">
+      <siteMapNode url="~/Account/EditProfile" title="个人资料"  description="" />
+      <siteMapNode url="~/Account/Password" title="修改密码"  description="" />
+      <siteMapNode url="~/Account/Log" title="登录日志"  description="" />
+    </siteMapNode>
+    <siteMapNode url="" title="用户管理"  description="Admin">
+      <siteMapNode url="/Account" title="用户列表"  description="" />
+      <siteMapNode url="/Account/Create" title="新建用户"  description="" />
+    </siteMapNode>
+    <!--<siteMapNode url="" title="参数管理"  description="Admin">
+      <siteMapNode url="~/System/InquiryConfiguration" title="询价参数"  description="" />
+      <siteMapNode url="~/System/Configuration" title="系统参数"  description="" />
+    </siteMapNode>-->
+  </siteMapNode>
+</siteMap>

@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A7187368-D641-4F3B-9DF3-6DB6FE8E3403}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SunTzu.Web</RootNamespace>
+    <AssemblyName>SunTzu.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EntityValidate\Constants.cs" />
+    <Compile Include="EntityValidate\DateTimeRule.cs" />
+    <Compile Include="EntityValidate\DummyRule.cs" />
+    <Compile Include="EntityValidate\EmailRule.cs" />
+    <Compile Include="EntityValidate\EntityValidator.cs" />
+    <Compile Include="EntityValidate\EnumRule.cs" />
+    <Compile Include="EntityValidate\Extension.cs" />
+    <Compile Include="EntityValidate\GuidRule.cs" />
+    <Compile Include="EntityValidate\IEntityValidator.cs" />
+    <Compile Include="EntityValidate\LengthRule.cs" />
+    <Compile Include="EntityValidate\NumberRule.cs" />
+    <Compile Include="EntityValidate\IPRule.cs" />
+    <Compile Include="EntityValidate\IValidateRule.cs" />
+    <Compile Include="EntityValidate\PhoneRule.cs" />
+    <Compile Include="EntityValidate\RegularExpressionRule.cs" />
+    <Compile Include="EntityValidate\RuleContainer.cs" />
+    <Compile Include="EntityValidate\RequiredRule.cs" />
+    <Compile Include="EntityValidate\UrlRule.cs" />
+    <Compile Include="EntityValidate\ValidateConfig.cs" />
+    <Compile Include="EntityValidate\ValidateConfigField.cs" />
+    <Compile Include="EntityValidate\ValidateConfigRule.cs" />
+    <Compile Include="EntityValidate\ValidateContainer.cs" />
+    <Compile Include="EntityValidate\ValidateResult.cs" />
+    <Compile Include="EntityValidate\AbstractValidateRule.cs" />
+    <Compile Include="ImageHelper.cs" />
+    <Compile Include="RandomNumberImage.cs" />
+    <Compile Include="HTMLHelper.cs" />
+    <Compile Include="Login\LoginAttribute.cs" />
+    <Compile Include="PageControl.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReturnResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MetaModel\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SunTzu.Core\SunTzu.Core.csproj">
+      <Project>{6686DDE0-3D27-42DD-9D87-FE6F4FA19380}</Project>
+      <Name>SunTzu.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SunTzu.Utility\SunTzu.Utility.csproj">
+      <Project>{11BB9BB8-9176-4658-803C-1249502E02CE}</Project>
+      <Name>SunTzu.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

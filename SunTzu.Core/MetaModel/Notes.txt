@@ -1,0 +1,4 @@
+meta model的属性初始化原则：
+1、xml优先
+2、数据库schema信息第二
+3、xml与schema冲突的时候，以schema为准？抛出异常？

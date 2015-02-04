@@ -1,0 +1,103 @@
+﻿@model ApplicationUser
+@{
+    ViewBag.Title = "修改用户";
+    ViewBag.TabName = "系统设置";
+    ViewBag.SubTabName = ViewBag.Title;
+}
+@section quickButton{
+    @{ Html.RenderPartial("_QuickButtonAdmin"); }
+}
+
+<form id="editForm" name="editForm" role="form" class="form-horizontal" method="post">
+    @Html.AntiForgeryToken()
+    <h4>修改用户资料</h4>
+    <hr />
+    <input type="hidden" name="uid" value="@Model.Id" />
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="UserName">用户名</label>
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="Password">密码</label>
+        <div class="col-md-10">
+            <input type="password" name="Password" id="Password" class="form-control" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Mobile, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Mobile, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Mobile)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">入职时间</label>
+
+        <div class="col-md-10">
+            <input id="CreateOn" name="CreateOn" type="text" value="@(Model.CreateOn == DateTime.MinValue ? DateTime.Now.ToString("yyyy-MM-dd") : Model.CreateOn.ToString("yyyy-MM-dd"))" class="form-control" data-date-format="yyyy-mm-dd" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="RoleId">角色</label>
+        <div class="col-md-10">
+            <select class="form-control" name="RoleId" id="RoleId">
+                @foreach (var role in CacheHelper<Role>.GetAll())
+                {
+                    if (role.Id == 3) { continue; } // 超管不能够分配
+                    <option @(role.Id == Model.RoleId ? "selected" : "") value="@role.Id">@role.Title</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="RoleId">状态</label>
+        <div class="col-md-10">
+            <select class="form-control" name="State" id="State">
+                <option @(Model.State == 0 ? "selected" : "") value="0">启用</option>
+                <option @(Model.State == 1 ? "selected" : "") value="1">禁用</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-primary" value="保存" />
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="/assets/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $.fn.datepicker.dates['zh-CN'] = {
+                days: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"],
+                daysShort: ["周日", "周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+                daysMin: ["日", "一", "二", "三", "四", "五", "六", "日"],
+                months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                monthsShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一", "十二"],
+                today: "今天"
+            };
+            $("#CreateOn").datepicker({ autoclose: true, clearBtn: true, language: 'zh-CN' });
+        });
+    </script>
+}

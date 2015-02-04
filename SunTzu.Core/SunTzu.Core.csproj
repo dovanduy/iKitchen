@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6686DDE0-3D27-42DD-9D87-FE6F4FA19380}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SunTzu.Core</RootNamespace>
+    <AssemblyName>SunTzu.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\Library\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\Microsoft.Practices.EnterpriseLibrary.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Library\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="NVelocity">
+      <HintPath>..\..\Library\NVelocity.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AOP\AssemblyNamesMatchingRule.cs" />
+    <Compile Include="AOP\CacheAttribute.cs" />
+    <Compile Include="AOP\CacheCallHandler.cs" />
+    <Compile Include="AOP\Container.cs" />
+    <Compile Include="AOP\LifeCycleAttribute.cs" />
+    <Compile Include="AOP\LockAttribute.cs" />
+    <Compile Include="AOP\LockCallHandler.cs" />
+    <Compile Include="AOP\RetryAttribute.cs" />
+    <Compile Include="AOP\RetryHandler.cs" />
+    <Compile Include="AOP\StopWatchCallHandler.cs" />
+    <Compile Include="Authorization\DummyAuthorization.cs" />
+    <Compile Include="Authorization\IAuthorization.cs" />
+    <Compile Include="Cache\CacheConstants.cs" />
+    <Compile Include="Cache\CacheMetaLoader.cs" />
+    <Compile Include="Cache\CacheProxy.cs" />
+    <Compile Include="Cache\CacheStatistics.cs" />
+    <Compile Include="Cache\ICacheAPI.cs" />
+    <Compile Include="Cache\LocalCacheImpl.cs" />
+    <Compile Include="Cache\Settings\CachePolicys.cs" />
+    <Compile Include="Cache\Settings\CacheSettingManager.cs" />
+    <Compile Include="Cache\Settings\LocalCachePolicy.cs" />
+    <Compile Include="Cache\Settings\RemoteCachePolicy.cs" />
+    <Compile Include="Cache\SkipCacheImpl.cs" />
+    <Compile Include="Data\BaseEntity.cs" />
+    <Compile Include="Data\DynamicLibrary.cs" />
+    <Compile Include="Data\IDataContext.cs" />
+    <Compile Include="Data\IEntity.cs" />
+    <Compile Include="Data\ITitle.cs" />
+    <Compile Include="Data\PagedList.cs" />
+    <Compile Include="MetaModel\MetaEntity.cs" />
+    <Compile Include="MetaModel\MetaField.cs" />
+    <Compile Include="MetaModel\MetaLoader.cs" />
+    <Compile Include="StringTemplate.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MetaModel\Notes.txt" />
+    <Content Include="MetaModel\Todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SunTzu.Utility\SunTzu.Utility.csproj">
+      <Project>{11BB9BB8-9176-4658-803C-1249502E02CE}</Project>
+      <Name>SunTzu.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

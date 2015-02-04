@@ -1,0 +1,46 @@
+﻿@model  PagedList<SignInLog>
+
+@section quickButton{
+    @{ Html.RenderPartial("_QuickButton"); }
+}
+
+<h4>我的登录日志</h4>
+<hr />
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            @*<th>
+                    用户名
+                </th>*@
+            <th>
+                登录时间
+            </th>
+            <th>
+                IP
+            </th>
+            <th>
+                状态
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr class="@(item.IsSuccess ? "" : "danger")">
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.UserId)
+                </td>*@
+            <td>
+                @item.CreateOn.ToString("yyyy-MM-dd hh:mm:ss")
+            </td>
+            <td>
+                @item.IP
+            </td>
+            <td>
+                登录@(item.IsSuccess ? "成功" : "失败")
+            </td>
+        </tr>
+    }
+
+</table>
+@{Html.RenderPartial("~/Views/Shared/_Pager.cshtml");}

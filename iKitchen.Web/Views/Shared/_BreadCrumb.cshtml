@@ -1,0 +1,30 @@
+﻿@{
+    var parentTitle = ViewBag.TabName;
+    var currentTitle = ViewBag.SubTabName;
+    var currentNode = SiteMap.CurrentNode;
+    var parentNode = currentNode;
+    if (currentNode != null)
+    {
+        if (currentNode.ParentNode == null)
+        {
+            parentTitle = currentNode.Title;
+            currentNode = null;
+        }
+        else
+        {
+            parentNode = currentNode.ParentNode;
+            parentTitle = parentNode.Title;
+            currentTitle = currentNode.Title;
+        }
+    }
+}
+@if (parentTitle != null)
+{
+    <ul class="breadcrumb">
+        <li><i class="fa fa-home"></i><a href="">@parentTitle</a></li>
+        @if (currentTitle != null)
+        {
+            <li class="active">@currentTitle</li>
+        }
+    </ul>
+}

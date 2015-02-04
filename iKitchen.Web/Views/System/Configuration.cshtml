@@ -1,0 +1,90 @@
+﻿@model SystemConfiguration
+@{
+    ViewBag.Title = "系统参数";
+}
+@section quickButton{
+    @{ Html.RenderPartial("_QuickButtonAdmin"); }
+}
+
+<h4>@ViewBag.Title</h4>
+<hr />
+<form id="editForm" name="editForm" role="form" class="form-horizontal" method="post" action="/System/SaveConfig">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label class="control-label col-sm-1">
+            公司名称
+        </label>
+        <div class="col-sm-2">
+            @Html.TextBoxFor(m => m.ClientName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.ClientName)
+        </div>
+
+        <label class="control-label col-sm-1 col-sm-offset-1">
+            流水号
+        </label>
+        <div class="col-sm-2">
+            @Html.TextBoxFor(m => m.AssessmentSequenceNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.AssessmentSequenceNumber)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-1">
+            勘察时效
+        </label>
+        <div class="col-sm-2">
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.KanChaDay, new { @Value = Model.KanChaDay > 0 ? Model.KanChaDay.ToString() : "", @class = "form-control" })
+                <span class="input-group-addon">天</span>
+            </div>
+            @Html.ValidationMessageFor(m => m.KanChaDay)
+        </div>
+        <label class="control-label col-sm-1 col-sm-offset-1">
+            撰写时效
+        </label>
+        <div class="col-sm-2">
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.ZhuanXieDay, new { @Value = Model.ZhuanXieDay > 0 ? Model.ZhuanXieDay.ToString() : "", @class = "form-control" })
+                <span class="input-group-addon">天</span>
+            </div>
+            @Html.ValidationMessageFor(m => m.ZhuanXieDay)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-sm-1">
+            审核时效
+        </label>
+        <div class="col-sm-2">
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.ShenHeDay, new { @Value = Model.ShenHeDay > 0 ? Model.ShenHeDay.ToString() : "", @class = "form-control" })
+                <span class="input-group-addon">天</span>
+            </div>
+            @Html.ValidationMessageFor(m => m.ShenHeDay)
+        </div>
+        <label class="control-label col-sm-1 col-sm-offset-1">
+            归档时效
+        </label>
+        <div class="col-sm-2">
+            <div class="input-group">
+                @Html.TextBoxFor(m => m.GuiDangDay, new { @Value = Model.GuiDangDay > 0 ? Model.GuiDangDay.ToString() : "", @class = "form-control" })
+                <span class="input-group-addon">天</span>
+            </div>
+            @Html.ValidationMessageFor(m => m.GuiDangDay)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-primary" value="保存" />
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    <script src="/scripts/iKitchen.js" type="text/javascript"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

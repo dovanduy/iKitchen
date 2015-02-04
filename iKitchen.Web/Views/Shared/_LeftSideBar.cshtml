@@ -1,0 +1,115 @@
+﻿@{
+    var parentName = ViewBag.TabName;
+    var nodeName = ViewBag.SubTabName;
+    if (SiteMap.CurrentNode != null)
+    {
+        nodeName = SiteMap.CurrentNode.Title;
+        if (SiteMap.CurrentNode.ParentNode != null)
+        {
+            parentName = SiteMap.CurrentNode.ParentNode.Title;
+        }
+    }
+
+
+    var serverStatus = ServerStatus.Instance;
+    decimal diskRatio = 100;
+    if (serverStatus.DiskSpace > 0)
+    {
+        diskRatio = serverStatus.FreeDiskSpace * 100 / serverStatus.DiskSpace;
+    }
+    var minifiedLeftSideBar = ViewBag.SideBar != null && ViewBag.SideBar == "minified";
+    var sidebarAngleClass = minifiedLeftSideBar ? "fa-angle-left" : "fa-angle-right";
+}
+<!-- left sidebar -->
+<div class="col-md-2 left-sidebar @(minifiedLeftSideBar ? "minified" : "")">
+    <!-- main-nav -->
+    <nav class="main-nav">
+        <ul class="main-menu">
+            @foreach (SiteMapNode node in SiteMap.RootNode.ChildNodes)
+            {
+                if (node.Description == "Admin" && !ViewBag.IsAdmin && !ViewBag.IsSuperAdmin) { continue; }
+                if (node.Description == "SuperAdmin" && !ViewBag.IsSuperAdmin) { continue; }
+                <li @(parentName == node.Title ? "class=active" : "")>
+                    @if (node.HasChildNodes)
+                    {
+                        <a href="#" class="js-sub-menu-toggle">
+                            <i class="fa fa-clipboard fa-fw"></i><span class="text">@node.Title</span>
+                            <i class="toggle-icon fa @(parentName == node.Title ? "fa-angle-down" : sidebarAngleClass)"></i>
+                        </a>
+                        <ul class="sub-menu" style="display:@(parentName == node.Title ? "block" : "none")">
+                            @foreach (SiteMapNode subNode in node.ChildNodes)
+                            {
+                                if (!string.IsNullOrEmpty(subNode.Description) && subNode.Description != ViewBag.RoleId.ToString()) { continue; }
+                                <li @(nodeName == subNode.Title ? "class=active" : "")><a href="@subNode.Url"><span class="text">@subNode.Title</span></a></li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <a href="@node.Url"><i class="fa fa-dashboard fa-fw"></i><span class="text">@node.Title</span></a>
+                    }
+                </li>
+            }
+        </ul>
+    </nav><!-- /main-nav -->
+    <div class="sidebar-minified js-toggle-minified">
+        <i class="fa fa-angle-left"></i>
+    </div>
+    <!-- sidebar content -->
+    <div class="sidebar-content">
+        @if (Request.UserAgent.Contains("MSIE"))
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading"><h5><i class="fa fa-lightbulb-o"></i> 小贴士</h5></div>
+                <div class="panel-body">
+                    <p>请使用更加安全的谷歌浏览器或火狐浏览器访问本系统。</p>
+                    <p><a class="btn btn-success btn-sm" href="http://www.google.com/intl/zh-CN/chrome/browser/features.html">下载谷歌浏览器</a></p>
+                    <p><a class="btn btn-primary btn-sm" href="http://www.firefox.com.cn/download/">下载火狐浏览器</a></p>
+                </div>
+            </div>
+        }
+        <h5 class="label label-default"><i class="fa fa-info-circle"></i> 服务器信息</h5>
+        <ul class="list-unstyled list-info-sidebar bottom-30px">
+            <li class="data-row">
+                <span class="data-name">服务器名称</span>
+                <span class="data-value">@serverStatus.MachineName</span>
+            </li>
+            <li class="data-row">
+                <span class="data-name">硬盘空间</span>
+                <span class="data-value">
+                    @serverStatus.FreeDiskSpace GB 可用空间 / 共 @serverStatus.DiskSpace GB
+                    <div class="progress progress-xs">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: @(diskRatio)%">
+                            <span class="sr-only">@diskRatio%</span>
+                        </div>
+                    </div>
+                </span>
+            </li>
+            @*<li class="data-row">
+                    <span class="data-name">Monthly Bandwidth Transfer</span>
+                    <span class="data-value">
+                        230 / 500 GB
+                        <div class="progress progress-xs">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="46" aria-valuemin="0" aria-valuemax="100" style="width: 46%">
+                                <span class="sr-only">46%</span>
+                            </div>
+                        </div>
+                    </span>
+                </li>*@
+            <li class="data-row">
+                <span class="data-name">操作系统</span>
+                <span class="data-value">@serverStatus.OS</span>
+            </li>
+            <li class="data-row">
+                <span class="data-name">Web 环境</span>
+                <span class="data-value">@serverStatus.IIS</span>
+            </li>
+            <li class="data-row">
+                <span class="data-name">处理器架构</span>
+                <span class="data-value">@serverStatus.Architecture</span>
+            </li>
+        </ul>
+    </div>
+    <!-- end sidebar content -->
+</div>
+<!-- end left sidebar -->

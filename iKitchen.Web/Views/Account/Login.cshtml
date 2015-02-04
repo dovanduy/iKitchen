@@ -1,0 +1,81 @@
+﻿@model iKitchen.Web.Models.LoginViewModel
+@{
+    ViewBag.Title = "登录";
+    Layout = null;
+}
+<!DOCTYPE html>
+<!--[if IE 9 ]><html class="ie ie9" lang="en" class="no-js"> <![endif]-->
+<!--[if !(IE)]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<head>
+    @Html.Partial("_MetaData")
+    <!-- CSS -->
+    <link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css">
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/kingadmin-favicon144x144.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/kingadmin-favicon114x114.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/kingadmin-favicon72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/assets/ico/kingadmin-favicon57x57.png">
+    <link rel="shortcut icon" href="/assets/ico/favicon.png">
+</head>
+<body>
+    <div class="wrapper full-page-wrapper page-login text-center">
+        <div class="inner-page">
+
+            <div class="logo"><img src="/assets/img/kingadmin-logo.png" alt="" /></div>
+            @*<button type="button" class="btn btn-login-facebook"><span>Login via Facebook</span></button>
+
+                <div class="separator"><span>OR</span></div>*@
+            <div class="login-box center-block">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @*<form class="form-horizontal" role="form">*@
+                    <p class="title">登录 iKitchen 房产估价系统</p>
+                    @Html.ValidationSummary()
+                    <div class="form-group">
+                        <label for="username" class="control-label sr-only">用户名</label>
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "请输入用户名" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.UserName)
+                        </div>
+                    </div>
+                    <label for="password" class="control-label sr-only">密码</label>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "请输入密码" })
+                            </div>
+                            @Html.ValidationMessageFor(m => m.Password)
+                        </div>
+                    </div>
+                    @*<div class="simple-checkbox">
+                            @Html.CheckBoxFor(m => m.RememberMe)
+                            @Html.LabelFor(m => m.RememberMe)
+                        </div>*@
+                    <button class="btn btn-custom-primary btn-lg btn-block btn-login"><i class="fa fa-arrow-circle-o-right"></i> 登录</button>
+                }
+
+                @*<div class="links">
+                        <p><a href="#">Forgot Username or Password?</a></p>
+                        <p><a href="#">Create New Account</a></p>
+                    </div>*@
+            </div>
+        </div>
+        <div class="push-sticky-footer"></div>
+    </div>
+    @Html.Partial("_Footer")
+    <!-- Javascript -->
+    <script src="/assets/js/jquery-2.1.0.min.js"></script>
+    <script src="/assets/js/bootstrap.js"></script>
+    <script src="/assets/js/modernizr.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+</body>
+</html>
