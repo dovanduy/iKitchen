@@ -39,20 +39,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Efe.Bussiness, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Library\Efe.Bussiness.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\Library\log4net.dll</HintPath>
+      <HintPath>..\Library\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Library\Microsoft.Practices.Unity.dll</HintPath>
+      <HintPath>..\Library\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="RazorEngine">
-      <HintPath>..\..\Library\RazorEngine.dll</HintPath>
+      <HintPath>..\Library\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -607,6 +603,7 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\System\InquiryConfiguration.cshtml" />
     <Content Include="Views\System\_QuickButtonAdmin.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
