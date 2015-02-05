@@ -1,0 +1,128 @@
+
+.intro{
+	height: 100%;
+}
+
+.home-badge{
+	border-radius: 100%;
+}
+.intro-08-headletters{
+	padding: 40px;
+}
+
+
+.intro-08-headletters{
+}
+.intro-08-headletters .caps-heading {
+	font-weight: normal;
+	font-size:36px;
+	line-height:43px;
+font-family:"MontserratRegular";
+	margin-top: 10px;
+	margin-bottom: 0;
+	text-transform: uppercase;
+}
+
+.intro-08-headletters h2{
+	font-weight: normal;
+	font-size:64px;
+	line-height:71px;
+	font-family:"TexGyreHerosBold";
+	margin-top: 10px;
+	margin-bottom: 0;
+}
+.intro-08-sub-heading{
+	margin-top: 20px;
+}
+.intro-08-sub-heading > span{
+	padding:10px;
+	font-size: 16px;
+	line-height:23px;
+font-family:"MontserratRegular";
+	font-weight: 100;
+	color: #999;
+	text-transform: uppercase;
+}
+
+
+.intro-08-sub-heading-title{
+	margin-top: 10px;
+}
+.intro-08-sub-heading-title > span{
+	padding: 5px 10px;
+	font-size: 14px;
+	line-height:21px;
+font-family:"MontserratRegular";
+	font-weight: 100;
+	text-transform: uppercase;
+}
+
+.home-badge{
+	margin-bottom: 10px;
+}
+
+/*CAROUSEL HOME*/
+.thumb-carousel-wrap{
+}
+.home-carousel  .item{
+	background:#fff;
+}
+.home-carousel  .item:hover{
+}
+.thumb-title{
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+.image-lightbox-link > img{
+	padding: 15px;
+	border-radius: 100%;
+	-webkit-transition: all .8s linear;
+	   -moz-transition: all .8s linear;
+		-ms-transition: all .8s linear;
+		 -o-transition: all .8s linear;
+			transition: all .8s linear;
+}
+.image-lightbox-link > img:hover{
+	-webkit-transition: all .8s linear;
+	   -moz-transition: all .8s linear;
+		-ms-transition: all .8s linear;
+		 -o-transition: all .8s linear;
+			transition: all .8s linear;
+}
+
+.foot-top{
+	border-top: 1px solid #EEEEEE;
+}
+
+.home-slide{
+	background-size: cover !important;
+	background-repeat: no-repeat !important;
+	background-position: center center !important;
+}
+.home-slide-01{
+	background-image:url('../images/intro/01.jpg') !important;
+}
+.home-slide-02{
+	background-image:url('../images/intro/02.jpg') !important;
+}
+.home-slide-03{
+	background-image:url('../images/intro/03.jpg') !important;
+}
+.home-slide-04{
+	background-image:url('../images/intro/04.jpg') !important;
+}
+.home-slide-05{
+	background-image:url('../images/intro/05.jpg') !important;
+}
+.home-slide-06{
+	background-image:url('../images/intro/06.jpg') !important;
+}
+.home-slide-07{
+	background-image:url('../images/intro/07.jpg') !important;
+}
+.home-slide-08{
+	background-image:url('../images/intro/08.jpg') !important;
+}

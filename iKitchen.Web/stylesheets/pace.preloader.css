@@ -1,0 +1,81 @@
+body.pace-running{
+  overflow: hidden;
+  background:#fff url('../images/load.png') center center no-repeat !important;
+
+}
+ .pace-running > .menu, .pace-running > #mastfoot, .pace-running > .standard-header{
+  opacity: 0;
+}
+.pace-running > #mastwrap{
+  opacity: 0;
+}
+.pace-done > #mastwrap, .pace-done > .menu, .pace-done > #mastfoot, .pace-done > .standard-header{
+  opacity: 1;
+    -moz-animation-name: dropHeader;
+    -moz-animation-iteration-count: once;
+    -moz-animation-timing-function: ease-in;
+    -moz-animation-duration: 0.5s;
+    -webkit-animation-name: dropHeader;
+    -webkit-animation-iteration-count: once;
+    -webkit-animation-timing-function: ease-in;
+    -webkit-animation-duration: 0.5s;
+}
+
+.pace-done > #mastwrap, .pace-done > .menu, .pace-done > #mastfoot, .pace-done > .standard-header{
+  opacity: 1;
+    -moz-animation-name: dropHeader;
+    -moz-animation-iteration-count: once;
+    -moz-animation-timing-function: ease-in;
+    -moz-animation-duration: 0.5s;
+    -webkit-animation-name: dropHeader;
+    -webkit-animation-iteration-count: once;
+    -webkit-animation-timing-function: ease-in;
+    -webkit-animation-duration: 0.5s;
+}
+
+@-moz-keyframes dropHeader {
+    0% {
+        left: -1000px;
+    }
+    100% {
+        left: 0;
+    }
+}
+@-webkit-keyframes dropHeader {
+    0% {
+        left: -1000px;
+    }
+    100% {
+        left: 0;
+    }
+}
+
+
+.pace .pace-progress {
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  right: 0;
+  height: 5rem;
+  width: 5rem;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.pace .pace-progress:after {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: .5rem;
+  content: attr(data-progress-text);
+font-family:"TexGyreHerosRegular";
+  font-weight: 100;
+  font-size: 32px;
+  line-height: 42px;
+  text-align: right;
+}
+
+
+.pace.pace-inactive .pace-progress {
+  display: none;
+}

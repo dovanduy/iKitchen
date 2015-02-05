@@ -1,0 +1,24 @@
+
+.intro-05-headletters{
+	background:rgba(0,0,0,0.4);
+}
+.intro-05-headletters .caps-heading {
+	font-weight: normal;
+	font-size:64px;
+	line-height:71px;
+	font-family:"TexGyreHerosBold";
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.intro-05-sub-heading{
+	font-size: 28px;
+	line-height:35px;
+	font-family:"TexGyreHerosBold";
+	font-weight: 100;
+	color: #aaa;
+}
+
+.home-badge{
+	margin-bottom: 10px;
+}

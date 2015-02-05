@@ -15,7 +15,6 @@ namespace iKitchen.Web.Controllers
 {
     public class HomeController : iKitchenController
     {
-        [Login]
         public ActionResult Index()
         {
             return View();

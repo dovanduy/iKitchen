@@ -1,0 +1,23 @@
+
+.intro-03-headletters{
+}
+.intro-03-headletters .caps-heading {
+	font-weight: normal;
+	font-size:64px;
+	line-height:71px;
+	font-family:"TexGyreHerosBold";
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.intro-03-sub-heading{
+	font-size: 20px;
+	line-height:32px;
+font-family:"MontserratRegular";
+	font-weight: 100;
+	color: #aaa;
+}
+
+.home-badge{
+	margin-bottom: 10px;
+}
