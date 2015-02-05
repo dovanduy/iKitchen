@@ -197,220 +197,15 @@
     <Compile Include="Models\SystemSet.cs" />
     <Compile Include="Models\WebConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\ServiceReference1\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="assets\audio\bell-ringing.mp3" />
-    <Content Include="assets\audio\flash-message.mp3" />
-    <Content Include="assets\audio\offline.mp3" />
-    <Content Include="assets\css\bootstrap.css" />
-    <Content Include="assets\css\font-awesome.css" />
-    <Content Include="assets\css\main.css" />
-    <Content Include="assets\css\skins\darkblue.css" />
-    <Content Include="assets\css\skins\darkbrown.css" />
-    <Content Include="assets\css\skins\fullbright.css" />
-    <Content Include="assets\css\skins\fulldark.css" />
-    <Content Include="assets\css\skins\lightgreen.css" />
-    <Content Include="assets\css\skins\orange.css" />
-    <Content Include="assets\css\skins\red.css" />
-    <Content Include="assets\css\skins\slategray.css" />
-    <Content Include="assets\css\skins\teal.css" />
-    <Content Include="assets\css\skins\yellow.css" />
-    <Content Include="assets\fonts\fontawesome-webfont.svg" />
-    <Content Include="assets\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="assets\fonts\lato-bol-webfont.svg" />
-    <Content Include="assets\fonts\lato-lig-webfont.svg" />
-    <Content Include="assets\fonts\lato-reg-webfont.svg" />
-    <Content Include="assets\ico\favicon.png" />
-    <Content Include="assets\ico\kingadmin-favicon114x114.png" />
-    <Content Include="assets\ico\kingadmin-favicon144x144.png" />
-    <Content Include="assets\ico\kingadmin-favicon57x57.png" />
-    <Content Include="assets\ico\kingadmin-favicon72x72.png" />
-    <Content Include="assets\img\bootstrap-colorpicker\alpha-horizontal.png" />
-    <Content Include="assets\img\bootstrap-colorpicker\alpha.png" />
-    <Content Include="assets\img\bootstrap-colorpicker\hue-horizontal.png" />
-    <Content Include="assets\img\bootstrap-colorpicker\hue.png" />
-    <Content Include="assets\img\bootstrap-colorpicker\saturation.png" />
-    <Content Include="assets\img\clear.png" />
-    <Content Include="assets\img\diagonal-stripe.png" />
-    <Content Include="assets\img\gallery\bird.jpg" />
-    <Content Include="assets\img\gallery\cafe.jpg" />
-    <Content Include="assets\img\gallery\chair.jpg" />
-    <Content Include="assets\img\gallery\cuba-cup.jpg" />
-    <Content Include="assets\img\gallery\desk.jpg" />
-    <Content Include="assets\img\gallery\desk2.jpg" />
-    <Content Include="assets\img\gallery\fence.jpg" />
-    <Content Include="assets\img\gallery\FileIcon.png" />
-    <Content Include="assets\img\gallery\hand.jpg" />
-    <Content Include="assets\img\gallery\jet-sky.jpg" />
-    <Content Include="assets\img\gallery\kitsune.jpg" />
-    <Content Include="assets\img\gallery\lighthouse.jpg" />
-    <Content Include="assets\img\gallery\mac.jpg" />
-    <Content Include="assets\img\gritter.png" />
-    <Content Include="assets\img\ie-spacer.gif" />
-    <Content Include="assets\img\kingadmin-logo-white.png" />
-    <Content Include="assets\img\kingadmin-logo.png" />
-    <Content Include="assets\img\loading.gif" />
-    <Content Include="assets\img\profile-avatar.png" />
-    <Content Include="assets\img\remark.png" />
-    <Content Include="assets\img\select2-spinner.gif" />
-    <Content Include="assets\img\user-avatar.png" />
-    <Content Include="assets\img\user1.png" />
-    <Content Include="assets\img\user2.png" />
-    <Content Include="assets\img\user3.png" />
-    <Content Include="assets\img\user4.png" />
-    <Content Include="assets\img\user5.png" />
-    <Content Include="assets\js\address.custom.js" />
-    <Content Include="assets\js\bootstrap-colorpicker.js" />
-    <Content Include="assets\js\bootstrap-colorpicker.min.js" />
-    <Content Include="assets\js\bootstrap-datepicker.js" />
-    <Content Include="assets\js\bootstrap-editable.js" />
-    <Content Include="assets\js\bootstrap-editable.min.js" />
-    <Content Include="assets\js\bootstrap-multiselect.js" />
-    <Content Include="assets\js\bootstrap-progressbar.js" />
-    <Content Include="assets\js\bootstrap-slider.js" />
-    <Content Include="assets\js\bootstrap-switch.js" />
-    <Content Include="assets\js\bootstrap-switch.min.js" />
-    <Content Include="assets\js\bootstrap-tagsinput.js" />
-    <Content Include="assets\js\bootstrap-tagsinput.min.js" />
-    <Content Include="assets\js\bootstrap-tour.custom.js" />
-    <Content Include="assets\js\bootstrap.js" />
-    <Content Include="assets\js\bootstrap.min.js" />
-    <Content Include="assets\js\bootstrap.touchspin.js" />
-    <Content Include="assets\js\datatable\jquery.dataTables.bootstrap.js" />
-    <Content Include="assets\js\datatable\jquery.dataTables.min.js" />
-    <Content Include="assets\js\daterangepicker.js" />
-    <Content Include="assets\js\demo-mock.js" />
-    <Content Include="assets\js\dropzone.js" />
-    <Content Include="assets\js\dropzone.min.js" />
-    <Content Include="assets\js\fullcalendar.js" />
-    <Content Include="assets\js\fullcalendar.min.js" />
-    <Content Include="assets\js\jQAllRangeSliders-min.js" />
-    <Content Include="assets\js\jqgrid\i18n\grid.locale-en.js" />
-    <Content Include="assets\js\jqgrid\jquery.jqGrid.fluid.js" />
-    <Content Include="assets\js\jqgrid\jquery.jqGrid.js" />
-    <Content Include="assets\js\jqgrid\jquery.jqGrid.min.js" />
-    <Content Include="assets\js\jquery-2.1.0.js" />
-    <Content Include="assets\js\jquery-2.1.0.min.js" />
-    <Content Include="assets\js\jquery-ui-1.10.4.custom.js" />
-    <Content Include="assets\js\jquery-ui-1.10.4.custom.min.js" />
-    <Content Include="assets\js\jquery.gritter.js" />
-    <Content Include="assets\js\jquery.gritter.min.js" />
-    <Content Include="assets\js\jquery.mapael.js" />
-    <Content Include="assets\js\jquery.masked-input.js" />
-    <Content Include="assets\js\jquery.masked-input.min.js" />
-    <Content Include="assets\js\jquery.mockjax.min.js" />
-    <Content Include="assets\js\jquery.mousewheel.js" />
-    <Content Include="assets\js\jquery.simplecolorpicker.js" />
-    <Content Include="assets\js\jquery.sparkline.js" />
-    <Content Include="assets\js\jquery.sparkline.min.js" />
-    <Content Include="assets\js\king-chart-stat.js" />
-    <Content Include="assets\js\king-common.js" />
-    <Content Include="assets\js\king-components.js" />
-    <Content Include="assets\js\king-elements.js" />
-    <Content Include="assets\js\king-form-layouts.js" />
-    <Content Include="assets\js\king-page.js" />
-    <Content Include="assets\js\king-table.js" />
-    <Content Include="assets\js\maps\france_departments.js" />
-    <Content Include="assets\js\maps\usa_states.js" />
-    <Content Include="assets\js\maps\world_countries.js" />
-    <Content Include="assets\js\markdown\bootstrap-markdown.js" />
-    <Content Include="assets\js\markdown\markdown.js" />
-    <Content Include="assets\js\markdown\to-markdown.js" />
-    <Content Include="assets\js\modernizr.js" />
-    <Content Include="assets\js\moment.js" />
-    <Content Include="assets\js\moment.min.js" />
-    <Content Include="assets\js\parsley.js" />
-    <Content Include="assets\js\parsley.min.js" />
-    <Content Include="assets\js\raphael-2.1.0.js" />
-    <Content Include="assets\js\raphael-2.1.0.min.js" />
-    <Content Include="assets\js\raphael-min.js" />
-    <Content Include="assets\js\raphael.js" />
-    <Content Include="assets\js\select2.js" />
-    <Content Include="assets\js\select2.min.js" />
-    <Content Include="assets\js\stat\colorbrewer.js" />
-    <Content Include="assets\js\stat\d3.js" />
-    <Content Include="assets\js\stat\d3.min.js" />
-    <Content Include="assets\js\stat\flot\jquery.flot.min.js" />
-    <Content Include="assets\js\stat\flot\jquery.flot.orderBars.js" />
-    <Content Include="assets\js\stat\flot\jquery.flot.pie.js" />
-    <Content Include="assets\js\stat\flot\jquery.flot.pie.min.js" />
-    <Content Include="assets\js\stat\flot\jquery.flot.resize.min.js" />
-    <Content Include="assets\js\stat\flot\jquery.flot.selection.min.js" />
-    <Content Include="assets\js\stat\flot\jquery.flot.time.min.js" />
-    <Content Include="assets\js\stat\flot\jquery.flot.tooltip.min.js" />
-    <Content Include="assets\js\stat\jquery.easypiechart.min.js" />
-    <Content Include="assets\js\summernote.js" />
-    <Content Include="assets\js\summernote.min.js" />
-    <Content Include="assets\js\typeahead.js" />
-    <Content Include="assets\js\typeaheadjs.1.5.1.js" />
-    <Content Include="assets\js\wizard.js" />
-    <Content Include="assets\js\wizard.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="demo-style-switcher\assets\css\style-switcher.css" />
-    <Content Include="demo-style-switcher\assets\img\cog.png" />
-    <Content Include="demo-style-switcher\assets\js\deliswitch.js" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="assets\audio\bell-ringing.ogg" />
-    <Content Include="assets\audio\flash-message.ogg" />
-    <Content Include="assets\audio\offline.ogg" />
-    <Content Include="assets\fonts\fontawesome-webfont.eot" />
-    <Content Include="assets\fonts\fontawesome-webfont.ttf" />
-    <Content Include="assets\fonts\fontawesome-webfont.woff" />
-    <Content Include="assets\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="assets\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="assets\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="assets\fonts\lato-bol-webfont.eot" />
-    <Content Include="assets\fonts\lato-bol-webfont.ttf" />
-    <Content Include="assets\fonts\lato-bol-webfont.woff" />
-    <Content Include="assets\fonts\lato-lig-webfont.eot" />
-    <Content Include="assets\fonts\lato-lig-webfont.ttf" />
-    <Content Include="assets\fonts\lato-lig-webfont.woff" />
-    <Content Include="assets\fonts\lato-reg-webfont.eot" />
-    <Content Include="assets\fonts\lato-reg-webfont.ttf" />
-    <Content Include="assets\fonts\lato-reg-webfont.woff" />
-    <Content Include="assets\js\stat\data-barchart.tsv" />
-    <Content Include="assets\js\stat\data-heatmap.tsv" />
-    <Content Include="demo-style-switcher\style-switcher.php" />
     <None Include="Properties\PublishProfiles\iKitchenPublish.pubxml" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\iKitchen.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\SunTzu.js" />
-    <Content Include="Scripts\_references.js" />
-    <Content Include="Service References\ServiceReference1\iKitchen.Web.ServiceReference1.InquiryModel.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ServiceReference1\iKitchen.Web.ServiceReference1.InquiryResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Service References\ServiceReference1\InquiryService.disco" />
-    <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
-    <None Include="Service References\ServiceReference1\configuration.svcinfo" />
-    <None Include="Service References\ServiceReference1\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -425,7 +220,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
@@ -459,16 +253,12 @@
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\System\InquiryConfiguration.cshtml" />
     <Content Include="Views\System\_QuickButtonAdmin.cshtml" />
-    <None Include="Service References\ServiceReference1\InquiryService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
@@ -489,12 +279,6 @@
       <Project>{b2c85693-b549-4087-9487-76af065d15cf}</Project>
       <Name>iKitchen.Linq</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
