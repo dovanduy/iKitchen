@@ -569,7 +569,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\ReturnCustomer.cshtml" />
     <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\_RemoveAccountPartial.cshtml" />
@@ -580,12 +580,9 @@
     <Content Include="Views\Account\Password.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_TopBar.cshtml" />
     <Content Include="Views\Shared\_LeftSideBar.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
-    <Content Include="Views\Shared\_StyleSwitcher.cshtml" />
     <Content Include="Views\Shared\_BreadCrumb.cshtml" />
-    <Content Include="Views\Account\Login - Copy.cshtml" />
     <Content Include="Views\Shared\_MetaData.cshtml" />
     <Content Include="Views\Shared\_Pager.cshtml" />
     <Content Include="Web.sitemap">
@@ -595,8 +592,6 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\EditProfile.cshtml" />
     <Content Include="Views\Shared\NotAllow.cshtml" />
-    <Content Include="Views\Account\_QuickButton.cshtml" />
-    <Content Include="Views\Account\_QuickButtonAdmin.cshtml" />
     <Content Include="Views\Account\Log.cshtml" />
     <Content Include="Views\Shared\_ModalPopUp.cshtml" />
     <Content Include="Views\System\Configuration.cshtml" />
@@ -604,6 +599,7 @@
     <Content Include="Views\System\InquiryConfiguration.cshtml" />
     <Content Include="Views\System\_QuickButtonAdmin.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Home\NewCustomer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

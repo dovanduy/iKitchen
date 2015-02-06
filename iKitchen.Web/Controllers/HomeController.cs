@@ -17,7 +17,11 @@ namespace iKitchen.Web.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            if(Authorization.IsLogin || !Request["isreturn"].IsNotNullOrEmpty()) // todo: use cookie
+            {
+                return View("ReturnCustomer");
+            }
+            return View("NewCustomer");
         }
 
         public ActionResult RandomImage()
