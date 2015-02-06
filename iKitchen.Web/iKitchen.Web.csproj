@@ -532,6 +532,7 @@
     <Content Include="javascripts\wow.js" />
     <Content Include="less\hint.txt" />
     <Content Include="less\less-1.5.0.min.js" />
+    <Content Include="less\color.css" />
     <Content Include="stylesheets\grid-portfolio.css" />
     <Content Include="stylesheets\idangerous.swiper.css" />
     <Content Include="stylesheets\idangerous.swiper.scrollbar.css" />
