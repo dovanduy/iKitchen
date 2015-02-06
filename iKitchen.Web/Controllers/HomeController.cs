@@ -36,5 +36,10 @@ namespace iKitchen.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult BootStrap()
+        {
+            return View();
+        }
     }
 }
