@@ -195,6 +195,11 @@ namespace iKitchen.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser() { UserName = model.UserName };
+                user.Email = "zihao.chen31@gmail.com";
+                user.RoleId = 1;
+                user.Mobile = "13899032456";
+                user.Sex = 0;
+                user.CreateOn = DateTime.Now;
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
