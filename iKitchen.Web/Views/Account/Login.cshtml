@@ -1,81 +1,88 @@
-﻿@model iKitchen.Web.Models.LoginViewModel
-@{
-    ViewBag.Title = "登录";
-    Layout = null;
-}
-<!DOCTYPE html>
-<!--[if IE 9 ]><html class="ie ie9" lang="en" class="no-js"> <![endif]-->
-<!--[if !(IE)]><!-->
-<html lang="en" class="no-js">
-<!--<![endif]-->
-<head>
-    @Html.Partial("_MetaData")
-    <!-- CSS -->
-    <link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css">
-    <link href="/assets/css/main.css" rel="stylesheet" type="text/css">
-    <!-- Fav and touch icons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/kingadmin-favicon144x144.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/kingadmin-favicon114x114.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/kingadmin-favicon72x72.png">
-    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/assets/ico/kingadmin-favicon57x57.png">
-    <link rel="shortcut icon" href="/assets/ico/favicon.png">
-</head>
-<body>
-    <div class="wrapper full-page-wrapper page-login text-center">
-        <div class="inner-page">
+﻿<!-- page-section : starts -->
+<section id="contact" class="contact-bg">
+	
 
-            <div class="logo"><img src="/assets/img/kingadmin-logo.png" alt="" /></div>
-            @*<button type="button" class="btn btn-login-facebook"><span>Login via Facebook</span></button>
+	<!-- inner-section : starts -->
+	<section id="contact-wrap" class="inner-section">
 
-                <div class="separator"><span>OR</span></div>*@
-            <div class="login-box center-block">
-                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @*<form class="form-horizontal" role="form">*@
-                    <p class="title">登录 iKitchen</p>
-                    @Html.ValidationSummary()
-                    <div class="form-group">
-                        <label for="username" class="control-label sr-only">用户名</label>
-                        <div class="col-sm-12">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "请输入用户名" })
-                            </div>
-                            @Html.ValidationMessageFor(m => m.UserName)
-                        </div>
-                    </div>
-                    <label for="password" class="control-label sr-only">密码</label>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <div class="input-group">
-                                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "请输入密码" })
-                            </div>
-                            @Html.ValidationMessageFor(m => m.Password)
-                        </div>
-                    </div>
-                    @*<div class="simple-checkbox">
-                            @Html.CheckBoxFor(m => m.RememberMe)
-                            @Html.LabelFor(m => m.RememberMe)
-                        </div>*@
-                    <button class="btn btn-custom-primary btn-lg btn-block btn-login"><i class="fa fa-arrow-circle-o-right"></i> 登录</button>
-                }
+		<!-- container : starts -->
+		<section class="container">
+			<div class="row">
+				<article class="col-md-4 text-left">
+					<div class="welcome pad-common border-top-main">
+						<h1 class="main-heading">Get In Touch With Us</h1>
+						<span class="liner-medium"></span>
+						<h3 class="sub-heading dark-text"><span>an awesome portfolio template for every creative people</span></h3>
+					</div>
 
-                @*<div class="links">
-                        <p><a href="#">Forgot Username or Password?</a></p>
-                        <p><a href="#">Create New Account</a></p>
-                    </div>*@
-            </div>
-        </div>
-        <div class="push-sticky-footer"></div>
-    </div>
-    @Html.Partial("_Footer")
-    <!-- Javascript -->
-    <script src="/assets/js/jquery-2.1.0.min.js"></script>
-    <script src="/assets/js/bootstrap.js"></script>
-    <script src="/assets/js/modernizr.js"></script>
-    @Scripts.Render("~/bundles/jqueryval")
-</body>
-</html>
+
+<!-- testimonial-wrap : starts -->
+<section class="testimonial-wrap pad-common high-bg">
+	<div class="add-bottom-half"><img alt="" title="" class="contact-icon" src="/images/rounded-icons/white/06.png"/></div>
+	<a class="email-text white-text">info@domain.tld</a>
+	<p class="address-text white-text">Identity LLC, North Avenue, London, UK</p>				
+	<ul class="credentials text-left">
+		<li><a href="#"><img src="/images/icons/mail.png" alt="presence" title="presence"><span class="credential-text">hello@domain.inc</span></a></li>
+		<li><a href="#"><img src="/images/icons/phone.png" alt="presence" title="presence"><span class="credential-text">+123.456.789.0</span></a></li>
+	</ul>
+</section>
+<!-- testimonial-wrap : ends -->
+
+			
+				</article>
+
+
+				<article class="col-md-4 text-left">
+					<div class="contact-item pad-common grey-bg border-top-dark">
+						<img alt="" title="" class="contact-icon" src="/images/rounded-icons/dark/08.png"/>
+						<h2 class="inner-heading dark-text">Send a Message</h2>
+						<span class="liner-small"></span>
+						<div class="alert alert-error error add-top-half" id="fname">
+							<p>Name must not be empty</p>
+						</div>
+						<div class="alert alert-error  error add-top-half" id="fmail">
+							<p>Please provide a valid email</p>
+						</div>
+						 <div class="alert alert-error  error add-top-half" id="fmsg">
+							 <p>Message should not be empty</p>
+						 </div>
+						  <form name="myform" id="contactForm" class="add-top-half" action="sendcontact.php" enctype="multipart/form-data" method="post"> 
+								<article>
+									<input type="text" placeholder="Your Name" id="name" name="name" size="100">
+								</article>
+								<article>
+									 <input type="text" placeholder="Valid email ID" name="email" id="email" size="30">
+								 </article>
+								 <article>
+									<textarea placeholder="Your Message" name="message" cols="40" rows="3" id="msg"></textarea>
+									<div class="btn-wrap">
+										<button class="btn btn-identity-color" id="submit" name="submit" type="submit">Send Message</button>
+									</div>
+								</article>
+						 </form>
+					</div>
+
+
+					<div class="contact-item pad-common dark-bg">
+						<img alt="" title="" class="contact-icon" src="/images/rounded-icons/white/07.png"/>
+						<h2 class="inner-heading white-text">twitter</h2>
+						<span class="liner-small"></span>
+						<div class="tweet-panel add-top-half">
+							<article id="ticker" class="query"></article>
+						</div>
+					</div>
+		
+
+
+					
+				</article>
+				<article class="col-md-4 text-left">
+					<!-- empty column -->
+				</article>
+			</div>
+		</section>
+		<!-- container : ends -->
+
+        	</section>
+	<!-- inner-section : ends -->
+</section>

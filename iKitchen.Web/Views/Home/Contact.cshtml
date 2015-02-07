@@ -1,17 +1,80 @@
-﻿@{
-    ViewBag.Title = "Contact";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+﻿<!-- page-section : starts -->
+<section id="contact" class="contact-bg">
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+    <!-- inner-section : starts -->
+    <section id="contact-wrap" class="inner-section">
+        <!-- container : starts -->
+        <section class="container">
+            <div class="row">
+                <article class="col-md-4 text-left">
+                    <div class="welcome pad-common border-top-main">
+                        <h1 class="main-heading">Get In Touch With Us</h1>
+                        <span class="liner-medium"></span>
+                        <h3 class="sub-heading dark-text"><span>an awesome portfolio template for every creative people</span></h3>
+                    </div>
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+                    <!-- testimonial-wrap : starts -->
+                    <section class="testimonial-wrap pad-common high-bg">
+                        <div class="add-bottom-half"><img alt="" title="" class="contact-icon" src="/images/rounded-icons/white/06.png" /></div>
+                        <a class="email-text white-text">info@domain.tld</a>
+                        <p class="address-text white-text">Identity LLC, North Avenue, London, UK</p>
+                        <ul class="credentials text-left">
+                            <li><a href="#"><img src="/images/icons/mail.png" alt="presence" title="presence"><span class="credential-text">hello@domain.inc</span></a></li>
+                            <li><a href="#"><img src="/images/icons/phone.png" alt="presence" title="presence"><span class="credential-text">+123.456.789.0</span></a></li>
+                        </ul>
+                    </section>
+                    <!-- testimonial-wrap : ends -->
+
+                </article>
+
+                <article class="col-md-4 text-left">
+                    <div class="contact-item pad-common grey-bg border-top-dark">
+                        <img alt="" title="" class="contact-icon" src="/images/rounded-icons/dark/08.png" />
+                        <h2 class="inner-heading dark-text">Send a Message</h2>
+                        <span class="liner-small"></span>
+                        <div class="alert alert-error error add-top-half" id="fname">
+                            <p>Name must not be empty</p>
+                        </div>
+                        <div class="alert alert-error  error add-top-half" id="fmail">
+                            <p>Please provide a valid email</p>
+                        </div>
+                        <div class="alert alert-error  error add-top-half" id="fmsg">
+                            <p>Message should not be empty</p>
+                        </div>
+                        <form name="myform" id="contactForm" class="add-top-half" action="sendcontact.php" enctype="multipart/form-data" method="post">
+                            <article>
+                                <input type="text" placeholder="Your Name" id="name" name="name" size="100">
+                            </article>
+                            <article>
+                                <input type="text" placeholder="Valid email ID" name="email" id="email" size="30">
+                            </article>
+                            <article>
+                                <textarea placeholder="Your Message" name="message" cols="40" rows="3" id="msg"></textarea>
+                                <div class="btn-wrap">
+                                    <button class="btn btn-identity-color" id="submit" name="submit" type="submit">Send Message</button>
+                                </div>
+                            </article>
+                        </form>
+                    </div>
+
+                    <div class="contact-item pad-common dark-bg">
+                        <img alt="" title="" class="contact-icon" src="/images/rounded-icons/white/07.png" />
+                        <h2 class="inner-heading white-text">twitter</h2>
+                        <span class="liner-small"></span>
+                        <div class="tweet-panel add-top-half">
+                            <article id="ticker" class="query"></article>
+                        </div>
+                    </div>
+
+
+
+                </article>
+                <article class="col-md-4 text-left">
+                    <!-- empty column -->
+                </article>
+            </div>
+        </section>
+        <!-- container : ends -->
+    </section>
+    <!-- inner-section : ends -->
+</section>
