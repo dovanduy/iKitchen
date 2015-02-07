@@ -1,0 +1,16 @@
+<mockup version="1.0" skin="sketch" measuredW="1150" measuredH="453" mockupW="936" mockupH="442">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::Image" x="214" y="11" w="-1" h="-1" measuredW="59" measuredH="442" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./left.png</src>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::Image" x="273" y="356" w="877" h="97" measuredW="877" measuredH="97" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./footer.png</src>
+        <text/>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
