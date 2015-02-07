@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectToBuild Include="$(WORKSPACE)\iKitchen\iKitchen.sln">
+    <ProjectToBuild Include="$(WORKSPACE)\iKitchen.sln">
       <Properties>Configuration=Release;OutDir=$(WORKSPACE)\Output\iKitchen\</Properties>
     </ProjectToBuild>
   </ItemGroup>
