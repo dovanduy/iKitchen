@@ -31,33 +31,33 @@ namespace iKitchen.Web.Models
 
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "{0}不能为空")]
-        [Display(Name = "用户名")]
+        [Required(ErrorMessage = "{0} must not be empty")]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "{0}不能为空")]
+        [Required(ErrorMessage = "{0} must not be empty")]
         [DataType(DataType.Password)]
-        [Display(Name = "密码")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "记住我？")]
+        [Display(Name = "Remeber me?")]
         public bool RememberMe { get; set; }
     }
 
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "用户名不能为空")]
-        [Display(Name = "用户名")]
+        [Required(ErrorMessage = "Username must not be empty")]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "密码不能为空")]
+        [Required(ErrorMessage = "Password must not be empty")]
         [StringLength(100, ErrorMessage = "{0}长度至少{2}为6个字符", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "初始密码")]
+        [Display(Name = "Curreny Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "确认密码")]
+        [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "确认密码与新密码不匹配")]
         public string ConfirmPassword { get; set; }
     }

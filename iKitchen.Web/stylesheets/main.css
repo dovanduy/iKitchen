@@ -735,7 +735,7 @@ font-family:"OpenSansLight";
 }
 
 input {
-    background: rgba(255,255,255,0.5); !important;
+    background: rgba(255,255,255,0.5) !important;
     border: none !important;
     border-radius: 0px !important;
     box-shadow: none !important;
@@ -764,7 +764,7 @@ input:focus, textarea:focus {
 			transition: all .8s linear;
 }
 textarea {
-    background: rgba(255,255,255,0.5); !important;
+    background: rgba(255,255,255,0.5) !important;
     border: none !important;
     border-radius: 0px !important;
     box-shadow: none !important;
