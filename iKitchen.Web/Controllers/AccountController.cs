@@ -200,7 +200,8 @@ namespace iKitchen.Web.Controllers
                 user.Mobile = "13899032456";
                 user.Sex = 0;
                 user.CreateOn = DateTime.Now;
-                var result = await UserManager.CreateAsync(user, model.Password);
+                user.UpdateOn = DateTime.Now;
+                var result = UserManager.Create(user, model.Password);
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
