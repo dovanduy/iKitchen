@@ -19,7 +19,7 @@ namespace iKitchen.Web.Controllers
         {
             if(Authorization.IsLogin || !Request["isreturn"].IsNotNullOrEmpty()) // todo: use cookie
             {
-                return View("ReturnCustomer");
+                return View();
             }
             return View("NewCustomer");
         }
