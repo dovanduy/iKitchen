@@ -1,10 +1,6 @@
 ﻿@model  PagedList<SignInLog>
 
-@section quickButton{
-    @{ Html.RenderPartial("_QuickButton"); }
-}
-
-<h4>我的登录日志</h4>
+<h4>Login log</h4>
 <hr />
 
 <table class="table table-hover">
@@ -14,13 +10,13 @@
                     用户名
                 </th>*@
             <th>
-                登录时间
+                Login time
             </th>
             <th>
                 IP
             </th>
             <th>
-                状态
+                State
             </th>
         </tr>
     </thead>
@@ -37,7 +33,7 @@
                 @item.IP
             </td>
             <td>
-                登录@(item.IsSuccess ? "成功" : "失败")
+                @(item.IsSuccess ? "Success" : "Failed")
             </td>
         </tr>
     }

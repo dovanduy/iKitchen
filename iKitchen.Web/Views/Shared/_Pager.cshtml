@@ -9,17 +9,16 @@
         <div class="col-md-12">
             <ul class="pagination">
                 @*<li>
-                        每页
                         <select id="PageSize" onchange="changePageSize()">
                             <option @(Model.PageSize == 25 ? "selected" : "")>25</option>
                             <option @(Model.PageSize == 50 ? "selected" : "")>50</option>
                             <option @(Model.PageSize == 100 ? "selected" : "")>100</option>
                         </select>
-                        条
+                        per page
                     </li>*@
 
-                <li class="@(Model.HasPreviousPage ? "" : "disabled")"><a href="@PageControl.GetUrlString(Model, 0)" title="首页">« 首页</a></li>
-                <li class="@(Model.HasPreviousPage ? "" : "disabled")"><a href="@PageControl.GetUrlString(Model, Model.PageIndex - 1)" title="上一页">&lt; 上一页</a></li>
+                <li class="@(Model.HasPreviousPage ? "" : "disabled")"><a href="@PageControl.GetUrlString(Model, 0)" title="First">« First</a></li>
+                <li class="@(Model.HasPreviousPage ? "" : "disabled")"><a href="@PageControl.GetUrlString(Model, Model.PageIndex - 1)" title="Previous">&lt; Prev</a></li>
                 @if (offsetLeft > 0)
                 {
                     <li><a>...</a></li>
@@ -30,24 +29,24 @@
                     {
                         continue;
                     }
-                    <li class="@(Model.PageIndex == i ? "active" : "")"><a href="@PageControl.GetUrlString(Model, i)" title="跳转到第@(i+1)页">@(i + 1)</a></li>
+                    <li class="@(Model.PageIndex == i ? "active" : "")"><a href="@PageControl.GetUrlString(Model, i)" title="Goto page @(i+1)">@(i + 1)</a></li>
                 }
                 @if (offsetRight < Model.PageCount - 1)
                 {
                     <li><a>...</a></li>
                 }
-                <li class="@(Model.HasNextPage ? "" : "disabled")"><a href="@PageControl.GetUrlString(Model, Model.PageIndex + 1)" title="下一页">下一页 &gt;</a></li>
-                <li class="@(Model.HasNextPage ? "" : "disabled")"><a href="@PageControl.GetUrlString(Model, Model.PageCount - 1)" title="末页">末页 »</a></li>
+                <li class="@(Model.HasNextPage ? "" : "disabled")"><a href="@PageControl.GetUrlString(Model, Model.PageIndex + 1)" title="Next">Next &gt;</a></li>
+                <li class="@(Model.HasNextPage ? "" : "disabled")"><a href="@PageControl.GetUrlString(Model, Model.PageCount - 1)" title="Last">Last »</a></li>
             </ul>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <p class="text-muted">当前显示第@(Model.PageIndex + 1)页，共@(Model.PageCount)页。每页@(Model.PageSize)条，共@(Model.TotalCount)条。</p>
+            <p class="text-muted">Page @(Model.PageIndex + 1) of @(Model.PageCount). @(Model.PageSize) records per page. @(Model.TotalCount) records in total.</p>
         </div>
     </div>
 }
 @if (Model == null || Model.TotalCount < 1)
 {
-    <div class="alert alert-danger">没有数据</div>
+    <div class="alert alert-danger">No data available</div>
 }

@@ -1,36 +1,20 @@
-﻿@model System.Web.Mvc.HandleErrorInfo
-@{
-    
+﻿@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
 }
-<section id="gallery" class="gallery gallery-bg">
-
-    <!-- inner-section : starts -->
-    <section id="gallery-wrap" class="inner-section">
-        <!-- container : starts -->
-        <section class="container">
-            <div class="row">
-                <article class="col-md-4 text-left">
-                    <div class="welcome pad-common  border-top-main">
-                        <h1 class="main-heading">503 Error</h1>
-                        <span class="liner-medium"></span>
-                    </div>
-                </article>
-                <article class="col-md-8 text-left">
-                    <div class="welcome high-bg pad-common  border-top-dark">
-                        <h3 class="sub-heading white-text"><span>Something went wrong.... @Model.Exception.Message</span></h3>
-                        <a href="/" class="btn btn-identity">Go back to home</a>
-                    </div>
-                </article>
+<!-- CSS Page Style -->
+<link rel="stylesheet" href="/assets/css/pages/page_404_error1.css">   
+<!--=== Content Part ===-->
+<div class="container">
+    <!--Error Block-->
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <div class="error-v2">
+                <span class="error-v2-title">503</span>
+                <span>Internal error!</span>
+                <p>An error occured when processing your request. <br> That’s all we know.</p>
             </div>
-
-            <div class="row">
-                <article class="col-md-12 text-left">
-                    <img alt="" title="" class="img-responsive" src="/images/parallax/01.jpg" />
-                </article>
-            </div>
-
-        </section>
-        <!-- container : ends -->
-    </section>
-    <!-- inner-section : ends -->
-</section>
+        </div>
+    </div>
+    <!--End Error Block-->
+</div><!--/container-->
+<!--=== End Content Part ===-->

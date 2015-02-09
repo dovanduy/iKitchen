@@ -2,8 +2,12 @@
     var pageName = SiteMap.CurrentNode != null ? SiteMap.CurrentNode.Title : "";
     var title = ViewBag.Title ?? ViewBag.SubTabName ?? ViewBag.TabName ?? pageName;
 }
-<title>@title - iKitchen</title>
+<title>iKitchen | @title</title>
+<!-- Meta -->
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="iKitchen">
-<meta name="author" content="allentranks">
+<meta name="author" content="Allen Xia, Zihao Chen">
+
+<!-- Favicon -->
+<link rel="shortcut icon" href="favicon.ico">
