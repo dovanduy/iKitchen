@@ -1,93 +1,50 @@
 ﻿@model iKitchen.Web.Models.LoginViewModel
 @{
     ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
 }
+<!--=== Content Part ===-->
+<div class="container">
+    <!--Reg Block-->
+    <div class="reg-block">
+        <div class="reg-block-header">
+            <h2>Sign In</h2>
+            <ul class="social-icons text-center">
+                <li><a class="rounded-x social_facebook" data-original-title="Facebook" href="#"></a></li>
+                <li><a class="rounded-x social_twitter" data-original-title="Twitter" href="#"></a></li>
+                <li><a class="rounded-x social_googleplus" data-original-title="Google Plus" href="#"></a></li>
+                <li><a class="rounded-x social_linkedin" data-original-title="Linkedin" href="#"></a></li>
+            </ul>
+            <p>Don't Have Account? Click <a class="color-green" href="page_registration1.html">Sign Up</a> to registration.</p>
+        </div>
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                <input type="text" class="form-control" placeholder="Username" id="UserName" name="UserName" size="100">
+            </div>
+            <div class="input-group margin-bottom-20">
+                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                <input type="password" class="form-control" placeholder="Password" id="Password" name="Password" size="100">
+            </div>
+            <hr>
 
-<!-- page-section : starts -->
-<section id="contact" class="contact-bg">
-	
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox">
+                    <p>Always stay signed in</p>
+                </label>
+            </div>
 
-	<!-- inner-section : starts -->
-	<section id="contact-wrap" class="inner-section">
-
-		<!-- container : starts -->
-		<section class="container">
-			<div class="row">
-				<article class="col-md-4 text-left">
-					<div class="welcome pad-common border-top-main">
-						<h1 class="main-heading">Get In Touch With Us</h1>
-						<span class="liner-medium"></span>
-						<h3 class="sub-heading dark-text"><span>an awesome portfolio template for every creative people</span></h3>
-					</div>
-
-
-<!-- testimonial-wrap : starts -->
-<section class="testimonial-wrap pad-common high-bg">
-	<div class="add-bottom-half"><img alt="" title="" class="contact-icon" src="/images/rounded-icons/white/06.png"/></div>
-	<a class="email-text white-text">info@domain.tld</a>
-	<p class="address-text white-text">Identity LLC, North Avenue, London, UK</p>				
-	<ul class="credentials text-left">
-		<li><a href="#"><img src="/images/icons/mail.png" alt="presence" title="presence"><span class="credential-text">hello@domain.inc</span></a></li>
-		<li><a href="#"><img src="/images/icons/phone.png" alt="presence" title="presence"><span class="credential-text">+123.456.789.0</span></a></li>
-	</ul>
-</section>
-<!-- testimonial-wrap : ends -->
-
-			
-				</article>
-
-
-				<article class="col-md-4 text-left">
-					<div class="contact-item pad-common grey-bg border-top-dark">
-						<img alt="" title="" class="contact-icon" src="/images/rounded-icons/dark/03.png"/>
-                        <h2 class="inner-heading dark-text">Login iKitchen</h2>
-                        <span class="liner-small"></span>
-                        <div class="alert alert-error error add-top-half" id="UserName">
-                            <p>Name must not be empty</p>
-                        </div>
-                        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            @*<form class="form-horizontal" role="form">*@
-                            @Html.ValidationSummary()
-                            <article class="form-group">
-                                <input type="text" placeholder="Username" id="UserName" name="UserName" size="100">
-                            </article>
-                            
-                            <div class="form-group">
-                                <input type="password" placeholder="Password" id="Password" name="Password" size="100">
-                            </div>
-                            <article>
-								<div class="btn-wrap">
-									<button class="btn btn-identity-color" id="submit" name="submit" type="submit">Login</button>
-								</div>
-							</article>
-                        }
-
-
-					</div>
-
-
-					<div class="contact-item pad-common dark-bg">
-						<img alt="" title="" class="contact-icon" src="/images/rounded-icons/white/07.png"/>
-						<h2 class="inner-heading white-text">twitter</h2>
-						<span class="liner-small"></span>
-						<div class="tweet-panel add-top-half">
-							<article id="ticker" class="query"></article>
-						</div>
-					</div>
-		
-
-
-					
-				</article>
-				<article class="col-md-4 text-left">
-					<!-- empty column -->
-				</article>
-			</div>
-		</section>
-		<!-- container : ends -->
-
-        	</section>
-	<!-- inner-section : ends -->
-</section>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <button type="submit" class="btn-u btn-block">Log In</button>
+                </div>
+            </div>
+        }
+    </div>
+    <!--End Reg Block-->
+</div><!--/container-->
+<!--=== End Content Part ===-->
