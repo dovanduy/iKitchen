@@ -1,2 +1,0 @@
-red #F6653C
-green #27CCC0
