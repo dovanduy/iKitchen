@@ -344,7 +344,12 @@ namespace iKitchen.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
+        }
+
+        public ActionResult Profile()
+        {
+            return View();
         }
 
 
