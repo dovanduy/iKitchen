@@ -4665,7 +4665,6 @@
     <Content Include="Views\System\_QuickButtonAdmin.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Home\NewCustomer.cshtml" />
-    <Content Include="Views\Home\BootStrap.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
   </ItemGroup>
