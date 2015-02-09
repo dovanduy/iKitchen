@@ -15,7 +15,7 @@
 			</property>
 			<property name="AppNamespace">iKitchen</property>
 			<property name="AppDescription">iKitchen</property>
-			<property name="Corp">FalconMeta</property>
+			<property name="Corp">iKitchen</property>
 			<property name="Author">allentranks</property>
 			<property name="LinqDataContext">iKitchenDataContext</property>
 		</propertySet>

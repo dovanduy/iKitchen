@@ -9,9 +9,9 @@ namespace iKitchen.Linq
     * Title: DataContext
     * Description:
     * Copyright: Copyright (c) 2015
-    * Company: FalconMeta
+    * Company: iKitchen
     * Author: allentranks
-    * Create Time: 2/5/2015 12:03:30 AM
+    * Create Time: 2/9/2015 10:16:04 PM
     * */    
 	/// <summary>
 	/// 
