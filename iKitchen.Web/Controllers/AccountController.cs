@@ -99,7 +99,7 @@ namespace iKitchen.Web.Controllers
                     log.IP = Request.UserHostAddress;
                     log.IsSuccess = false;
                     log.SaveOrUpdate();
-                    ModelState.AddModelError("", "用户名或密码不正确！");
+                    ModelState.AddModelError("", "The username and password don't match");
                 }
             }
 

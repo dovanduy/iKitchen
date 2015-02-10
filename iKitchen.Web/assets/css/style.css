@@ -2264,7 +2264,7 @@ input[type="checkbox"].input-validation-error {
     border: 0 none;
 }
 
-.validation-summary-errors {
+.validation-summary-errors, .validation-summary-errors li {
     color: #b94a48;
 }
 
