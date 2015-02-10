@@ -2911,6 +2911,8 @@
     <Content Include="assets\plugins\jquery\jquery-migrate.min.js" />
     <Content Include="assets\plugins\jquery\jquery.js" />
     <Content Include="assets\plugins\jquery\jquery.min.js" />
+    <Content Include="assets\plugins\jquery\jquery.validate.min.js" />
+    <Content Include="assets\plugins\jquery\jquery.validate.unobtrusive.min.js" />
     <Content Include="assets\plugins\ladda-buttons\css\custom-lada-btn.css" />
     <Content Include="assets\plugins\ladda-buttons\css\ladda-themeless.min.css" />
     <Content Include="assets\plugins\ladda-buttons\css\ladda.min.css" />

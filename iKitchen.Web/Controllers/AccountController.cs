@@ -205,6 +205,7 @@ namespace iKitchen.Web.Controllers
                 if (result.Succeeded)
                 {
                     await SignInAsync(user, isPersistent: false);
+                    Session[WebConstants.CurrentUser] = user;
                     return RedirectToAction("Index", "Home");
                 }
                 else
