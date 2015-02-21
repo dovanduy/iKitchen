@@ -4,10 +4,10 @@
 		<add key="ConnectionString1" value="Data Source=182.92.106.147,49368;Initial Catalog=iKitchen;User Id=EVSUser;Password=tokyo821025" />
 	</variables>
 	<propertySets>
-		<propertySet name="All" template="D:\Projects\ATRoot\Project\CodeSmithTemplate\Razor_Embryo\LinqEF.cst">
+		<propertySet name="All" template="L:\Projects\ATRoot\Project\CodeSmithTemplate\Razor_Embryo\LinqEF.cst">
 			<property name="ConnectionStringName">iKitchen.Linq.Properties.Settings.iKitchenConnectionString</property>
 			<!-- Linq类文件存放目录 -->
-			<property name="LinqClassFolder">D:\Project\iKitchen\iKitchen.Linq\</property>
+			<property name="LinqClassFolder">L:\Project\iKitchen\iKitchen.Linq\</property>
 			<property name="IsOverwrite">False</property>
 			<property name="SourceDatabase">
 				<connectionString>$(ConnectionString1)</connectionString>
