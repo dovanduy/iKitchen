@@ -52,6 +52,12 @@ namespace iKitchen.Linq
 		/// <summary>
 		/// 
 		/// </summary>
+        [StringLength(50)]
+		public System.String MainImagePath { get; set; }
+        
+		/// <summary>
+		/// 
+		/// </summary>
         [Required]
 		public System.Decimal Price { get; set; }
         

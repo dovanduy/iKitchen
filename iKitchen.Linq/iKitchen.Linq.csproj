@@ -51,6 +51,8 @@
     <Compile Include="DataExtension.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Event.gen.cs" />
+    <Compile Include="EventImage.cs" />
+    <Compile Include="EventImage.gen.cs" />
     <Compile Include="EventUser.cs" />
     <Compile Include="EventUser.gen.cs" />
     <Compile Include="Feedback.cs" />

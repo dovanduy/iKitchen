@@ -11,7 +11,7 @@ namespace iKitchen.Linq
     * Copyright: Copyright (c) 2015
     * Company: iKitchen
     * Author: allentranks
-    * Create Time: 2/21/2015 10:58:24 PM
+    * Create Time: 2/22/2015 10:29:05 PM
     * */    
 	/// <summary>
 	/// 
@@ -31,6 +31,7 @@ namespace iKitchen.Linq
 		
         #region DbSet Method Definitions
         public DbSet<Event> Event { get; set; }     
+        public DbSet<EventImage> EventImage { get; set; }     
         public DbSet<EventUser> EventUser { get; set; }     
         public DbSet<Feedback> Feedback { get; set; }     
         public DbSet<OpLog> OpLog { get; set; }     
