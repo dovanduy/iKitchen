@@ -4669,6 +4669,14 @@
     <Content Include="Views\Home\NewCustomer.cshtml" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Account\ProfileComments.cshtml" />
+    <Content Include="Views\Account\ProfileHistory.cshtml" />
+    <Content Include="Views\Account\ProfileMe.cshtml" />
+    <Content Include="Views\Account\ProfileProjects.cshtml" />
+    <Content Include="Views\Account\ProfileSettings.cshtml" />
+    <Content Include="Views\Account\ProfileUsers.cshtml" />
+    <Content Include="Views\Account\_LeftSideBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
