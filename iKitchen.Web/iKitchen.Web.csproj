@@ -181,6 +181,7 @@
     <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Models\AccountHelper.cs" />
     <Compile Include="Models\EntityUIExtensions.cs" />
+    <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\ServerStatus.cs" />
     <Compile Include="Models\WebInitializer.cs" />
     <Compile Include="Global.asax.cs">
@@ -4672,13 +4673,14 @@
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Account\ProfileComments.cshtml" />
-    <Content Include="Views\Account\ProfileHistory.cshtml" />
+    <Content Include="Views\Account\ProfileCreateEvent.cshtml" />
     <Content Include="Views\Account\ProfileMe.cshtml" />
     <Content Include="Views\Account\ProfileProjects.cshtml" />
     <Content Include="Views\Account\ProfileSettings.cshtml" />
     <Content Include="Views\Account\ProfileUsers.cshtml" />
     <Content Include="Views\Account\_LeftSideBar.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
+    <Content Include="Views\Account\CreateEvent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -403,6 +403,34 @@ namespace iKitchen.Web.Controllers
             return new ChallengeResult(provider, Url.Action("LinkLoginCallback", "Account"), User.Identity.GetUserId());
         }
 
+
+        [Login]
+        public ActionResult CreateEvent()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Login]
+        // TODO
+        public ActionResult CreateEvent(CreateEventViewModel model)
+        {
+            var newEvent = new Event();
+            newEvent.Address = model.Address;
+            newEvent.Description = model.Description;
+            newEvent.EventTime = DateTime.Now;
+            newEvent.Title = model.Title;
+            newEvent.UserId = "2";
+            newEvent.Summary = "nice";
+            newEvent.IsOneTime = true;
+            newEvent.GuestLimitCount = 5;
+            newEvent.State = 1;
+            newEvent.Price = 100;
+            newEvent.SaveOrUpdate();
+
+            return View();
+        }
+
         //
         // GET: /Account/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
