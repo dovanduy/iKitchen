@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/assets/plugins/fancybox/source/jquery.fancybox.css">
     <link rel="stylesheet" href="/assets/plugins/owl-carousel/owl-carousel/owl.carousel.css">
     <link rel="stylesheet" href="/assets/plugins/revolution-slider/rs-plugin/css/settings.css" type="text/css" media="screen">
-
+    <link rel="stylesheet" href="/assets/plugins/sky-forms/version-2.0.1/css/sky-forms.css" />
     <link rel="stylesheet" href="/assets/plugins/sky-forms/version-2.0.1/css/custom-sky-forms.css">
     <link rel="stylesheet" href="/assets/plugins/scrollbar/src/perfect-scrollbar.css">
     <link rel="stylesheet" href="/assets/css/pages/profile.css">
@@ -58,9 +58,12 @@
     <script type="text/javascript" src="/assets/js/custom.js"></script>
     <!-- JS Page Level -->
     <script type="text/javascript" src="/assets/js/app.js"></script>
+
     <script type="text/javascript" src="/assets/js/plugins/fancy-box.js"></script>
     <script type="text/javascript" src="/assets/js/plugins/owl-carousel.js"></script>
     <script type="text/javascript" src="/assets/js/plugins/revolution-slider.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/datepicker.js"></script>
+    <script type="text/javascript" src="/assets/js/plugins/form-sliders.js"></script>
     <script type="text/javascript">
         jQuery(document).ready(function () {
             App.init();
@@ -68,6 +71,8 @@
             FancyBox.initFancybox();
             OwlCarousel.initOwlCarousel();
             RevolutionSlider.initRSfullWidth();
+            Datepicker.initDatepicker();
+            FormSliders.initFormSliders();
         });
     </script>
     @RenderSection("PageJS", false)

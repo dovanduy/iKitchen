@@ -73,13 +73,13 @@
                         <section class="col col-6">
                             <label class="input">
                                 <i class="icon-append fa fa-calendar"></i>
-                                <input type="text" name="start" id="start" placeholder="Expected start date" class="hasDatepicker">
+                                <input type="text" name="start" id="start" placeholder="Expected start date" />
                             </label>
                         </section>
                         <section class="col col-6">
                             <label class="input">
                                 <i class="icon-append fa fa-calendar"></i>
-                                <input type="text" name="finish" id="finish" placeholder="Expected finish date" class="hasDatepicker">
+                                <input type="text" name="finish" id="finish" placeholder="Expected finish date" />
                             </label>
                         </section>
                     </div>
@@ -104,10 +104,12 @@
                             How Spicy
                         </div>
                     </section>
+
                     <section>
-                        <label class="label rounded-x">How Many Food Hunters You Want To Invite (<span id="slider2-value1-rounded">1</span> - <span id="slider2-value2-rounded">20</span>)</label>
-                        <div id="slider2-rounded" class="ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all" aria-disabled="false"><div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 15%; width: 45%;"></div><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 15%;"></a><a class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 60%;"></a></div>
+                        <label class="label">How Many Food Hunters You Want To Invite (<span id="slider2-value1">1</span> - <span id="slider2-value2">20</span>)</label>
+                        <div id="slider2"></div>
                     </section>
+
                     <section>
                         <label class="textarea">
                             <i class="icon-append fa fa-comment"></i>
@@ -132,7 +134,7 @@
 
     <script>
         jQuery(document).ready(function ($) {
-            "use strict";
+
             $('.contentHolder').perfectScrollbar();
         });
     </script>
