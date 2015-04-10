@@ -420,7 +420,7 @@ namespace iKitchen.Web.Controllers
             newEvent.Description = model.Description;
             newEvent.EventTime = DateTime.Now;
             newEvent.Title = model.Title;
-            newEvent.UserId = "2";
+            newEvent.UserId = User.Identity.GetUserId();
             newEvent.Summary = "nice";
             newEvent.IsOneTime = true;
             newEvent.GuestLimitCount = 5;
