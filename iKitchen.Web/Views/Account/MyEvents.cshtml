@@ -1,0 +1,30 @@
+﻿<!--=== Profile ===-->
+<div class="profile container content">
+    <div class="row">
+        <!--Left Sidebar-->
+        @Html.Partial("_LeftSideBar")
+        <!--End Left Sidebar-->
+        <div class="col-md-9">
+            <form action="/account/createevent" method="post" enctype="multipart/form-data" id="sky-form1" class="sky-form" novalidate="novalidate">
+                <header>My Events</header>
+                @foreach (var _event in ViewBag.Events)
+                {
+                    <li>
+                        @_event.Title + @_event.Description + @_event.Address
+                    </li>
+                }
+            </form>
+        </div>
+
+    </div><!--/end row-->
+</div><!--/container-->
+<!--=== End Profile ===-->
+@section PageJS{
+
+    <script>
+        jQuery(document).ready(function ($) {
+            "use strict";
+            $('.contentHolder').perfectScrollbar();
+        });
+    </script>
+}

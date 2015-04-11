@@ -4678,6 +4678,7 @@
     <Content Include="Views\Account\_LeftSideBar.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Account\CreateEvent.cshtml" />
+    <Content Include="Views\Account\MyEvents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

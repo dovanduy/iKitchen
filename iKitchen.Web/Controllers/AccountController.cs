@@ -431,6 +431,14 @@ namespace iKitchen.Web.Controllers
             return View();
         }
 
+        [Login]
+        public ActionResult MyEvents()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            ViewBag.Events = db.Event.Where(d => d.UserId == (string)currentUserId).ToList();
+            return View();
+        }
+
         //
         // GET: /Account/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
