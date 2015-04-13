@@ -4684,6 +4684,7 @@
     <Content Include="Views\Event\_LeftSideBar.cshtml" />
     <Content Include="Views\Event\MyEvents.cshtml" />
     <Content Include="Views\Event\CreateEvent.cshtml" />
+    <Content Include="Views\Event\EventDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

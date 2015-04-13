@@ -62,5 +62,11 @@ namespace iKitchen.Web.Controllers
 
             return View();
         }
+
+
+        public ActionResult EventDetail()
+        {
+            return View();
+        }
 	}
 }
