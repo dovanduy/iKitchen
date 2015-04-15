@@ -404,41 +404,6 @@ namespace iKitchen.Web.Controllers
         }
 
 
-        [Login]
-        public ActionResult CreateEvent()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [Login]
-        // TODO
-        public ActionResult CreateEvent(CreateEventViewModel model)
-        {
-            var newEvent = new Event();
-            newEvent.Address = model.Address;
-            newEvent.Description = model.Description;
-            newEvent.EventTime = DateTime.Now;
-            newEvent.Title = model.Title;
-            newEvent.UserId = User.Identity.GetUserId();
-            newEvent.Summary = "nice";
-            newEvent.IsOneTime = true;
-            newEvent.GuestLimitCount = 5;
-            newEvent.State = 1;
-            newEvent.Price = 100;
-            newEvent.SaveOrUpdate();
-
-            return View();
-        }
-
-        [Login]
-        public ActionResult MyEvents()
-        {
-            var currentUserId = User.Identity.GetUserId();
-            ViewBag.Events = db.Event.Where(d => d.UserId == (string)currentUserId).ToList();
-            return View();
-        }
-
         //
         // GET: /Account/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
