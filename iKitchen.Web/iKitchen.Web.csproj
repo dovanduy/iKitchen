@@ -4670,7 +4670,6 @@
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Account\ProfileComments.cshtml" />
-    <Content Include="Views\Account\ProfileCreateEvent.cshtml" />
     <Content Include="Views\Account\ProfileMe.cshtml" />
     <Content Include="Views\Account\ProfileProjects.cshtml" />
     <Content Include="Views\Account\ProfileSettings.cshtml" />
