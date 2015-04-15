@@ -422,6 +422,7 @@
     <Content Include="assets\img\icons\social\xing.png" />
     <Content Include="assets\img\icons\social\yahoo.png" />
     <Content Include="assets\img\icons\social\youtube.png" />
+    <Content Include="assets\img\iKitchen_logo.png" />
     <Content Include="assets\img\img.jpg" />
     <Content Include="assets\img\job\1.jpg" />
     <Content Include="assets\img\job\high-rated-job-1.1.jpg" />
@@ -617,6 +618,7 @@
     <Content Include="assets\img\team\team1.jpg" />
     <Content Include="assets\img\team\team2.jpg" />
     <Content Include="assets\img\team\team3.jpg" />
+    <Content Include="assets\img\team\zihao.jpg" />
     <Content Include="assets\img\testimonials\img1.jpg" />
     <Content Include="assets\img\testimonials\img2.jpg" />
     <Content Include="assets\img\testimonials\img3.jpg" />
