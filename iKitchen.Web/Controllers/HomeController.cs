@@ -15,6 +15,7 @@ namespace iKitchen.Web.Controllers
 {
     public class HomeController : iKitchenController
     {
+        [RequireHttps]
         public ActionResult Index()
         {
             if(Authorization.IsLogin || !Request["isreturn"].IsNotNullOrEmpty()) // todo: use cookie
