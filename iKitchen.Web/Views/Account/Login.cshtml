@@ -9,12 +9,7 @@
     <div class="reg-block">
         <div class="reg-block-header">
             <h2>Sign In</h2>
-            <ul class="social-icons text-center">
-                <li><a class="rounded-x social_facebook" data-original-title="Facebook" href="#"></a></li>
-                <li><a class="rounded-x social_twitter" data-original-title="Twitter" href="#"></a></li>
-                <li><a class="rounded-x social_googleplus" data-original-title="Google Plus" href="#"></a></li>
-                <li><a class="rounded-x social_linkedin" data-original-title="Linkedin" href="#"></a></li>
-            </ul>
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
             <p>Don't Have Account? Click <a class="color-green" href="/Account/Register">Sign Up</a> to registration.</p>
         </div>
         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
@@ -50,11 +45,6 @@
                 </div>
             </div>
         }
-        <div class="col-md-4">
-            <section id="socialLoginForm">
-                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
-            </section>
-        </div>
     </div>
     <!--End Reg Block-->
 </div><!--/container-->

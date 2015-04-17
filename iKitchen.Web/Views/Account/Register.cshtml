@@ -4,18 +4,13 @@
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
-<!--=== Content Part ===-->    
+<!--=== Content Part ===-->
 <div class="container">
     <!--Reg Block-->
     <div class="reg-block">
         <div class="reg-block-header">
             <h2>Sign Up</h2>
-            <ul class="social-icons text-center">
-                <li><a class="rounded-x social_facebook" data-original-title="Facebook" href="#"></a></li>
-                <li><a class="rounded-x social_twitter" data-original-title="Twitter" href="#"></a></li>
-                <li><a class="rounded-x social_googleplus" data-original-title="Google Plus" href="#"></a></li>
-                <li><a class="rounded-x social_linkedin" data-original-title="Linkedin" href="#"></a></li>
-            </ul>
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
             <p>Already Signed Up? Click <a class="color-green" href="/Account/Login">Sign In</a> to login your account.</p>
         </div>
 
@@ -27,7 +22,7 @@
         {
             @Html.AntiForgeryToken()
             @*<form class="form-horizontal" role="form">*@
-            @Html.ValidationSummary() 
+            @Html.ValidationSummary()
             <div class="input-group margin-bottom-20">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
                 <input type="text" placeholder="Username" id="UserName" name="UserName" class="form-control">
@@ -45,17 +40,18 @@
                 <span class="input-group-addon"><i class="fa fa-key"></i></span>
                 <input type="password" id="ConfirmPassword" name="ConfirmPassword" class="form-control" placeholder="Confirm Password">
             </div>
-            <div class="checkbox">            
+            <div class="checkbox">
                 <label>
-                    <input type="checkbox"> 
-                    <p>I read <a target="_blank" href="page_terms.html">Terms and Conditions</a></p>
+                    <input type="checkbox">
+                    <p>I read <a target="_blank" href="#">Terms and Conditions</a></p>
                 </label>
             </div>
-            <article>
-                <div class="btn-wrap">
-                    <button class="btn btn-identity-color" id="submit" name="submit" type="submit">Register</button>
+
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <button type="submit" class="btn-u btn-block">Register</button>
                 </div>
-            </article>
+            </div>
         }
     </div>
     <!--End Reg Block-->
