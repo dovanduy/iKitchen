@@ -345,7 +345,7 @@ namespace iKitchen.Web.Controllers
         public ActionResult LogOff()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Profile()
@@ -559,7 +559,7 @@ namespace iKitchen.Web.Controllers
             }
             else
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Profile", "Account");
             }
         }
 
