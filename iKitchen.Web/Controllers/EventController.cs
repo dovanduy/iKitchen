@@ -39,28 +39,24 @@ namespace iKitchen.Web.Controllers
         [Login]
         public ActionResult CreateEvent()
         {
-            return View();
+            return View(new Event());
         }
 
         [HttpPost]
         [Login]
         // TODO
-        public ActionResult CreateEvent(CreateEventViewModel model)
+        public ActionResult CreateEvent(int? id)
         {
             var newEvent = new Event();
-            newEvent.Address = model.Address;
-            newEvent.Description = model.Description;
-            newEvent.EventTime = DateTime.Now;
-            newEvent.Title = model.Title;
+            HTMLHelper.BindModel(newEvent);
             newEvent.UserId = User.Identity.GetUserId();
-            newEvent.Summary = "nice";
-            newEvent.IsOneTime = true;
-            newEvent.GuestLimitCount = 5;
-            newEvent.State = 1;
-            newEvent.Price = 100;
-            newEvent.SaveOrUpdate();
-
-            return View();
+            if (newEvent.SaveOrUpdate())
+            {
+                SetSuccessMessage("Event created");
+                return Redirect("/Event/CreateEvent");
+            }
+            SetErrorMessage("Failed to create your event");
+            return View(newEvent);
         }
 
 

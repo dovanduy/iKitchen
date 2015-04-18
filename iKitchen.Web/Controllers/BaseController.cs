@@ -182,7 +182,7 @@ namespace iKitchen.Web.Controllers
         }
 
 
-        protected void SetSuccessMessage(string message = "保存成功！")
+        protected void SetSuccessMessage(string message = "Saved successfully!")
         {
             SetMessage(message, "success");
         }
@@ -192,7 +192,7 @@ namespace iKitchen.Web.Controllers
             SetMessage(message, "info");
         }
 
-        protected void SetErrorMessage(string message = "保存失败...")
+        protected void SetErrorMessage(string message = "Failed to save...")
         {
             SetMessage(message, "danger");
         }
