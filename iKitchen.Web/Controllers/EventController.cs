@@ -30,7 +30,7 @@ namespace iKitchen.Web.Controllers
         public ActionResult MyEvents()
         {
             var currentUserId = User.Identity.GetUserId();
-            ViewData.Model = db.Event.Where(d => d.UserId == (string)currentUserId).ToList();
+            ViewData.Model = db.Event.Where(d => d.UserId == currentUserId).ToList();
             ViewData["UserName"] = User.Identity.GetUserName();
             ViewData["Counter"] = 0;
             return View();

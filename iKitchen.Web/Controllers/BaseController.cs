@@ -171,6 +171,8 @@ namespace iKitchen.Web.Controllers
             CheckAuthorization(filterContext);
 
             ViewBag.SystemConfiguration = SystemConfiguration;
+
+            ViewBag.Nav = filterContext.RouteData.Values["controller"].ToString(); // set default nav
         }
 
         protected override void OnResultExecuted(ResultExecutedContext filterContext)

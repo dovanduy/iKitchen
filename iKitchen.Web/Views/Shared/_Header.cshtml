@@ -47,7 +47,7 @@
                     </li>
                     <!-- End Home -->
                     <!-- Event -->
-                    <li @(ViewBag.Nav == "Event" ? "active" : "")>
+                    <li @(ViewBag.Nav == "Event" ? "class=active" : "")>
                         <a href="/Event/">
                             Events
                         </a>
@@ -58,15 +58,15 @@
                     </li>
                     <!-- End Event -->
                     <!-- About -->
-                    <li @(ViewBag.Nav == "AboutUs" ? "active" : "")>
-                        <a href="/Home/AboutUs">
+                    <li @(ViewBag.Nav == "AboutUs" ? "class=active" : "")>
+                        <a href="/AboutUs">
                             About us
                         </a>
                     </li>
                     <!-- End About -->
                     <!-- Contact us -->
                     <li @(ViewBag.Nav == "Contact" ? "class=active" : "")>
-                        <a href="/Home/Contact">
+                        <a href="/Contact">
                             Contact
                         </a>
                     </li>
