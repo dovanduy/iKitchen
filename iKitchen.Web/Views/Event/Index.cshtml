@@ -1,69 +1,66 @@
-﻿<!--=== Content Part ===-->
+﻿@model PagedList<iKitchen.Linq.Event>
+<!--=== Content Part ===-->
 <div class="container content">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="view view-tenth">
-                <img class="img-responsive" src="/assets/img/main/1.jpg" alt="" />
-                <div class="mask">
-                    <h2>Portfolio Item</h2>
-                    <p>At vero eos et accusamus et iusto odio dignissimos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
-                    <a href="/Event/EventDetail" class="info">Read More</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="view view-tenth">
-                <img class="img-responsive" src="/assets/img/main/2.jpg" alt="" />
-                <div class="mask">
-                    <h2>Portfolio Item</h2>
-                    <p>At vero eos et accusamus et iusto odio dignissimos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
-                    <a href="/Event/EventDetail" class="info">Read More</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="view view-tenth">
-                <img class="img-responsive" src="/assets/img/main/5.jpg" alt="" />
-                <div class="mask">
-                    <h2>Portfolio Item</h2>
-                    <p>At vero eos et accusamus et iusto odio dignissimos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
-                    <a href="/Event/EventDetail" class="info">Read More</a>
-                </div>
-            </div>
-        </div>
-    </div><!--/row-->
 
     <div class="row">
-        <div class="col-md-4">
-            <div class="view view-tenth">
-                <img class="img-responsive" src="/assets/img/main/3.jpg" alt="" />
-                <div class="mask">
-                    <h2>Portfolio Item</h2>
-                    <p>At vero eos et accusamus et iusto odio dignissimos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
-                    <a href="/Views/Event/EventDetail" class="info">Read More</a>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            var item = Model[i];
+            var user = CacheHelperApplicationUser.GetById(item.UserId);
+            <div class="col-sm-4">
+                <div class="easy-block-v1">
+                    <img class="img-responsive" src="/assets/img/main/15.jpg" alt="">
+                    <div class="easy-block-v1-badge rgba-red">@(item.State == 0 ? "available" : "N/A")</div>
+                </div>
+                <div class="projects">
+                    <h2><a href="/Event/Detail/">@item.Title</a></h2>
+                    <ul class="list-unstyled list-inline blog-info-v2">
+                        <li>By: <a class="color-green" href="#">@user.UserName</a></li>
+                        <li><i class="fa fa-clock-o"></i> @item.CreateOn</li>
+                    </ul>
+                    <p>@item.Description</p>
+                    <br>
+                    <h3 class="heading-xs">Guests Number <span class="pull-right">77%</span></h3>
+                    <div class="progress progress-u progress-xxs">
+                        <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%">
+                        </div>
+                    </div>
+                    <ul class="list-inline blog-info-v2">
+                        <li>
+                            <strong>5</strong>
+                            <span>Joined</span>
+                        </li>
+                        <li>
+                            <strong>3</strong>
+                            <span>Available</span>
+                        </li>
+                        @if (item.EventTime.HasValue)
+                        {
+                            <li>
+                                <strong>@((int)DateTime.Now.Subtract(item.EventTime.Value).TotalDays)</strong>
+                                <span>days to go</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div class="project-share">
+                    <ul class="list-inline comment-list-v2 pull-left">
+                        <li><i class="fa fa-eye"></i> <a href="#">25</a></li>
+                        <li><i class="fa fa-comments"></i> <a href="#">32</a></li>
+                        <li><i class="fa fa-retweet"></i> <a href="#">77</a></li>
+                    </ul>
+                    <ul class="list-inline star-vote pull-right">
+                        <li><i class="color-green fa fa-star"></i></li>
+                        <li><i class="color-green fa fa-star"></i></li>
+                        <li><i class="color-green fa fa-star"></i></li>
+                        <li><i class="color-green fa fa-star-half-o"></i></li>
+                        <li><i class="color-green fa fa-star-o"></i></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="view view-tenth">
-                <img class="img-responsive" src="/assets/img/main/4.jpg" alt="" />
-                <div class="mask">
-                    <h2>Portfolio Item</h2>
-                    <p>At vero eos et accusamus et iusto odio dignissimos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
-                    <a href="/Views/Event/EventDetail" class="info">Read More</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="view view-tenth">
-                <img class="img-responsive" src="/assets/img/main/6.jpg" alt="" />
-                <div class="mask">
-                    <h2>Portfolio Item</h2>
-                    <p>At vero eos et accusamus et iusto odio dignissimos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
-                    <a href="/Views/Event/EventDetail" class="info">Read More</a>
-                </div>
-            </div>
-        </div>
-    </div><!--/row-->
+        }
+
+    </div><!--/end row-->
+
 </div><!--/container-->
 <!--=== End Content Part ===-->

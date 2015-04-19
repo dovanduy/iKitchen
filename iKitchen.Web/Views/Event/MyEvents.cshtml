@@ -1,4 +1,4 @@
-﻿@model IEnumerable<iKitchen.Linq.Event>
+﻿@model List<iKitchen.Linq.Event>
 
 <!--=== Profile ===-->
 <div class="profile container content">
@@ -9,63 +9,66 @@
         <div class="col-md-9">
             <!--Profile Body-->
             <div class="profile-body">
-                @foreach (var item in Model)
-                {
-                    <!--Projects-->
                 <div class="row">
-                    <div class="col-sm-6">
-                        <div class="easy-block-v1">
-                            <img class="img-responsive" src="/assets/img/main/15.jpg" alt="">
-                            <div class="easy-block-v1-badge rgba-red">@item.State</div>
-                        </div>
-                        <div class="projects">
-                            <h2>@item.Title</h2>
-                            <ul class="list-unstyled list-inline blog-info-v2">
-                                <li>By: <a class="color-green" href="#">@ViewData["UserName"]</a></li>
-                                <li><i class="fa fa-clock-o"></i> @item.CreateOn</li>
-                            </ul>
-                            <p>@item.Description</p>
-                            <br>
-                            <h3 class="heading-xs">Guests Number <span class="pull-right">77%</span></h3>
-                            <div class="progress progress-u progress-xxs">
-                                <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%">
-                                </div>
+                    @for (int i = 0; i < Model.Count(); i++)
+                    {
+                        var item = Model[i];
+                        var user = CacheHelperApplicationUser.GetById(item.UserId);
+                        <div class="col-sm-6">
+                            <div class="easy-block-v1">
+                                <img class="img-responsive" src="/assets/img/main/15.jpg" alt="">
+                                <div class="easy-block-v1-badge rgba-red">@item.State</div>
                             </div>
-                            <ul class="list-inline blog-info-v2">
-                                <li>
-                                    <strong>12%</strong>
-                                    <span>Funded</span>
-                                </li>
-                                <li>
-                                    <strong>17%</strong>
-                                    <span>Pludged</span>
-                                </li>
-                                <li>
-                                    <strong>25</strong>
-                                    <span>days to go</span>
-                                </li>
-                            </ul>
+                            <div class="projects">
+                                <h2><a href="/Event/Detail/">@item.Title</a></h2>
+                                <ul class="list-unstyled list-inline blog-info-v2">
+                                    <li>By: <a class="color-green" href="#">@user.UserName</a></li>
+                                    <li><i class="fa fa-clock-o"></i> @item.CreateOn</li>
+                                </ul>
+                                <p>@item.Description</p>
+                                <br>
+                                <h3 class="heading-xs">Guests Number <span class="pull-right">77%</span></h3>
+                                <div class="progress progress-u progress-xxs">
+                                    <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="77" aria-valuemin="0" aria-valuemax="100" style="width: 77%">
+                                    </div>
+                                </div>
+                                <ul class="list-inline blog-info-v2">
+                                    <li>
+                                        <strong>5</strong>
+                                        <span>Joined</span>
+                                    </li>
+                                    <li>
+                                        <strong>3</strong>
+                                        <span>Available</span>
+                                    </li>
+                                    @if (item.EventTime.HasValue)
+                                    {
+                                        <li>
+                                            <strong>@((int)DateTime.Now.Subtract(item.EventTime.Value).TotalDays)</strong>
+                                            <span>days to go</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="project-share">
+                                <ul class="list-inline comment-list-v2 pull-left">
+                                    <li><i class="fa fa-eye"></i> <a href="#">25</a></li>
+                                    <li><i class="fa fa-comments"></i> <a href="#">32</a></li>
+                                    <li><i class="fa fa-retweet"></i> <a href="#">77</a></li>
+                                </ul>
+                                <ul class="list-inline star-vote pull-right">
+                                    <li><i class="color-green fa fa-star"></i></li>
+                                    <li><i class="color-green fa fa-star"></i></li>
+                                    <li><i class="color-green fa fa-star"></i></li>
+                                    <li><i class="color-green fa fa-star-half-o"></i></li>
+                                    <li><i class="color-green fa fa-star-o"></i></li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="project-share">
-                            <ul class="list-inline comment-list-v2 pull-left">
-                                <li><i class="fa fa-eye"></i> <a href="#">25</a></li>
-                                <li><i class="fa fa-comments"></i> <a href="#">32</a></li>
-                                <li><i class="fa fa-retweet"></i> <a href="#">77</a></li>
-                            </ul>
-                            <ul class="list-inline star-vote pull-right">
-                                <li><i class="color-green fa fa-star"></i></li>
-                                <li><i class="color-green fa fa-star"></i></li>
-                                <li><i class="color-green fa fa-star"></i></li>
-                                <li><i class="color-green fa fa-star-half-o"></i></li>
-                                <li><i class="color-green fa fa-star-o"></i></li>
-                            </ul>
-                        </div>
-                    </div>
+                    }
+
                 </div><!--/end row-->
-                <!--End Projects-->
-                }
-                
-                <button type="button" class="btn-u btn-u-default btn-u-sm btn-block">Load More</button>
+                @*<button type="button" class="btn-u btn-u-default btn-u-sm btn-block">Load More</button>*@
             </div>
             <!--End Profile Body-->
         </div>
@@ -73,7 +76,7 @@
 </div><!--/container-->
 <!--=== End Profile ===-->
     </div><!--/end row-->
-</div><!--/container-->
+                    </div><!--/container-->
 <!--=== End Profile ===-->
 @section PageJS{
 

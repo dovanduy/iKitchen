@@ -21,8 +21,11 @@ namespace iKitchen.Web.Controllers
     {
         //
         // GET: /Event/
-        public ActionResult Index()
+        public ActionResult Index(int? pageIndex)
         {
+            ViewData.Model = CacheHelper<Event>.GetAll()
+                                            .OrderByDescending(c=>c.Id)
+                                            .ToPagedList(pageIndex.GetValueOrDefault());
             return View();
         }
 
