@@ -34,8 +34,8 @@
 
             <div class="checkbox">
                 <label>
-                    <input type="checkbox">
-                    <p>Always stay signed in</p>
+                    @Html.CheckBoxFor(m => m.RememberMe)
+                    @Html.LabelFor(m => m.RememberMe)
                 </label>
             </div>
 
