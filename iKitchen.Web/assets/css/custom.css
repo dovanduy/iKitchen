@@ -1,1 +1,28 @@
 /* Add here all your css styles (customizations) */
+/* 
+.field-validation-error {
+    color: #ff0000;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+    */
+.input-validation-error {
+    background-color: #fff0f0 !important;
+}
+  

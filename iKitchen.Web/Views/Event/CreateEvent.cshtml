@@ -10,16 +10,17 @@
         <div class="row">
             <section class="col col-6">
                 <label class="input">
-                    <i class="icon-prepend fa fa-user"></i>
+                    <i class="icon-prepend fa fa-pencil-square-o"></i>
                     @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Title" })
                 </label>
                 @Html.ValidationMessageFor(m => m.Title)
             </section>
             <section class="col col-6">
                 <label class="input">
-                    <i class="icon-prepend fa fa-briefcase"></i>
-                    @Html.TextBoxFor(m => m.Price, new { @class = "form-control", placeholder = "Unit Price" })
+                    <i class="icon-prepend fa">$</i>
+                    @Html.TextBoxFor(m => m.Price, new { @Value = Model.Price > 0 ? Model.Price.ToString() : "", @class = "form-control", placeholder = "Unit Price" })
                 </label>
+                @Html.ValidationMessageFor(m => m.Price)
             </section>
         </div>
 
@@ -27,14 +28,14 @@
             <section class="col col-6">
                 <label class="input">
                     <i class="icon-prepend fa fa-calendar"></i>
-                    @Html.TextBoxFor(m => m.EventTime, new { @class = "form-control date", placeholder = "The event time" })
+                    @Html.TextBoxFor(m => m.EventTime, "{0:dd/MM/yyyy}", new { @class = "form-control date", placeholder = "The event time" })
                 </label>
                 @Html.ValidationMessageFor(m => m.EventTime)
             </section>
             <section class="col col-6">
                 <div class="inline-group">
-                    <label class="radio"><input type="radio" name="IsOneTime" checked="@Model.IsOneTime ? "><i class="rounded-x"></i>One Time Event</label>
-                    <label class="radio"><input type="radio" name="IsOneTime" checked="@Model.IsOneTime"><i class="rounded-x"></i>Repeat Event</label>
+                    <label class="radio"><input type="radio" name="IsOneTime" value="true" checked="@Model.IsOneTime ? "><i class="rounded-x"></i>One Time Event</label>
+                    <label class="radio"><input type="radio" name="IsOneTime" value="false" checked="@Model.IsOneTime"><i class="rounded-x"></i>Repeat Event</label>
                 </div>
             </section>
         </div>
@@ -53,6 +54,7 @@
 
         <section>
             <label class="input">
+                <i class="icon-prepend fa fa-map-marker"></i>
                 @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
             </label>
             @Html.ValidationMessageFor(m => m.Address)
@@ -87,13 +89,12 @@
         </section>
     </fieldset>
     <footer>
-        <button type="submit" class="btn-u">Create~</button>
-        <div class="progress"></div>
+        <button type="submit" class="btn-u">Create</button>
     </footer>
-    <div class="message">
+    @*<div class="message">
         <i class="rounded-x fa fa-check"></i>
         <p>Thanks for your sharing!<br>Food hunters will contact you very soon.</p>
-    </div>
+    </div>*@
 </form>
 <!--=== End Profile ===-->
 @section PageJS{
@@ -103,6 +104,12 @@
 
             $('.contentHolder').perfectScrollbar();
 
+            // Regular datepicker
+            $('#EventTime').datepicker({
+                dateFormat: 'dd/mm/yy',
+                prevText: '<i class="fa fa-angle-left"></i>',
+                nextText: '<i class="fa fa-angle-right"></i>'
+            });
 
             // Range slider
             $('#slider').slider({

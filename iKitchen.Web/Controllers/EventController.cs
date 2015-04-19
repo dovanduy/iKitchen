@@ -45,18 +45,22 @@ namespace iKitchen.Web.Controllers
         [HttpPost]
         [Login]
         // TODO
-        public ActionResult CreateEvent(int? id)
+        public ActionResult CreateEvent(Event @event)
         {
-            var newEvent = new Event();
-            HTMLHelper.BindModel(newEvent);
-            newEvent.UserId = User.Identity.GetUserId();
-            if (newEvent.SaveOrUpdate())
+            ModelState.Remove("UserId");
+            if (ModelState.IsValid)
             {
-                SetSuccessMessage("Event created");
-                return Redirect("/Event/CreateEvent");
+                var newEvent = new Event();
+                HTMLHelper.BindModel(newEvent);
+                newEvent.UserId = User.Identity.GetUserId();
+                if (newEvent.SaveOrUpdate())
+                {
+                    SetSuccessMessage("Event created!");
+                    return Redirect("/Event/CreateEvent");
+                }
             }
-            SetErrorMessage("Failed to create your event");
-            return View(newEvent);
+            SetErrorMessage("Failed to create your event...");
+            return View(@event);
         }
 
 
@@ -64,5 +68,5 @@ namespace iKitchen.Web.Controllers
         {
             return View();
         }
-	}
+    }
 }
