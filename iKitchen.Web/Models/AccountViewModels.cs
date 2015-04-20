@@ -68,6 +68,40 @@ namespace iKitchen.Web.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class ProfileSettingsViewModel
+    {
+        [Display(Name = "用户名")]
+        [StringLength(100)]
+        public string UserName { get; set; }
+
+
+        [DataType(DataType.Password)]
+        [Display(Name = "初始密码")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm Password")]
+        [Compare("Password", ErrorMessage = "确认密码与新密码不匹配")]
+        public string ConfirmPassword { get; set; }
+
+        /// <summary>
+        /// Email
+        /// </summary>
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "无效的Email地址")]
+        [StringLength(100)]
+        public string Email { get; set; }
+
+
+        /// <summary>
+        /// 手机
+        /// </summary>
+        [StringLength(11)]
+        [Display(Name = "手机号码")]
+        [RegularExpression("[1][3,4,5,8][0-9]{9}$", ErrorMessage = "手机号码格式不正确")]
+        public string PhoneNumber { get; set; }
+    }
+
     public class CreateUserViewModel
     {
         [Required(ErrorMessage = "{0}不能为空")]

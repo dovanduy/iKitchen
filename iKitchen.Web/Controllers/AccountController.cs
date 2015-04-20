@@ -108,37 +108,39 @@ namespace iKitchen.Web.Controllers
         }
 
         [Login]
-        public ActionResult EditProfile()
+        public ActionResult ProfileSettings()
         {
-            return View(AccountHelper.GetCurrentUser());
+            var user = AccountHelper.GetCurrentUser();
+            ProfileSettingsViewModel model = new ProfileSettingsViewModel();
+            model.UserName = user.UserName;
+            model.PhoneNumber = user.Mobile;
+            model.Email = user.Email;
+            return View(model);
         }
 
-        [Login(RoleId = WebConstants.RoleId_Admin)]
-        public ActionResult Edit(string uid)
-        {
-            var db = new ApplicationDbContext();
-            var user = db.Users.FirstOrDefault(c => c.Id == uid);
-            return View(user);
-        }
+        //[Login(RoleId = WebConstants.RoleId_Admin)]
+        //public ActionResult Edit(string uid)
+         //{
+           // var db = new ApplicationDbContext();
+            //var user = db.Users.FirstOrDefault(c => c.Id == uid);
+           // return View(user);
+       // }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Login(RoleId = WebConstants.RoleId_Admin)]
-        public ActionResult Edit()
+        public ActionResult ChangePassword(ProfileSettingsViewModel model)
         {
             var db = new ApplicationDbContext();
-            string uid = Request["uid"];
-            var user = db.Users.FirstOrDefault(c => c.Id == uid);
+            var user = db.Users.FirstOrDefault(c => c.UserName == model.UserName);
             HTMLHelper.BindModel(user);
             try
             {
                 db.SaveChanges();
-                var password = Request["Password"];
+                var password = model.Password;
                 if (password.IsNotNullOrEmpty())
                 {
                     UserManager.RemovePassword(user.Id);
                     UserManager.AddPassword(user.Id, password);
-                    SetSuccessMessage("保存成功！密码已重置！");
+                    SetSuccessMessage("New password has been saved!");
                 }
                 else
                 {
@@ -147,11 +149,34 @@ namespace iKitchen.Web.Controllers
             }
             catch (Exception e)
             {
-                logger.Debug("修改用户失败！", e);
+                logger.Debug("Change password Failed！", e);
                 SetErrorMessage();
             }
 
-            return View(user);
+            return View("ProfileSettings");
+        }
+
+        [HttpPost]
+        public ActionResult ChangeProfile(ProfileSettingsViewModel model)
+        {
+            var db = new ApplicationDbContext();
+            var user = AccountHelper.GetCurrentUser();
+            if (model.PhoneNumber != null)
+                user.Mobile = model.PhoneNumber;
+            if (model.Email != null)
+                user.Email = model.Email;
+
+            var result = UserManager.Update(user);
+            if (!result.Succeeded)
+            {
+                logger.Debug("Change profile failed！");
+                SetErrorMessage();
+            }
+            SetSuccessMessage("New profile has been saved!");
+            model.UserName = user.UserName;
+            model.PhoneNumber = user.Mobile;
+            model.Email = user.Email;
+            return View("ProfileSettings", model);
         }
 
         // POST: /Account/Register
