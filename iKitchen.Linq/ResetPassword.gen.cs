@@ -15,13 +15,19 @@ namespace iKitchen.Linq
 	/// <summary>
 	/// 
 	/// </summary>
-	public partial class EventUser : IEntity
+	public partial class ResetPassword : IEntity
 	{
 		/// <summary>
 		/// 
 		/// </summary>
         [Required]
 		public System.Int32 Id { get; set; }
+        
+		/// <summary>
+		/// 
+		/// </summary>
+        [Required]
+		public System.Guid Guid { get; set; }
         
 		/// <summary>
 		/// 
@@ -34,31 +40,19 @@ namespace iKitchen.Linq
 		/// 
 		/// </summary>
         [Required]
-		public System.Int32 EventId { get; set; }
+		public System.DateTime CreateOn { get; set; }
         
 		/// <summary>
 		/// 
 		/// </summary>
-        [StringLength(500)]
-		public System.String Message { get; set; }
+        [Required]
+		public System.DateTime UpdateOn { get; set; }
         
 		/// <summary>
-		/// 状态
+		/// 
 		/// </summary>
         [Required]
 		public System.Int32 State { get; set; }
-        
-		/// <summary>
-		/// 创建时间
-		/// </summary>
-        [Required]
-		public System.DateTime CreateOn { get; set; }
-        
-		/// <summary>
-		/// 更新时间
-		/// </summary>
-        [Required]
-		public System.DateTime UpdateOn { get; set; }
         
     }
 }

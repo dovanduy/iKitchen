@@ -10,8 +10,8 @@ namespace iKitchen.Linq
     * Description:
     * Copyright: Copyright (c) 2015
     * Company: iKitchen
-    * Author: allentranks
-    * Create Time: 2/22/2015 10:29:05 PM
+    * Author: Allen.Xia
+    * Create Time: 22/04/2015 10:28:43 p.m.
     * */    
 	/// <summary>
 	/// 
@@ -35,6 +35,7 @@ namespace iKitchen.Linq
         public DbSet<EventUser> EventUser { get; set; }     
         public DbSet<Feedback> Feedback { get; set; }     
         public DbSet<OpLog> OpLog { get; set; }     
+        public DbSet<ResetPassword> ResetPassword { get; set; }     
         public DbSet<Role> Role { get; set; }     
         public DbSet<SignInLog> SignInLog { get; set; }     
         public DbSet<SystemConfiguration> SystemConfiguration { get; set; }     

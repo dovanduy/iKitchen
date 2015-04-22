@@ -584,7 +584,7 @@ namespace iKitchen.Web.Controllers
             }
             else
             {
-                return RedirectToAction("Profile", "Account");
+                return RedirectToAction("Overall", "Account");
             }
         }
 
