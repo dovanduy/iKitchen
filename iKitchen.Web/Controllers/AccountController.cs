@@ -373,7 +373,7 @@ namespace iKitchen.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public ActionResult Profile()
+        public ActionResult Overall()
         {
             return View();
         }

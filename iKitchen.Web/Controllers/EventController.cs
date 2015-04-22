@@ -32,12 +32,14 @@ namespace iKitchen.Web.Controllers
         }
 
         [Login]
-        public ActionResult MyEvents()
+        public ActionResult MyEvents(int? pageIndex)
         {
             var currentUserId = User.Identity.GetUserId();
-            ViewData.Model = db.Event.Where(d => d.UserId == currentUserId).ToList();
-            ViewData["UserName"] = User.Identity.GetUserName();
-            ViewData["Counter"] = 0;
+            var events = CacheHelper<Event>.GetAll()
+                                            .Where(d => d.UserId == currentUserId)
+                                            .OrderByDescending(c => c.Id)
+                                            .ToPagedList(pageIndex.GetValueOrDefault());
+            ViewData.Model = events;
             return View();
         }
 
