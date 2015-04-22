@@ -23,9 +23,11 @@ namespace iKitchen.Web.Controllers
         // GET: /Event/
         public ActionResult Index(int? pageIndex)
         {
-            ViewData.Model = CacheHelper<Event>.GetAll()
-                                            .OrderByDescending(c=>c.Id)
+            var events = CacheHelper<Event>.GetAll()
+                                            .OrderByDescending(c => c.Id)
                                             .ToPagedList(pageIndex.GetValueOrDefault());
+            
+            ViewData.Model = events;
             return View();
         }
 
@@ -58,7 +60,23 @@ namespace iKitchen.Web.Controllers
                 newEvent.UserId = User.Identity.GetUserId();
                 if (newEvent.SaveOrUpdate())
                 {
+                    // save uploaded file
+                    var uploadedFiles = ImageHelper.SaveImageMultiple();
+                    if (uploadedFiles.Count > 0)
+                    {
+                        foreach (var uploadFile in uploadedFiles)
+                        {
+                            ImageHelper.CompressImage(uploadFile, 360, 270);
+                            var eventImage = new EventImage();
+                            eventImage.EventId = newEvent.Id;
+                            eventImage.ImagePath = uploadFile;
+                            eventImage.Title = "N/A";
+                            eventImage.SaveOrUpdate(); // todo: use batch insert.
+                        }
+                        CacheHelper<EventImage>.Clear();
+                    }
                     SetSuccessMessage("Event created!");
+                    CacheHelper<Event>.Clear();
                     return Redirect("/Event/CreateEvent");
                 }
             }

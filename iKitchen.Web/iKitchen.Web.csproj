@@ -50,6 +50,9 @@
     <Reference Include="RazorEngine">
       <HintPath>..\Library\RazorEngine.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -529,6 +532,7 @@
     <Content Include="assets\img\new\img7.jpg" />
     <Content Include="assets\img\new\img8.jpg" />
     <Content Include="assets\img\new\img9.jpg" />
+    <Content Include="assets\img\no_image.gif" />
     <Content Include="assets\img\overlay-icon.png" />
     <Content Include="assets\img\patterns\1.png" />
     <Content Include="assets\img\patterns\10.png" />
