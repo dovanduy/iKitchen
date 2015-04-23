@@ -41,13 +41,7 @@
                 <!--End Left Sidebar-->
 
                 <div class="col-md-9">
-                    @if(TempData["Message"]!=null)
-                    { 
-                    <div class="alert alert-@TempData["MessageType"] fade in alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        @TempData["Message"]
-                    </div>
-                    }
+                    @Html.Partial("_MessageBox")
                     @RenderBody()
                 </div>
             </div><!--/end row-->
@@ -94,6 +88,10 @@
             RevolutionSlider.initRSfullWidth();
             Datepicker.initDatepicker();
             FormSliders.initFormSliders();
+            $('#confirm-delete').on('show.bs.modal', function (e) {
+                $(this).find('.btn-ok').attr('posturl', $(e.relatedTarget).data('href'));
+            });
+            
         });
     </script>
     @RenderSection("PageJS", false)

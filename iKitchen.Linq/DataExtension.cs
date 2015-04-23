@@ -64,11 +64,11 @@ namespace iKitchen.Linq
             var db = DataContextManager.GetContext();
             if (isLogicDelete)
             {
-                db.Set(data.GetType()).Remove(data);
+                data.State = -1; // state = -1 时，逻辑删除
             }
             else
             {
-                data.State = -1; // state = -1 时，逻辑删除
+                db.Set(data.GetType()).Remove(data);
             }
             try
             {

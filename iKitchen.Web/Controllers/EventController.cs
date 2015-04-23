@@ -24,9 +24,10 @@ namespace iKitchen.Web.Controllers
         public ActionResult Index(int? pageIndex)
         {
             var events = CacheHelper<Event>.GetAll()
+                                            .Where(c => c.State != -1)
                                             .OrderByDescending(c => c.Id)
                                             .ToPagedList(pageIndex.GetValueOrDefault());
-            
+
             ViewData.Model = events;
             return View();
         }
@@ -36,7 +37,7 @@ namespace iKitchen.Web.Controllers
         {
             var currentUserId = User.Identity.GetUserId();
             var events = CacheHelper<Event>.GetAll()
-                                            .Where(d => d.UserId == currentUserId)
+                                            .Where(c => c.UserId == currentUserId && c.State != -1)
                                             .OrderByDescending(c => c.Id)
                                             .ToPagedList(pageIndex.GetValueOrDefault());
             ViewData.Model = events;
@@ -90,6 +91,37 @@ namespace iKitchen.Web.Controllers
         public ActionResult EventDetail()
         {
             return View();
+        }
+
+        [Login]
+        [HttpPost]
+        public JsonResult Remove(int id)
+        {
+            var @event = db.Event.FirstOrDefault(c => c.Id == id);
+            if (@event == null || @event.State == -1)
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message += " Event doesn't exist.";
+                return result.ToJsonResult();
+            }
+            if (@event.UserId != User.Identity.GetUserId())
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message += " You don't have the permission to delete this event.";
+                return result.ToJsonResult();
+            }
+
+            if (@event.Delete())
+            {
+                CacheHelper<Event>.Clear();
+                var result = ReturnResultFactory.DeleteSuccess;
+                return result.ToJsonResult();
+            }
+            else
+            {
+                var result = ReturnResultFactory.Failed;
+                return result.ToJsonResult();
+            }
         }
     }
 }

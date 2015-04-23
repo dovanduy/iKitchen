@@ -1,0 +1,7 @@
+﻿@if (TempData["Message"] != null)
+{
+    <div class="alert alert-@TempData["MessageType"] fade in alert-dismissable">
+        <button id="CloseMessageButton" type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        @TempData["Message"]
+    </div>
+}

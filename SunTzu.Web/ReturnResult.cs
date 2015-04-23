@@ -41,7 +41,7 @@ namespace SunTzu.Web
                 return new ReturnResult()
                 {
                     success = true,
-                    message = "添加成功！",
+                    message = "Added successfully!",
                     action = Reload,
                     callbackType = ""
                 };
@@ -55,7 +55,7 @@ namespace SunTzu.Web
                 return new ReturnResult()
                 {
                     success = true,
-                    message = "保存成功！",
+                    message = "Saved successfully!",
                     action = "",
                     callbackType = "closeCurrent"
                 };
@@ -69,7 +69,7 @@ namespace SunTzu.Web
                 return new ReturnResult()
                 {
                     success = true,
-                    message = "删除成功！",
+                    message = "Deleted successfully!",
                     action = Reload
                 };
             }
@@ -82,7 +82,7 @@ namespace SunTzu.Web
                 return new ReturnResult()
                 {
                     success = true,
-                    message = "提交成功！",
+                    message = "Submitted successfully!",
                     action = None
                 };
             }
@@ -95,7 +95,7 @@ namespace SunTzu.Web
                 return new ReturnResult()
                 {
                     success = false,
-                    message = "操作失败，请重试！",
+                    message = "Action failed...",
                     action = None
                 };
             }
@@ -108,7 +108,7 @@ namespace SunTzu.Web
                 return new ReturnResult()
                 {
                     success = true,
-                    message = "操作成功！",
+                    message = "Action done successfully!",
                     action = None
                 };
             }
@@ -121,7 +121,7 @@ namespace SunTzu.Web
                 return new ReturnResult()
                 {
                     success = false,
-                    message = "未登录或登陆超时！请重新登录",
+                    message = "Session timed out. Please sign in.",
                     url = "/Home/Login",
                     action = Redirect
                 };
