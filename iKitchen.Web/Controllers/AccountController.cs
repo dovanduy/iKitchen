@@ -292,7 +292,7 @@ namespace iKitchen.Web.Controllers
         // GET: /Account/ResetPassword
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult ResetPassword()
+        public ActionResult ForgetPassword()
         {
             return View();
         }
@@ -301,14 +301,108 @@ namespace iKitchen.Web.Controllers
         // POST: /Account/Password
         [AllowAnonymous]
         [HttpPost]
+        public ActionResult ForgetPassword(ForgetPasswordViewModel model)
+        {
+            var db = new ApplicationDbContext();
+            ResetPassword token = new ResetPassword();
+            Guid guid = Guid.NewGuid();
+            token.Guid = guid;
+            token.State = 1;
+            var user = db.Users.FirstOrDefault(c => c.UserName == model.UserName);
+            token.UserId = user.Id;
+            token.CreateOn = DateTime.Now;
+            token.UpdateOn = DateTime.Now;
+            try
+            {
+                token.SaveOrUpdate();
+                var resetLink = "<a href='" + Url.Action("ResetPassword", "Account", new { userid = user.Id, guid = token.Guid }, "http") + "'>Reset Password</a>";
+                string subject = "Password Reset Token";
+                string emailBody = "<b>Please find the Password Reset Token</b><br/>" + resetLink; //edit it
+                var test = SendMailMessage(user.Email, subject, emailBody);
+                SetSuccessMessage("Sent a reset password to your Email: " + user.Email);
+            }
+            catch
+            {
+                SetErrorMessage("Sending Email failed.");
+            }
+            
+            // If we got this far, something failed, redisplay form
+            
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult ResetPassword(string userId, string guid)
+        {
+            var db = new ApplicationDbContext();
+            var user = db.Users.FirstOrDefault(c => c.Id == userId);
+            var resetPasswordRequest = CacheHelper<ResetPassword>.GetAll()
+                                                                 .FirstOrDefault(c => c.Guid == guid.ParseToGuid());
+   
+            if (resetPasswordRequest.UserId == userId)
+            {
+                ResetPasswordViewModel model = new ResetPasswordViewModel();
+                model.UserName = user.UserName;
+                model.Guid = guid;
+
+                return View(model);
+            }
+            
+
+            return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
         public ActionResult ResetPassword(ResetPasswordViewModel model)
         {
             var db = new ApplicationDbContext();
-            var user = db.Users.FirstOrDefault(c => c.UserName == model.UserName);
-            // If we got this far, something failed, redisplay form
-            SetSuccessMessage("Sent a reset password to your Email: " + user.Email);
-            return View();
+            string strName = model.UserName;
+            Guid guid = model.Guid.ParseToGuid();
+            var user = db.Users.FirstOrDefault(c => c.UserName == strName);
+            var resetPasswordRequest = CacheHelper<ResetPassword>.GetAll()
+                                                                 .FirstOrDefault(c => c.Guid == guid);
+            var requestIsAvailiable = resetPasswordRequest.State;
+
+            if (requestIsAvailiable == 0)
+            {
+                return View("Login");
+            }
+            if ((DateTime.Now - resetPasswordRequest.CreateOn).TotalHours > 12)
+            {
+                resetPasswordRequest.State = 0;
+                resetPasswordRequest.SaveOrUpdate();
+                return View("Login");
+            }
+
+            HTMLHelper.BindModel(user);
+            try
+            {
+                db.SaveChanges();
+                var password = model.Password;
+                if (password.IsNotNullOrEmpty())
+                {
+                    UserManager.RemovePassword(user.Id);
+                    UserManager.AddPassword(user.Id, password);
+                    resetPasswordRequest.State = 0;
+                    resetPasswordRequest.SaveOrUpdate();
+                    SetSuccessMessage("New password has been saved!");
+                }
+                else
+                {
+                    SetSuccessMessage();
+                }
+            }
+            catch (Exception e)
+            {
+                logger.Debug("Change password Failed！", e);
+                SetErrorMessage();
+            }
+
+            return RedirectToAction("Index", "Home");
         }
+
+
 
         [Login]
         public ActionResult Log(int? page)

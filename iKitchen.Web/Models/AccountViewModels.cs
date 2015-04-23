@@ -50,11 +50,31 @@ namespace iKitchen.Web.Models
         public bool RememberMe { get; set; }
     }
 
+    public class ForgetPasswordViewModel
+    {
+        [Required(ErrorMessage = "{0} must not be empty")]
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
+    }
+
     public class ResetPasswordViewModel
     {
         [Required(ErrorMessage = "{0} must not be empty")]
         [Display(Name = "Username")]
         public string UserName { get; set; }
+
+        [Required(ErrorMessage = "Password must not be empty")]
+        [StringLength(100, ErrorMessage = "{0}长度至少{2}为6个字符", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Curreny Password")]
+        public string Password { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm Password")]
+        [Compare("Password", ErrorMessage = "确认密码与新密码不匹配")]
+        public string ConfirmPassword { get; set; }
+
+        public string Guid { get; set; }
     }
 
     public class RegisterViewModel
