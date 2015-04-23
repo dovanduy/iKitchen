@@ -61,6 +61,8 @@
     <Compile Include="OpLog.cs" />
     <Compile Include="OpLog.gen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResetPassword.cs" />
+    <Compile Include="ResetPassword.gen.cs" />
     <Compile Include="Role.cs" />
     <Compile Include="Role.gen.cs" />
     <Compile Include="SignInLog.cs" />

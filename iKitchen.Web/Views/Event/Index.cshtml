@@ -1,4 +1,7 @@
 ﻿@model PagedList<iKitchen.Linq.Event>
+@{
+    ViewBag.Title = "Events";
+}
 <!--=== Content Part ===-->
 <div class="container content">
 
@@ -9,7 +12,8 @@
             var user = CacheHelperApplicationUser.GetById(item.UserId);
             <div class="col-sm-4">
                 <div class="easy-block-v1">
-                    <img class="img-responsive" src="/assets/img/main/15.jpg" alt="">
+                    @PopulateMainImage(item)
+                    @*<img class="img-responsive" src="/assets/img/main/15.jpg" alt="">*@
                     <div class="easy-block-v1-badge rgba-red">@(item.State == 0 ? "available" : "N/A")</div>
                 </div>
                 <div class="projects">
@@ -64,3 +68,17 @@
 
 </div><!--/container-->
 <!--=== End Content Part ===-->
+@helper PopulateMainImage(Event @event)
+{
+    var eventImage = CacheHelper<EventImage>.GetAll().Where(c => c.EventId == @event.Id).FirstOrDefault();
+    string image = null;
+    if (eventImage != null)
+    {
+        image = "/Images/Upload/360x270/" + eventImage.ImagePath;
+    }
+    else
+    {
+        image = "/assets/img/no_image.gif";
+    }
+    <img src="@image" onerror="this.onerror = null;this.src = '/assets/img/no_image.gif';" />
+}

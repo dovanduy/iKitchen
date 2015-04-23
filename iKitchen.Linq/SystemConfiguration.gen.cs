@@ -10,7 +10,7 @@ namespace iKitchen.Linq
     * Description:
     * Copyright: Copyright (c) 2015
     * Company: iKitchen
-    * Author: allentranks
+    * Author: Allen.Xia
     * */    
 	/// <summary>
 	/// 系统配置表

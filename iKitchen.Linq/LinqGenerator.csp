@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <codeSmith xmlns="http://www.codesmithtools.com/schema/csp.xsd">
 	<variables>
-		<add key="ConnectionString1" value="Data Source=182.92.106.147,49368;Initial Catalog=iKitchen;User Id=EVSUser;Password=tokyo821025" />
+		<add key="ConnectionString1" value="Data Source=191.239.81.134;Initial Catalog=iKitchen;User Id=EVSUser;Password=tokyo821025" />
 	</variables>
 	<propertySets>
-		<propertySet name="All" template="L:\Projects\ATRoot\Project\CodeSmithTemplate\Razor_Embryo\LinqEF.cst">
+		<propertySet name="All" template="C:\Work\Projects\ATRoot\Project\CodeSmithTemplate\Razor_Embryo\LinqEF.cst">
 			<property name="ConnectionStringName">iKitchen.Linq.Properties.Settings.iKitchenConnectionString</property>
 			<!-- Linq类文件存放目录 -->
-			<property name="LinqClassFolder">L:\Project\iKitchen\iKitchen.Linq\</property>
+			<property name="LinqClassFolder">C:\Work\Project\iKitchen\iKitchen.Linq\</property>
 			<property name="IsOverwrite">False</property>
 			<property name="SourceDatabase">
 				<connectionString>$(ConnectionString1)</connectionString>
@@ -16,7 +16,7 @@
 			<property name="AppNamespace">iKitchen</property>
 			<property name="AppDescription">iKitchen</property>
 			<property name="Corp">iKitchen</property>
-			<property name="Author">allentranks</property>
+			<property name="Author">Allen.Xia</property>
 			<property name="LinqDataContext">iKitchenDataContext</property>
 		</propertySet>
 	</propertySets>
