@@ -46,6 +46,10 @@ namespace SunTzu.Web
             {
                 string filename = null;
                 filename = Request.Files[i].FileName;
+                if (string.IsNullOrEmpty(filename))
+                {
+                    continue;
+                }
                 filename = filename.Replace(filename.Substring(0, filename.LastIndexOf('.')), Guid.NewGuid().ToString());
                 Request.Files[i].SaveAs(folder + filename);
                 result.Add(filename);

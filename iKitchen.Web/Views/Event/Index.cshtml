@@ -12,14 +12,14 @@
             var user = CacheHelperApplicationUser.GetById(item.UserId);
             <div class="col-sm-4">
                 <div class="easy-block-v1">
+                    
                     @PopulateMainImage(item)
-                    @*<img class="img-responsive" src="/assets/img/main/15.jpg" alt="">*@
                     <div class="easy-block-v1-badge rgba-red">@(item.State == 0 ? "available" : "N/A")</div>
                 </div>
                 <div class="projects">
-                    <h2><a href="/Event/Detail/">@item.Title</a></h2>
+                    <h2><a href="/Event/Detail/@item.Id" title="View details">@item.Title</a></h2>
                     <ul class="list-unstyled list-inline blog-info-v2">
-                        <li>By: <a class="color-green" href="#">@user.UserName</a></li>
+                        <li>Hosted By <a class="color-green" href="#">@user.UserName</a></li>
                         <li><i class="fa fa-clock-o"></i> @item.CreateOn</li>
                     </ul>
                     <p>@item.Description</p>
@@ -80,5 +80,5 @@
     {
         image = "/assets/img/no_image.gif";
     }
-    <img src="@image" onerror="this.onerror = null;this.src = '/assets/img/no_image.gif';" />
+    <a href="/Event/Detail/@(@event.Id)" title="View details"><img src="@image" onerror="this.onerror = null;this.src = '/assets/img/no_image.gif';" /></a>
 }

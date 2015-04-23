@@ -1,52 +1,66 @@
-﻿<!--=== Content Part ===-->
+﻿@model Event
+@{
+    ViewBag.Title = Model.Title;
+    var user = CacheHelperApplicationUser.GetById(Model.UserId);
+    var eventImages = CacheHelper<EventImage>.GetAll().Where(c => c.EventId == Model.Id).ToList();
+}
+<!--=== Content Part ===-->
 <div class="container content">
     <div class="row portfolio-item margin-bottom-50">
         <!-- Carousel -->
         <div class="col-md-7">
             <div class="carousel slide carousel-v1" id="myCarousel">
                 <div class="carousel-inner">
-                    <div class="item active">
-                        <img alt="" src="/assets/img/main/11.jpg">
-                        <div class="carousel-caption">
-                            <p>Facilisis odio, dapibus ac justo acilisis gestinas.</p>
+                    @if (eventImages.Count == 0)
+                    {
+                        <div class="item active">
+                            <img alt="" width="653" src="/assets/img/no_image.gif">
+                            <div class="carousel-caption">
+                                <p>No image available.</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="item">
-                        <img alt="" src="/assets/img/main/12.jpg">
-                        <div class="carousel-caption">
-                            <p>Cras justo odio, dapibus ac facilisis into egestas.</p>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <img alt="" src="/assets/img/main/13.jpg">
-                        <div class="carousel-caption">
-                            <p>Justo cras odio apibus ac afilisis lingestas de.</p>
-                        </div>
-                    </div>
+                    }
+                    else
+                    {
+                        for (int i = 0; i < eventImages.Count; i++)
+                        {
+                            <div class="item @(i == 0 ? "active" :"")">
+                                <img alt="" src="/Images/Upload/@(eventImages[i].ImagePath)">
+                                <div class="carousel-caption">
+                                    <p>Here is the caption of the image.</p>
+                                </div>
+                            </div>
+                        }
+                    }
                 </div>
-
-                <div class="carousel-arrow">
-                    <a data-slide="prev" href="#myCarousel" class="left carousel-control">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
-                    <a data-slide="next" href="#myCarousel" class="right carousel-control">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                </div>
+                @if (eventImages.Count > 1)
+                {
+                    <div class="carousel-arrow">
+                        <a data-slide="prev" href="#myCarousel" class="left carousel-control">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a data-slide="next" href="#myCarousel" class="right carousel-control">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                }
             </div>
         </div>
         <!-- End Carousel -->
         <!-- Content Info -->
         <div class="col-md-5">
-            <h2>Portfolio Item Information</h2>
+            <h2>@Model.Title</h2>
+            <h4 class="text-success">@(Model.Price > 0 ? "$" + @Model.Price + " per person" : "FREE EVENT!")</h4>
+            <ul class="list-unstyled">
+                <li title="Hosted by @user.UserName"><i class="fa fa-user color-green"></i> @user.UserName</li>
+                <li title="The event time is @Model.EventTime"><i class="fa fa-calendar color-green"></i> @Model.EventTime</li>
+                <li title="The event is going to hold at @Model.Address"><i class="fa fa-map-marker color-green"></i> @Model.Address</li>
+            </ul>
+            <a href="#" class="btn-u btn-u-large margin-bottom-10">Join Now</a>
+            <p>==== DESCRIPTION TODO ====</p>
             <p>At vero eos et accusamus et iusto odio dignissimos <a href="#">ducimus qui blanditiis</a> praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum Fusce condimentum eleifend enim a feugiat. Pellentesque viverra vehicula sem ut volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non libero magna. Sed et quam lacus.</p>
             <p>Molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Ut non libero consectetur adipiscing elit magna. Sed et quam lacus.</p>
-            <ul class="list-unstyled">
-                <li><i class="fa fa-user color-green"></i> Jack Baur</li>
-                <li><i class="fa fa-calendar color-green"></i> 14,2003 February</li>
-                <li><i class="fa fa-tags color-green"></i> Websites, Google, HTML5/CSS3</li>
-            </ul>
-            <a href="#" class="btn-u btn-u-large">VISIT THE PROJECT</a>
+
         </div>
         <!-- End Content Info -->
     </div><!--/row-->
@@ -60,7 +74,7 @@
     <!-- Recent Works -->
     <div class="owl-carousel-v1 owl-work-v1 margin-bottom-40">
         <div class="headline">
-            <h2 class="pull-left">Recent Works</h2>
+            <h2 class="pull-left">Feedback</h2>
             <div class="owl-navigation">
                 <div class="customNavigation">
                     <a class="owl-btn prev-v2"><i class="fa fa-angle-left"></i></a>

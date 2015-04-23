@@ -14,6 +14,7 @@ using SunTzu.Core.Data;
 using SunTzu.Utility;
 using iKitchen.Linq;
 using SunTzu.Web;
+using System.Net;
 
 namespace iKitchen.Web.Controllers
 {
@@ -87,17 +88,11 @@ namespace iKitchen.Web.Controllers
             return View(@event);
         }
 
-
-        public ActionResult EventDetail()
-        {
-            return View();
-        }
-
         [Login]
         [HttpPost]
         public JsonResult Remove(int id)
         {
-            var @event = db.Event.FirstOrDefault(c => c.Id == id);
+            var @event = db.Event.Find(id);
             if (@event == null || @event.State == -1)
             {
                 var result = ReturnResultFactory.Failed;

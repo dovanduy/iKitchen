@@ -17,6 +17,8 @@ using SunTzu.Web.Login;
 using System.Text;
 using System.Collections.Specialized;
 using RestSharp;
+using System.Net;
+using System.Data.Entity;
 
 namespace iKitchen.Web.Controllers
 {
@@ -33,7 +35,7 @@ namespace iKitchen.Web.Controllers
             }
         }
 
-        protected IQueryable<T> table
+        protected DbSet<T> table
         {
             get
             {
@@ -65,7 +67,7 @@ namespace iKitchen.Web.Controllers
         public virtual ActionResult Edit(int? id)
         {
             T entity = id > 0
-                ? table.FirstOrDefault(c => c.Id == id) // 编辑
+                ? table.Find(id) // 编辑
                 : new T(); // 添加
             ViewData.Model = entity ?? new T();
             return View();
@@ -73,10 +75,17 @@ namespace iKitchen.Web.Controllers
 
         public virtual ActionResult Detail(int? id)
         {
-            T entity = id > 0
-                ? table.FirstOrDefault(c => c.Id == id)
-                : new T();
-            ViewData.Model = entity ?? new T();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var entity = table.Find(id);
+            if (entity == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewData.Model = entity;
             return View();
         }
 
@@ -84,7 +93,7 @@ namespace iKitchen.Web.Controllers
         public virtual ActionResult Save(int? id)
         {
             T entity = id > 0
-                ? table.FirstOrDefault(c => c.Id == id) // 编辑
+                ? table.Find(id) // 编辑
                 : new T(); // 添加
 
             HTMLHelper.BindModel(entity);
