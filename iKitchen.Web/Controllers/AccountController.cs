@@ -90,6 +90,7 @@ namespace iKitchen.Web.Controllers
                     log.IP = Request.UserHostAddress;
                     log.IsSuccess = true;
                     log.SaveOrUpdate();
+                   // var test = SendMailMessage(user.Email);
                     return RedirectToLocal(returnUrl);
                 }
                 else
@@ -288,67 +289,25 @@ namespace iKitchen.Web.Controllers
         }
 
         //
-        // GET: /Account/Password
-        [Login]
-        public ActionResult Password(ManageMessageId? message)
+        // GET: /Account/ResetPassword
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult ResetPassword()
         {
-            ViewBag.HasLocalPassword = HasPassword();
-            ViewBag.ReturnUrl = Url.Action("Password");
             return View();
         }
 
         //
         // POST: /Account/Password
-        [Login]
+        [AllowAnonymous]
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Password(ManageUserViewModel model)
+        public ActionResult ResetPassword(ResetPasswordViewModel model)
         {
-            bool hasPassword = HasPassword();
-            ViewBag.HasLocalPassword = hasPassword;
-            ViewBag.ReturnUrl = Url.Action("Password");
-            if (hasPassword)
-            {
-                if (ModelState.IsValid)
-                {
-                    IdentityResult result = UserManager.ChangePassword(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        SetSuccessMessage("密码已经更改");
-                        return RedirectToAction("Password");
-                    }
-                    else
-                    {
-                        SetErrorMessage("更改密码失败，请确认旧密码输入是否正确");
-                        AddErrors(result);
-                    }
-                }
-            }
-            else
-            {
-                // User does not have a password so remove any validation errors caused by a missing OldPassword field
-                ModelState state = ModelState["OldPassword"];
-                if (state != null)
-                {
-                    state.Errors.Clear();
-                }
-
-                if (ModelState.IsValid)
-                {
-                    IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Manage", new { Message = ManageMessageId.SetPasswordSuccess });
-                    }
-                    else
-                    {
-                        AddErrors(result);
-                    }
-                }
-            }
-
+            var db = new ApplicationDbContext();
+            var user = db.Users.FirstOrDefault(c => c.UserName == model.UserName);
             // If we got this far, something failed, redisplay form
-            return View(model);
+            SetSuccessMessage("Sent a reset password to your Email: " + user.Email);
+            return View();
         }
 
         [Login]

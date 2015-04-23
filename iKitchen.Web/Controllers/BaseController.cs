@@ -16,6 +16,7 @@ using SunTzu.Web;
 using SunTzu.Web.Login;
 using System.Text;
 using System.Collections.Specialized;
+using RestSharp;
 
 namespace iKitchen.Web.Controllers
 {
@@ -327,6 +328,66 @@ namespace iKitchen.Web.Controllers
             logger.Error("未处理的异常！", filterContext.Exception);
             LogHttpRequest("异常信息", false);
             base.OnException(filterContext);
+        }
+
+        private const String DOMAIN = "mail.ikitchen.nz";
+        private const String FROM = "iKitchen <admin@iKitchen.nz>";
+        private const String API_KEY = "key-fe871d61c594e5dcb908423574332dcd";
+        public static IRestResponse SendMailMessage(String toEmail)
+        {
+            RestClient client = new RestClient();
+            client.BaseUrl = new Uri("https://api.mailgun.net/v2");
+            client.Authenticator =
+                    new HttpBasicAuthenticator("api",
+                                               API_KEY);
+            RestRequest request = new RestRequest();
+            request.AddParameter("domain",
+                                 DOMAIN, ParameterType.UrlSegment);
+            request.Resource = "{domain}/messages";
+            request.AddParameter("from", FROM);
+            request.AddParameter("to", toEmail);
+            request.AddParameter("subject", "This is a test");
+            request.AddParameter("text", "Testing some Mailgun awesomness!");
+            request.Method = Method.POST;
+            return client.Execute(request);
+        }
+
+        public static IRestResponse SendMailMessage(String toEmail, String subject)
+        {
+            RestClient client = new RestClient();
+            client.BaseUrl = new Uri("https://api.mailgun.net/v2");
+            client.Authenticator =
+                    new HttpBasicAuthenticator("api",
+                                               API_KEY);
+            RestRequest request = new RestRequest();
+            request.AddParameter("domain",
+                                 DOMAIN, ParameterType.UrlSegment);
+            request.Resource = "{domain}/messages";
+            request.AddParameter("from", FROM);
+            request.AddParameter("to", toEmail);
+            request.AddParameter("subject", subject);
+            request.AddParameter("text", "Testing some Mailgun awesomness!");
+            request.Method = Method.POST;
+            return client.Execute(request);
+        }
+
+        public static IRestResponse SendMailMessage(String toEmail, String subject, String message)
+        {
+            RestClient client = new RestClient();
+            client.BaseUrl = new Uri("https://api.mailgun.net/v2");
+            client.Authenticator =
+                    new HttpBasicAuthenticator("api",
+                                               API_KEY);
+            RestRequest request = new RestRequest();
+            request.AddParameter("domain",
+                                 DOMAIN, ParameterType.UrlSegment);
+            request.Resource = "{domain}/messages";
+            request.AddParameter("from", FROM);
+            request.AddParameter("to", toEmail);
+            request.AddParameter("subject", subject);
+            request.AddParameter("text", message);
+            request.Method = Method.POST;
+            return client.Execute(request);
         }
     }
 }

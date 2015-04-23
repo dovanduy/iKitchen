@@ -50,6 +50,13 @@ namespace iKitchen.Web.Models
         public bool RememberMe { get; set; }
     }
 
+    public class ResetPasswordViewModel
+    {
+        [Required(ErrorMessage = "{0} must not be empty")]
+        [Display(Name = "Username")]
+        public string UserName { get; set; }
+    }
+
     public class RegisterViewModel
     {
         [Required(ErrorMessage = "Username must not be empty")]
