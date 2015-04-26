@@ -64,14 +64,14 @@ namespace iKitchen.Web.Models
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Password must not be empty")]
-        [StringLength(100, ErrorMessage = "{0}长度至少{2}为6个字符", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "At least 6 charactors.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Curreny Password")]
+        [Display(Name = "New Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
-        [Compare("Password", ErrorMessage = "确认密码与新密码不匹配")]
+        [Compare("Password", ErrorMessage = "Confirm password and New password do not match")]
         public string ConfirmPassword { get; set; }
 
         public string Guid { get; set; }
@@ -84,15 +84,20 @@ namespace iKitchen.Web.Models
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Password must not be empty")]
-        [StringLength(100, ErrorMessage = "{0}长度至少{2}为6个字符", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "At least 6 charactors.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Curreny Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
-        [Compare("Password", ErrorMessage = "确认密码与新密码不匹配")]
+        [Compare("Password", ErrorMessage = "Confirm password and New password do not match")]
         public string ConfirmPassword { get; set; }
+
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress(ErrorMessage = "Not a valid Email address")]
+        [StringLength(100)]
+        public string Email { get; set; }
     }
 
     public class ProfileSettingsViewModel
@@ -108,7 +113,7 @@ namespace iKitchen.Web.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
-        [Compare("Password", ErrorMessage = "确认密码与新密码不匹配")]
+        [Compare("Password", ErrorMessage = "Confirm password and New password do not match")]
         public string ConfirmPassword { get; set; }
 
         /// <summary>

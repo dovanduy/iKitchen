@@ -319,7 +319,7 @@ namespace iKitchen.Web.Controllers
                 string subject = "Password Reset Token";
                 string emailBody = "<b>Please find the Password Reset Token</b><br/>" + resetLink; //edit it
                 var test = SendMailMessage(user.Email, subject, emailBody);
-                SetSuccessMessage("Sent a reset password to your Email: " + user.Email);
+                SetSuccessMessage("Have sent a password reseting link to: " + user.Email);
             }
             catch
             {
@@ -341,6 +341,13 @@ namespace iKitchen.Web.Controllers
    
             if (resetPasswordRequest.UserId == userId)
             {
+                var requestIsAvailiable = resetPasswordRequest.State;
+
+                if (requestIsAvailiable == 0)
+                {
+                    SetErrorMessage("This link is not availiable");
+                    return View("Login");
+                }
                 ResetPasswordViewModel model = new ResetPasswordViewModel();
                 model.UserName = user.UserName;
                 model.Guid = guid;
@@ -362,16 +369,12 @@ namespace iKitchen.Web.Controllers
             var user = db.Users.FirstOrDefault(c => c.UserName == strName);
             var resetPasswordRequest = CacheHelper<ResetPassword>.GetAll()
                                                                  .FirstOrDefault(c => c.Guid == guid);
-            var requestIsAvailiable = resetPasswordRequest.State;
 
-            if (requestIsAvailiable == 0)
-            {
-                return View("Login");
-            }
             if ((DateTime.Now - resetPasswordRequest.CreateOn).TotalHours > 12)
             {
                 resetPasswordRequest.State = 0;
                 resetPasswordRequest.SaveOrUpdate();
+                SetErrorMessage("Request has expired!");
                 return View("Login");
             }
 
