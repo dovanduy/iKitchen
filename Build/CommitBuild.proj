@@ -1,88 +1,84 @@
 <?xml version="1.0" encoding="gb2312"?>
 <Project DefaultTargets="Compile" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <PropertyGroup>
-    <ProductID>iKitchen</ProductID>
-    <Version>Trunk</Version>
-    <BUILD_NUMBER Condition="'$(BUILD_NUMBER)' == ''">0</BUILD_NUMBER>
-    <BUILD_ID Condition="'$(BUILD_ID)' == ''">local</BUILD_ID>
-    <JOB_NAME Condition="'$(JOB_NAME)' == ''">local</JOB_NAME>
-    <BUILD_TAG Condition="'$(BUILD_TAG)' == ''">local</BUILD_TAG>
-    <BUILD_URL Condition="'$(BUILD_URL)' == ''">http://localhost/</BUILD_URL>
-    <SVN_REVISION Condition="'$(SVN_REVISION)' == ''">0</SVN_REVISION>
-
-    <WORKSPACE Condition="'$(WORKSPACE)' == ''">$(MSBuildProjectDirectory)\..</WORKSPACE>
-
-    <ArtifactsFolder>C:\Artifacts\$(ProductID)-$(Version)\$(ProductID)-$(Version)-$(BUILD_NUMBER)</ArtifactsFolder>
-    <DeployFolder>c:\iKitchen</DeployFolder>
-    <DeployUATFolder>c:\UATiKitchen</DeployUATFolder>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectToBuild Include="$(WORKSPACE)\iKitchen.sln">
-      <Properties>Configuration=Release;OutDir=$(WORKSPACE)\Output\iKitchen\</Properties>
-    </ProjectToBuild>
-  </ItemGroup>
-
-  <Target Name="Compile">
-    <Message Text="starting compile..."/>
-    <MSBuild Projects="@(ProjectToBuild)"/>
-    <Message Text="compile finished"/>
-
-    <CallTarget Targets="GenerateArtifacts" />
-    <CallTarget Targets="GenerateBuildStampFile" />
-    <CallTarget Targets="Deploy" />
-  </Target>
-
-
-  <Target Name="GenerateArtifacts">
-    <ItemGroup>
-      <ArtifactsFiles Include="$(WORKSPACE)\Output\iKitchen\_PublishedWebsites\iKitchen.Web\**\*.*" />
-    </ItemGroup>
-    <Message Text="Generating Artifacts files" />
-    <Copy SourceFiles="@(ArtifactsFiles)" DestinationFiles="$(ArtifactsFolder)\%(RecursiveDir)%(Filename)%(Extension)" />
-  </Target>
-
-  <Target Name="GenerateBuildStampFile" Outputs="%(DoConfig.Configuration)">
-    <ItemGroup>
-      <BuildStampLines Include="Product=$(ProductID) $(Version)"/>
-      <BuildStampLines Include="BUILD_NUMBER=$(BUILD_NUMBER)"/>
-      <BuildStampLines Include="BUILD_ID=$(BUILD_ID)"/>
-      <BuildStampLines Include="JOB_NAME=$(JOB_NAME)"/>
-      <BuildStampLines Include="BUILD_TAG=$(BUILD_TAG)"/>
-      <BuildStampLines Include="BuildMachine=$(COMPUTERNAME)"/>
-      <BuildStampLines Include="BUILD_URL=$(BUILD_URL)"/>
-      <BuildStampLines Include="SVN_REVISION=$(SVN_REVISION)"/>
-    </ItemGroup>
-
-    <Message Text="Generating BuildStamp.txt file. Build Number=$(BUILD_NUMBER)"/>
-    <WriteLinesToFile
-       File="$(ArtifactsFolder)\BuildStamp.txt"
-       Overwrite="true"
-       Lines="@(BuildStampLines)" />
-  </Target>
-
-  <Target Name="Deploy">
-    <ItemGroup>
-      <DeployFiles Include="$(ArtifactsFolder)\**\*.*" Exclude="$(ArtifactsFolder)\web.config;$(ArtifactsFolder)\Web.sitemap" />
-    </ItemGroup>
 	<PropertyGroup>
-		<DeployFolderYinsheng>c:\iKitchen_Yingsheng</DeployFolderYinsheng>
-		<DeployFolderQianyuan>c:\iKitchen_Qianyuan</DeployFolderQianyuan>
-	</PropertyGroup>
-    <Message Text="Starting deploying iKitchen website..." />
-    <Message Text="Deploy folder = $(DeployFolder)" />
-    <Copy SourceFiles="@(DeployFiles)" DestinationFiles="$(DeployFolder)\%(RecursiveDir)%(Filename)%(Extension)" />
-	
-  </Target>
+		<ProductID>iKitchen</ProductID>
+		<Version>Trunk</Version>
+		<BUILD_NUMBER Condition="'$(BUILD_NUMBER)' == ''">0</BUILD_NUMBER>
+		<BUILD_ID Condition="'$(BUILD_ID)' == ''">local</BUILD_ID>
+		<JOB_NAME Condition="'$(JOB_NAME)' == ''">local</JOB_NAME>
+		<BUILD_TAG Condition="'$(BUILD_TAG)' == ''">local</BUILD_TAG>
+		<BUILD_URL Condition="'$(BUILD_URL)' == ''">http://localhost/</BUILD_URL>
+		<SVN_REVISION Condition="'$(SVN_REVISION)' == ''">0</SVN_REVISION>
 
-  <Target Name="DeployUAT">
-    <ItemGroup>
-      <DeployFiles Include="$(DeployFolder)\**\*.*" Exclude="$(DeployFolder)\web.config;$(DeployFolder)\log\**\*.*;" />
-    </ItemGroup>
-    <Message Text="Refreshing iKitchen UAT website..." />
-    <Message Text="From Deploy folder = $(DeployFolder)" />
-    <Message Text="To Deploy UAT folder = $(DeployUATFolder)" />
-    <Copy SourceFiles="@(DeployFiles)" DestinationFiles="$(DeployUATFolder)\%(RecursiveDir)%(Filename)%(Extension)" />
-  </Target>
+		<WORKSPACE Condition="'$(WORKSPACE)' == ''">$(MSBuildProjectDirectory)\..</WORKSPACE>
+
+		<ArtifactsFolder>C:\Artifacts\$(ProductID)-$(Version)\$(ProductID)-$(Version)-$(BUILD_NUMBER)</ArtifactsFolder>
+		<DeployFolder>c:\iKitchen</DeployFolder>
+		<DeployUATFolder>c:\UATiKitchen</DeployUATFolder>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectToBuild Include="$(WORKSPACE)\iKitchen.sln">
+			<Properties>Configuration=Release;OutDir=$(WORKSPACE)\Output\iKitchen\</Properties>
+		</ProjectToBuild>
+	</ItemGroup>
+
+	<Target Name="Compile">
+		<Message Text="starting compile..."/>
+		<MSBuild Projects="@(ProjectToBuild)" Targets="Clean;Build" />
+		<Message Text="compile finished"/>
+
+		<CallTarget Targets="GenerateArtifacts" />
+		<CallTarget Targets="GenerateBuildStampFile" />
+		<CallTarget Targets="Deploy" />
+	</Target>
+
+
+	<Target Name="GenerateArtifacts">
+		<ItemGroup>
+			<ArtifactsFiles Include="$(WORKSPACE)\Output\iKitchen\_PublishedWebsites\iKitchen.Web\**\*.*" />
+		</ItemGroup>
+		<Message Text="Generating Artifacts files..." />
+		<Copy SourceFiles="@(ArtifactsFiles)" DestinationFiles="$(ArtifactsFolder)\%(RecursiveDir)%(Filename)%(Extension)" />
+	</Target>
+
+	<Target Name="GenerateBuildStampFile" Outputs="%(DoConfig.Configuration)">
+		<ItemGroup>
+			<BuildStampLines Include="Product=$(ProductID) $(Version)"/>
+			<BuildStampLines Include="BUILD_NUMBER=$(BUILD_NUMBER)"/>
+			<BuildStampLines Include="BUILD_ID=$(BUILD_ID)"/>
+			<BuildStampLines Include="JOB_NAME=$(JOB_NAME)"/>
+			<BuildStampLines Include="BUILD_TAG=$(BUILD_TAG)"/>
+			<BuildStampLines Include="BuildMachine=$(COMPUTERNAME)"/>
+			<BuildStampLines Include="BUILD_URL=$(BUILD_URL)"/>
+			<BuildStampLines Include="SVN_REVISION=$(SVN_REVISION)"/>
+		</ItemGroup>
+
+		<Message Text="Generating BuildStamp.txt file. Build Number=$(BUILD_NUMBER)"/>
+		<WriteLinesToFile
+		   File="$(ArtifactsFolder)\BuildStamp.txt"
+		   Overwrite="true"
+		   Lines="@(BuildStampLines)" />
+	</Target>
+
+	<Target Name="Deploy">
+		<ItemGroup>
+			<DeployFiles Include="$(ArtifactsFolder)\**\*.*" Exclude="$(ArtifactsFolder)\web.config;$(ArtifactsFolder)\Web.sitemap" />
+		</ItemGroup>
+		<Message Text="Starting deploying iKitchen website..." />
+		<Message Text="Deploy folder = $(DeployFolder)" />
+		<Copy SourceFiles="@(DeployFiles)" DestinationFiles="$(DeployFolder)\%(RecursiveDir)%(Filename)%(Extension)" />
+
+	</Target>
+
+	<Target Name="DeployUAT">
+		<ItemGroup>
+			<DeployFiles Include="$(DeployFolder)\**\*.*" Exclude="$(DeployFolder)\web.config;$(DeployFolder)\log\**\*.*;" />
+		</ItemGroup>
+		<Message Text="Refreshing iKitchen UAT website..." />
+		<Message Text="From Deploy folder = $(DeployFolder)" />
+		<Message Text="To Deploy UAT folder = $(DeployUATFolder)" />
+		<Copy SourceFiles="@(DeployFiles)" DestinationFiles="$(DeployUATFolder)\%(RecursiveDir)%(Filename)%(Extension)" />
+	</Target>
 </Project>
