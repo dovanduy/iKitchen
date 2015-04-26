@@ -21,6 +21,7 @@
 	<ItemGroup>
 		<ProjectToBuild Include="$(WORKSPACE)\iKitchen.sln">
 			<Properties>Configuration=Release;OutDir=$(WORKSPACE)\Output\iKitchen\</Properties>
+			<Targets>Clean;Build</Targets>
 		</ProjectToBuild>
 	</ItemGroup>
 
@@ -39,9 +40,6 @@
 		<ItemGroup>
 			<ArtifactsFiles Include="$(WORKSPACE)\Output\iKitchen\_PublishedWebsites\iKitchen.Web\**\*.*" />
 		</ItemGroup>
-
-		<Message Text="Clearing artifacts..." />
-		<RemoveDir Directories="$(ArtifactsFolder)" />
 		<Message Text="Generating Artifacts files..." />
 		<Copy SourceFiles="@(ArtifactsFiles)" DestinationFiles="$(ArtifactsFolder)\%(RecursiveDir)%(Filename)%(Extension)" />
 	</Target>
