@@ -21,13 +21,12 @@
 	<ItemGroup>
 		<ProjectToBuild Include="$(WORKSPACE)\iKitchen.sln">
 			<Properties>Configuration=Release;OutDir=$(WORKSPACE)\Output\iKitchen\</Properties>
-			<Targets>Clean;Build</Targets>
 		</ProjectToBuild>
 	</ItemGroup>
 
 	<Target Name="Compile">
 		<Message Text="starting compile..."/>
-		<MSBuild Projects="@(ProjectToBuild)"/>
+		<MSBuild Projects="@(ProjectToBuild)" Targets="Clean;Build" />
 		<Message Text="compile finished"/>
 
 		<CallTarget Targets="GenerateArtifacts" />
