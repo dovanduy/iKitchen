@@ -523,6 +523,12 @@ namespace iKitchen.Web.Controllers
                     return View("ExternalLoginFailure");
                 }
                 var user = new ApplicationUser() { UserName = model.UserName };
+                user.Email = "zihao.chen31@gmail.com";
+                user.RoleId = 1;
+                user.Mobile = "13899032456";
+                user.Sex = 0;
+                user.CreateOn = DateTime.Now;
+                user.UpdateOn = DateTime.Now;
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -530,6 +536,7 @@ namespace iKitchen.Web.Controllers
                     if (result.Succeeded)
                     {
                         await SignInAsync(user, isPersistent: false);
+                        Session[WebConstants.CurrentUser] = user;
                         return RedirectToLocal(returnUrl);
                     }
                 }
