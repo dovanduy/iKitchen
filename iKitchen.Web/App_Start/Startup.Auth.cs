@@ -21,8 +21,8 @@ namespace iKitchen.Web
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+                //clientId: "000000004C14FF77",
+                //clientSecret: "a1fZUk4hKxb468Osq3DlzcWcTtQiYU5m");
 
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
