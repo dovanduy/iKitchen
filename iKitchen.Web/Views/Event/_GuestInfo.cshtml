@@ -1,0 +1,28 @@
+﻿@model  Event
+@{
+    var currentGuestCount = CacheHelper<EventUser>.GetAll().Count(c => c.EventId == Model.Id);
+    var totoalGuestCount = Model.GuestLimitCount;
+    var percentage = totoalGuestCount > 0 ? currentGuestCount * 100 / totoalGuestCount : 0;
+}
+<h3 class="heading-xs">Guests<span class="pull-right">@percentage%</span></h3>
+<div class="progress progress-u progress-xxs">
+    <div class="progress-bar progress-bar-u" role="progressbar" aria-valuenow="@currentGuestCount" aria-valuemin="0" aria-valuemax="@totoalGuestCount" style="width: @percentage%">
+    </div>
+</div>
+<ul class="list-inline blog-info-v2">
+    <li>
+        <strong>@currentGuestCount</strong>
+        <span>Joined</span>
+    </li>
+    <li>
+        <strong>@(totoalGuestCount-currentGuestCount)</strong>
+        <span>Available</span>
+    </li>
+    @if (Model.EventTime.HasValue)
+    {
+        <li class="pull-right">
+            <strong>@((int)DateTime.Now.Subtract(Model.EventTime.Value).TotalDays)</strong>
+            <span>days to go</span>
+        </li>
+    }
+</ul>

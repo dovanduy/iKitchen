@@ -25,4 +25,8 @@
 .input-validation-error {
     background-color: #fff0f0 !important;
 }
-  
+
+.btn-grey {
+    background-color: #ddd;
+    color: #999;
+}
