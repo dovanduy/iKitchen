@@ -15,7 +15,10 @@
                 <div class="easy-block-v1">
                     
                     @PopulateMainImage(item)
-                    <div class="easy-block-v1-badge rgba-red">@(item.State == 0 ? "available" : "N/A")</div>
+                    @if(!isFull)
+                    { 
+                    <div class="easy-block-v1-badge rgba-default">Available</div>
+                    }
                 </div>
                 <div class="projects">
                     <h2><a href="/Event/Detail/@item.Id" title="View details">@item.Title</a></h2>
