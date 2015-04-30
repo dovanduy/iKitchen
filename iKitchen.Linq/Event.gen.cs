@@ -83,10 +83,13 @@ namespace iKitchen.Linq
 		/// </summary>
         [Required]
 		public System.Int32 GuestLimitCount { get; set; }
-
+        
+		/// <summary>
+		/// 0 No limit
+		/// </summary>
         [Required]
-        public System.Int32 GuestMinCount { get; set; }
-
+		public System.Int32 GuestMinCount { get; set; }
+        
 		/// <summary>
 		/// Original Event id if it is clone from existing Event
 		/// </summary>

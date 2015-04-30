@@ -39,6 +39,24 @@ namespace iKitchen.Linq
 		/// <summary>
 		/// 
 		/// </summary>
+        [Required]
+		public System.Decimal UnitPrice { get; set; }
+        
+		/// <summary>
+		/// 
+		/// </summary>
+        [Required]
+		public System.Boolean IsPaid { get; set; }
+        
+		/// <summary>
+		/// 
+		/// </summary>
+        [Required]
+		public System.Boolean IsRefund { get; set; }
+        
+		/// <summary>
+		/// 
+		/// </summary>
         [StringLength(500)]
 		public System.String Message { get; set; }
         
