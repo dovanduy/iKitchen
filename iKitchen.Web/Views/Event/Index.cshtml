@@ -10,6 +10,7 @@
         {
             var item = Model[i];
             var user = CacheHelperApplicationUser.GetById(item.UserId);
+            var eventUser = CacheHelper<EventUser>.GetAll().FirstOrDefault(c => c.UserId == user.Id && c.EventId == item.Id);
             var isFull = CacheHelper<EventUser>.GetAll().Count(c => c.EventId == item.Id) >= item.GuestLimitCount;
             <div class="col-sm-4">
                 <div class="easy-block-v1">
@@ -44,9 +45,23 @@
                 </div>
 
                 <div class="panel-heading-v2 overflow-h margin-bottom-20">
+                    @if (eventUser != null)
+                    {
+                        if (eventUser.IsPaid)
+                        {
+                            <a href="/Event/Detail/@item.Id" class="btn btn-info btn-block" title="View detail">Already joined</a>
+                        }
+                        else
+                        {
+                            <a href="/Event/Detail/@item.Id" class="btn-u btn-block">Pending payment</a>
+                        }
+                    }
+                    else
+                    {
                     <a href="#" data-href="/Event/Join/@item.Id" data-toggle="modal" data-target="#confirm"
                        data-confirm-message='Are you sure you want to join Event "@item.Title"?' data-confirm-title="Confirm join"
                        class="@(isFull ? "btn btn-grey disabled" : "btn-u btn-u-green") btn-block">@(isFull ? "No Vacancy" : "Join Now")</a>
+                    }
                 </div>
             </div>
         }

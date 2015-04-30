@@ -3,14 +3,23 @@
     ViewBag.Title = Model.Title;
     var user = CacheHelperApplicationUser.GetById(Model.UserId);
     var eventImages = CacheHelper<EventImage>.GetAll().Where(c => c.EventId == Model.Id).ToList();
+    var eventUser = CacheHelper<EventUser>.GetAll().FirstOrDefault(c => c.UserId == user.Id && c.EventId == Model.Id);
     var isFull = CacheHelper<EventUser>.GetAll().Count(c => c.EventId == Model.Id) >= Model.GuestLimitCount;
 }
 
 <!--=== Content Part ===-->
 <div class="container content">
-    @*<div class="tag-box tag-box-v2">
-        <p>You have requested to join this Event. To complete your request, please deposit $@Model.Price to 0000-0000-000000-000, using reference #009999.</p>
-    </div>*@
+    @if (eventUser != null && !eventUser.IsPaid)
+    {
+        <div class="tag-box tag-box-v2">
+            <h3>Pending payment</h3>
+            <h5>
+                You have requested to join this Event.
+                To complete your request, please deposit <strong>$@eventUser.UnitPrice</strong> to <strong>0000-0000-000000-000</strong>,
+                using reference number: <strong>#@Model.Id.ToString().PadLeft(6, '0')</strong>.
+            </h5>
+        </div>
+    }
     <div class="row portfolio-item margin-bottom-50">
         <!-- Carousel -->
         <div class="col-md-7">
@@ -18,36 +27,36 @@
                 <div class="carousel-inner">
                     @if (eventImages.Count == 0)
                     {
-                    <div class="item active">
-                        <img alt="" width="653" src="/assets/img/no_image.gif">
-                        <div class="carousel-caption">
-                            <p>No image available.</p>
+                        <div class="item active">
+                            <img alt="" width="653" src="/assets/img/no_image.gif">
+                            <div class="carousel-caption">
+                                <p>No image available.</p>
+                            </div>
                         </div>
-                    </div>
                     }
                     else
                     {
                         for (int i = 0; i < eventImages.Count; i++)
                         {
-                    <div class="item @(i == 0 ? "active" :"")">
-                        <img alt="" src="/Images/Upload/@(eventImages[i].ImagePath)">
-                        <div class="carousel-caption">
-                            <p>Here is the caption of the image.</p>
-                        </div>
-                    </div>
+                            <div class="item @(i == 0 ? "active" :"")">
+                                <img alt="" src="/Images/Upload/@(eventImages[i].ImagePath)">
+                                <div class="carousel-caption">
+                                    <p>Here is the caption of the image.</p>
+                                </div>
+                            </div>
                         }
                     }
                 </div>
                 @if (eventImages.Count > 1)
                 {
-                <div class="carousel-arrow">
-                    <a data-slide="prev" href="#myCarousel" class="left carousel-control">
-                        <i class="fa fa-angle-left"></i>
-                    </a>
-                    <a data-slide="next" href="#myCarousel" class="right carousel-control">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                </div>
+                    <div class="carousel-arrow">
+                        <a data-slide="prev" href="#myCarousel" class="left carousel-control">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+                        <a data-slide="next" href="#myCarousel" class="right carousel-control">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
                 }
             </div>
         </div>
@@ -64,10 +73,20 @@
 
             @Html.Partial("_GuestInfo", Model)
 
-            <a href="#" data-href="/Event/Join/@Model.Id" data-toggle="modal" data-target="#confirm"
-               data-confirm-message='Are you sure you want to join Event "@Model.Title"?' data-confirm-title="Confirm join" 
-               class="@(isFull ? "btn btn-grey disabled" : "btn-u btn-u-green btn-u-large") margin-bottom-10">@(isFull ? "No Vacancy" : "Join Now")</a>
-
+            @if (eventUser == null)
+            {
+                <a href="#" data-href="/Event/Join/@Model.Id" data-toggle="modal" data-target="#confirm"
+                   data-confirm-message='Are you sure you want to join Event "@Model.Title"?' data-confirm-title="Confirm join"
+                   class="@(isFull ? "btn btn-grey disabled" : "btn-u btn-u-green btn-u-large") margin-bottom-10">@(isFull ? "No Vacancy" : "Join Now")</a>
+            }
+            else if (!eventUser.IsPaid)
+            {
+                <a href="#" class="btn-u disabled margin-bottom-10">Pending payment</a>
+            }
+            else if (eventUser.IsPaid)
+            {
+                <a href="#" class="btn btn-info disabled margin-bottom-10">Already joined</a>
+            }
             <p>==== DESCRIPTION TODO ====</p>
             <p>At vero eos et accusamus et iusto odio dignissimos <a href="#">ducimus qui blanditiis</a> praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum Fusce condimentum eleifend enim a feugiat. Pellentesque viverra vehicula sem ut volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non libero magna. Sed et quam lacus.</p>
             <p>Molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Ut non libero consectetur adipiscing elit magna. Sed et quam lacus.</p>
