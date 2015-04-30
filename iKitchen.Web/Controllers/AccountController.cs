@@ -526,15 +526,7 @@ namespace iKitchen.Web.Controllers
 
                 var provider = info.Login.LoginProvider;
                 ClaimsIdentity ext = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
-                //var email = ext.Claims.First(x => x.Type.Contains("email")).Value;
-                //var user = new ApplicationUser() { UserName = model.UserName };
                 var user = ExternalLoginUserToken(provider, model.UserName, ext);
-                //user.Email = email;
-                //user.RoleId = 1;
-                //user.Mobile = "13899032456";
-                //user.Sex = 0;
-                //user.CreateOn = DateTime.Now;
-                //user.UpdateOn = DateTime.Now;
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
