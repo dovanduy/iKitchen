@@ -44,7 +44,9 @@
                 </div>
 
                 <div class="panel-heading-v2 overflow-h margin-bottom-20">
-                    <a href="#" class="@(isFull ? "btn btn-grey disabled" : "btn-u btn-u-green") btn-block">@(isFull ? "No Vacancy" : "Join Now")</a>
+                    <a href="#" data-href="/Event/Join/@item.Id" data-toggle="modal" data-target="#confirm"
+                       data-confirm-message='Are you sure you want to join Event "@item.Title"?' data-confirm-title="Confirm join"
+                       class="@(isFull ? "btn btn-grey disabled" : "btn-u btn-u-green") btn-block">@(isFull ? "No Vacancy" : "Join Now")</a>
                 </div>
             </div>
         }
@@ -52,6 +54,7 @@
     </div><!--/end row-->
 
 </div><!--/container-->
+@Html.Partial("_Confirm")
 <!--=== End Content Part ===-->
 @helper PopulateMainImage(Event @event)
 {

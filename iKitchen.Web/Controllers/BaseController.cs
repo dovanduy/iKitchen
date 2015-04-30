@@ -223,7 +223,7 @@ namespace iKitchen.Web.Controllers
                 OpType = opType,
                 OpDescription = opDescription,
                 OpRemark = opRemark,
-                OpResult = isSuccess ? "成功" : "失败",
+                OpResult = isSuccess ? "Success" : "Failed",
                 UserName = Authorization.CurrentUserName
             };
             opLog.SaveOrUpdate();
@@ -334,8 +334,8 @@ namespace iKitchen.Web.Controllers
 
         protected override void OnException(ExceptionContext filterContext)
         {
-            logger.Error("未处理的异常！", filterContext.Exception);
-            LogHttpRequest("异常信息", false);
+            logger.Error("Unhandled Exception!", filterContext.Exception);
+            LogHttpRequest("Exception Info", false);
             base.OnException(filterContext);
         }
 

@@ -88,10 +88,6 @@
             RevolutionSlider.initRSfullWidth();
             Datepicker.initDatepicker();
             FormSliders.initFormSliders();
-            $('#confirm-delete').on('show.bs.modal', function (e) {
-                $(this).find('.btn-ok').attr('posturl', $(e.relatedTarget).data('href'));
-            });
-            
         });
     </script>
     @RenderSection("PageJS", false)

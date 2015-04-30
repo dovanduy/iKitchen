@@ -122,7 +122,7 @@ namespace SunTzu.Web
                 {
                     success = false,
                     message = "Session timed out. Please sign in.",
-                    url = "/Home/Login",
+                    url = "/Account/Login",
                     action = Redirect
                 };
             }

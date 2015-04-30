@@ -11,7 +11,13 @@ jQuery(document).ready(function () {
         $(this).find('.btn-ok').attr('posturl', $(e.relatedTarget).data('href'));
     });
 
-    $("#CloseMessageButton").delay(3000).hide(3000);
+    $("#CloseMessageButton").parent().delay(5000).hide(500);
+    $('#confirm').on('show.bs.modal', function (e) {
+        $(this).find('.btn-ok').attr('posturl', $(e.relatedTarget).data('href'));
+        $(this).find('#ConfirmTitle').text($(e.relatedTarget).data('confirm-title'));
+        $(this).find('#ConfirmMessage').text($(e.relatedTarget).data('confirm-message'));
+        $(this).find('#ResultMessage').text("");
+    });
 });
 
 function DoPost(url, param) {

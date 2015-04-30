@@ -118,5 +118,59 @@ namespace iKitchen.Web.Controllers
                 return result.ToJsonResult();
             }
         }
+
+        [HttpPost]
+        public JsonResult Join(int id)
+        {
+            var @event = db.Event.Find(id);
+            if (@event == null || @event.State == -1)
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message = "Failed to join... Event doesn't exist.";
+                return result.ToJsonResult();
+            }
+
+            var currentUserId = User.Identity.GetUserId();
+            if (db.EventUser.Any(c => c.EventId == id && c.UserId == currentUserId))
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message = "Failed to join... You have already joined in this Event.";
+                return result.ToJsonResult();
+            }
+
+            if (@event.GuestLimitCount > 0)
+            {
+                var joinedCount = db.EventUser.Count(c => c.EventId == id);
+                if (joinedCount >= @event.GuestLimitCount)
+                {
+                    var result = ReturnResultFactory.Failed;
+                    result.message = "Failed to join... No vacancy for this Event at this moment.";
+                    return result.ToJsonResult();
+                }
+            }
+
+            var eventUser = new EventUser();
+            eventUser.UserId = User.Identity.GetUserId();
+            eventUser.EventId = id;
+            eventUser.UnitPrice = @event.Price;
+            eventUser.IsPaid = @event.Price == 0;
+            if (eventUser.SaveOrUpdate())
+            {
+                var result = ReturnResultFactory.Success;
+                result.message = "Joined successfully!";
+                result.action = ReturnResultFactory.Redirect;
+                result.url = "/Event/Detail/" + id;
+                var message = "You have joined this event successfully.";
+                SetSuccessMessage(message);
+                CacheHelper<EventUser>.Clear();
+                return result.ToJsonResult();
+            }
+            else
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message = "Failed to join... ";
+                return result.ToJsonResult();
+            }
+        }
     }
 }
