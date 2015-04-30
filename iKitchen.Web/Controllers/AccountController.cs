@@ -108,7 +108,7 @@ namespace iKitchen.Web.Controllers
             return View(model);
         }
 
-        [Login]
+        [Authorize]
         public ActionResult ProfileSettings()
         {
             var user = AccountHelper.GetCurrentUser();
@@ -182,7 +182,7 @@ namespace iKitchen.Web.Controllers
 
         // POST: /Account/Register
         [HttpPost]
-        [Login]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult SaveProfile()
         {
@@ -407,7 +407,7 @@ namespace iKitchen.Web.Controllers
 
 
 
-        [Login]
+        [Authorize]
         public ActionResult Log(int? page)
         {
             var logList = db.SignInLog.Where(c => c.UserId == Authorization.CurrentUserName)
@@ -463,6 +463,7 @@ namespace iKitchen.Web.Controllers
             if (user != null)
             {
                 await SignInAsync(user, isPersistent: false);
+                Session[WebConstants.CurrentUser] = user;
                 return RedirectToLocal(returnUrl);
             }
             else
