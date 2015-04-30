@@ -64,7 +64,9 @@
 
             @Html.Partial("_GuestInfo", Model)
 
-            <a href="#" class="@(isFull ? "btn btn-grey disabled" : "btn-u btn-u-green btn-u-large") margin-bottom-10">@(isFull ? "No Vacancy" : "Join Now")</a>
+            <a href="#" data-href="/Event/Join/@Model.Id" data-toggle="modal" data-target="#confirm"
+               data-confirm-message='Are you sure you want to join Event "@Model.Title"?' data-confirm-title="Confirm join" 
+               class="@(isFull ? "btn btn-grey disabled" : "btn-u btn-u-green btn-u-large") margin-bottom-10">@(isFull ? "No Vacancy" : "Join Now")</a>
 
             <p>==== DESCRIPTION TODO ====</p>
             <p>At vero eos et accusamus et iusto odio dignissimos <a href="#">ducimus qui blanditiis</a> praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum Fusce condimentum eleifend enim a feugiat. Pellentesque viverra vehicula sem ut volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non libero magna. Sed et quam lacus.</p>
