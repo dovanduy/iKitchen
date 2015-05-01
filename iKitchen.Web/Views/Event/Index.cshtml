@@ -10,7 +10,7 @@
         {
             var item = Model[i];
             var user = CacheHelperApplicationUser.GetById(item.UserId);
-            var eventUser = CacheHelper<EventUser>.GetAll().FirstOrDefault(c => c.UserId == user.Id && c.EventId == item.Id);
+            var eventUser = CacheHelper<EventUser>.GetAll().FirstOrDefault(c => c.UserId == User.Identity.GetUserId() && c.EventId == item.Id);
             var isFull = CacheHelper<EventUser>.GetAll().Count(c => c.EventId == item.Id) >= item.GuestLimitCount;
             <div class="col-sm-4">
                 <div class="easy-block-v1">
@@ -45,7 +45,11 @@
                 </div>
 
                 <div class="panel-heading-v2 overflow-h margin-bottom-20">
-                    @if (eventUser != null)
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a href="/Account/Login/?returnurl=@Request.RawUrl" title="please sign in to join" class="btn-u btn-u-green btn-block margin-bottom-10">Join Now</a>
+                    }
+                    else if (eventUser != null)
                     {
                         if (eventUser.IsPaid)
                         {

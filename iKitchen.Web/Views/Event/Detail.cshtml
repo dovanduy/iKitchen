@@ -3,7 +3,7 @@
     ViewBag.Title = Model.Title;
     var user = CacheHelperApplicationUser.GetById(Model.UserId);
     var eventImages = CacheHelper<EventImage>.GetAll().Where(c => c.EventId == Model.Id).ToList();
-    var eventUser = CacheHelper<EventUser>.GetAll().FirstOrDefault(c => c.UserId == user.Id && c.EventId == Model.Id);
+    var eventUser = CacheHelper<EventUser>.GetAll().FirstOrDefault(c => c.UserId == User.Identity.GetUserId() && c.EventId == Model.Id);
     var isFull = CacheHelper<EventUser>.GetAll().Count(c => c.EventId == Model.Id) >= Model.GuestLimitCount;
 }
 
@@ -73,7 +73,11 @@
 
             @Html.Partial("_GuestInfo", Model)
 
-            @if (eventUser == null)
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a href="/Account/Login/?returnurl=@Request.RawUrl" title="please sign in to join" class="btn-u btn-u-green btn-u-large margin-bottom-10">Join Now</a>
+            }
+            else if (eventUser == null)
             {
                 <a href="#" data-href="/Event/Join/@Model.Id" data-toggle="modal" data-target="#confirm"
                    data-confirm-message='Are you sure you want to join Event "@Model.Title"?' data-confirm-title="Confirm join"
@@ -81,7 +85,7 @@
             }
             else if (!eventUser.IsPaid)
             {
-                <a href="#" class="btn-u disabled margin-bottom-10">Pending payment</a>
+                <a href="#" class="btn-u margin-bottom-10">Pending payment</a>
             }
             else if (eventUser.IsPaid)
             {

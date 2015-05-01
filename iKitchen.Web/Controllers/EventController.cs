@@ -120,6 +120,7 @@ namespace iKitchen.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public JsonResult Join(int id)
         {
             var @event = db.Event.Find(id);

@@ -16,14 +16,14 @@
         {
             @Html.AntiForgeryToken()
             @Html.ValidationSummary()
-            
+
             @*@Html.ValidationMessageFor(m => m.UserName)*@
             <div class="input-group margin-bottom-20">
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder="Username" })
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Username" })
                 <b class="tooltip tooltip-bottom-left">Some helpful information</b>
             </div>
-            
+
             @*@Html.ValidationMessageFor(m => m.Password)*@
             <div class="input-group margin-bottom-20">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
@@ -33,20 +33,20 @@
             <div class="checkbox">
                 <label>
                     @Html.CheckBoxFor(m => m.RememberMe)
-                    @Html.LabelFor(m => m.RememberMe)
+                    Remember me
                 </label>
             </div>
-            
-            <hr>
-            
-            <h4>Forget your Password ?</h4>
-                    <p>no worries, <a class="color-green" href="/Account/ForgetPassword">click here</a> to reset your password.</p>
 
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <button type="submit" class="btn-u btn-block ladda-button expand-left">Log In</button>
                 </div>
             </div>
+            <hr>
+
+            <h4>Forget your Password ?</h4>
+            <p>no worries, <a class="color-green" href="/Account/ForgetPassword">click here</a> to reset your password.</p>
+
         }
     </div>
     <!--End Reg Block-->
