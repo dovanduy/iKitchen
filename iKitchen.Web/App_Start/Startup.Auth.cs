@@ -28,9 +28,13 @@ namespace iKitchen.Web
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            app.UseFacebookAuthentication(
-               appId: "1543874179228733",
-               appSecret: "2576bf58b588a6a1ec4e8b728c19115b");
+            var facebookOptions = new Microsoft.Owin.Security.Facebook.FacebookAuthenticationOptions()
+            {
+                AppId = "1543874179228733",
+                AppSecret = "2576bf58b588a6a1ec4e8b728c19115b"
+            };
+            facebookOptions.Scope.Add("email");
+            app.UseFacebookAuthentication(facebookOptions);
 
             //app.UseGoogleAuthentication();
         }

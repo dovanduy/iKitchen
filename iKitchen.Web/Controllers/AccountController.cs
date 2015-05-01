@@ -108,7 +108,7 @@ namespace iKitchen.Web.Controllers
             return View(model);
         }
 
-        [Login]
+        [Authorize]
         public ActionResult ProfileSettings()
         {
             var user = AccountHelper.GetCurrentUser();
@@ -182,7 +182,7 @@ namespace iKitchen.Web.Controllers
 
         // POST: /Account/Register
         [HttpPost]
-        [Login]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public ActionResult SaveProfile()
         {
@@ -407,7 +407,7 @@ namespace iKitchen.Web.Controllers
 
 
 
-        [Login]
+        [Authorize]
         public ActionResult Log(int? page)
         {
             var logList = db.SignInLog.Where(c => c.UserId == Authorization.CurrentUserName)
@@ -463,6 +463,7 @@ namespace iKitchen.Web.Controllers
             if (user != null)
             {
                 await SignInAsync(user, isPersistent: false);
+                Session[WebConstants.CurrentUser] = user;
                 return RedirectToLocal(returnUrl);
             }
             else
@@ -522,13 +523,10 @@ namespace iKitchen.Web.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser() { UserName = model.UserName };
-                user.Email = "zihao.chen31@gmail.com";
-                user.RoleId = 1;
-                user.Mobile = "13899032456";
-                user.Sex = 0;
-                user.CreateOn = DateTime.Now;
-                user.UpdateOn = DateTime.Now;
+
+                var provider = info.Login.LoginProvider;
+                ClaimsIdentity ext = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+                var user = ExternalLoginUserToken(provider, model.UserName, ext);
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {
@@ -546,6 +544,40 @@ namespace iKitchen.Web.Controllers
             ViewBag.ReturnUrl = returnUrl;
             return View(model);
         }
+
+        private ApplicationUser ExternalLoginUserToken(String externalProvider, String userName, ClaimsIdentity token)
+        {
+            ApplicationUser user = new ApplicationUser() { UserName = userName };
+            String email = "";
+            int roleId = 1;
+            String mobile = "13899032456";
+            int gender = 1;
+            DateTime createOn = DateTime.Now;
+            DateTime updateOn = DateTime.Now;
+
+            switch(externalProvider)
+            {
+                case "Facebook":
+                    email = token.Claims.First(x => x.Type.Contains("email")).Value;
+                    break;
+
+
+                case "twitter":
+                    break;
+                default:
+                    break;
+            }
+
+            user.Email = email;
+            user.RoleId = roleId;
+            user.Mobile = mobile;
+            user.Sex = gender;
+            user.CreateOn = createOn;
+            user.UpdateOn = updateOn;
+
+            return user;
+        }
+
 
         //
         // GET: /Account/ExternalLoginFailure
