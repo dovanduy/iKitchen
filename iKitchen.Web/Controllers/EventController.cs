@@ -33,7 +33,7 @@ namespace iKitchen.Web.Controllers
             return View();
         }
 
-        [Login]
+        [Authorize]
         public ActionResult MyEvents(int? pageIndex)
         {
             var currentUserId = User.Identity.GetUserId();
@@ -45,13 +45,13 @@ namespace iKitchen.Web.Controllers
             return View();
         }
 
-        [Login]
+        [Authorize]
         public ActionResult Create()
         {
             return View(new Event());
         }
 
-        [Login]
+        [Authorize]
         [HttpPost]
         public ActionResult Create(Event @event)
         {
@@ -87,7 +87,63 @@ namespace iKitchen.Web.Controllers
             return View(@event);
         }
 
-        [Login]
+
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+            var @event = db.Event.Find(id);
+            if (@event == null || @event.UserId != User.Identity.GetUserId() || @event.State == -1)
+            {
+                return HttpNotFound(); 
+            }
+            var eventImages = db.EventImage.Where(c => c.EventId == id).ToList();
+            ViewBag.EventImages = eventImages;
+            ViewData.Model = @event;
+            return View("Create");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult Edit(int id, Event @event)
+        {
+            ModelState.Remove("UserId");
+            if (ModelState.IsValid)
+            {
+                var newEvent = db.Event.Find(id);
+                if (newEvent == null || newEvent.UserId != User.Identity.GetUserId() || newEvent.State == -1)
+                {
+                    return HttpNotFound();
+                }
+                HTMLHelper.BindModel(newEvent);
+                newEvent.UserId = User.Identity.GetUserId();
+                if (newEvent.SaveOrUpdate())
+                {
+                    // save uploaded file
+                    var uploadedFiles = ImageHelper.SaveImageMultiple();
+                    if (uploadedFiles.Count > 0)
+                    {
+                        foreach (var uploadFile in uploadedFiles)
+                        {
+                            ImageHelper.CompressImage(uploadFile, 360, 270);
+                            var eventImage = new EventImage();
+                            eventImage.EventId = newEvent.Id;
+                            eventImage.ImagePath = uploadFile;
+                            eventImage.Title = "N/A";
+                            eventImage.SaveOrUpdate(); // todo: use batch insert.
+                        }
+                        CacheHelper<EventImage>.Clear();
+                    }
+                    SetSuccessMessage("Event Saved!");
+                    CacheHelper<Event>.Clear();
+                    return Redirect("/Event/MyEvents");
+                }
+            }
+            SetErrorMessage("Failed to save your event...");
+            ViewData.Model = @event;
+            return View("Create");
+        }
+
+        [Authorize]
         [HttpPost]
         public JsonResult Remove(int id)
         {
