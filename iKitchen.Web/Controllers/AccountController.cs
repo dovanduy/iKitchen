@@ -111,7 +111,8 @@ namespace iKitchen.Web.Controllers
         [Authorize]
         public ActionResult ProfileSettings()
         {
-            var user = AccountHelper.GetCurrentUser();
+            var db = new ApplicationDbContext();
+            var user = db.Users.FirstOrDefault(c => c.UserName == User.Identity.Name);
             ProfileSettingsViewModel model = new ProfileSettingsViewModel();
             model.UserName = user.UserName;
             model.PhoneNumber = user.Mobile;
@@ -154,14 +155,14 @@ namespace iKitchen.Web.Controllers
                 SetErrorMessage();
             }
 
-            return View("ProfileSettings");
+            return View("Overall");
         }
 
         [HttpPost]
         public ActionResult ChangeProfile(ProfileSettingsViewModel model)
         {
             var db = new ApplicationDbContext();
-            var user = AccountHelper.GetCurrentUser();
+            var user = UserManager.FindById(User.Identity.GetUserId());
             if (model.PhoneNumber != null)
                 user.Mobile = model.PhoneNumber;
             if (model.Email != null)
@@ -548,7 +549,7 @@ namespace iKitchen.Web.Controllers
         private ApplicationUser ExternalLoginUserToken(String externalProvider, String userName, ClaimsIdentity token)
         {
             ApplicationUser user = new ApplicationUser() { UserName = userName };
-            String email = "";
+            String email = "zihao.chen31@gmail.com";
             int roleId = 1;
             String mobile = "13899032456";
             int gender = 1;
@@ -558,7 +559,8 @@ namespace iKitchen.Web.Controllers
             switch(externalProvider)
             {
                 case "Facebook":
-                    email = token.Claims.First(x => x.Type.Contains("email")).Value;
+                    email = token.Claims.FirstOrDefault(x => x.Type.Contains("email")).Value;
+                    gender = token.Claims.FirstOrDefault(x => x.Type.Contains("gender")).Value == "male" ? 1 : 0;
                     break;
 
 

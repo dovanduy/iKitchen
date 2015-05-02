@@ -25,9 +25,7 @@ namespace iKitchen.Web.Models
         /// 手机
         /// </summary>
         [Required(ErrorMessage = "{0}不能为空")]
-        [StringLength(11)]
-        [Display(Name = "手机号码")]
-        [RegularExpression("[1][3,4,5,8][0-9]{9}$", ErrorMessage = "手机号码格式不正确")]
+        [Display(Name = "Mobile number")]
         public System.String Mobile { get; set; }
 
         /// <summary>
