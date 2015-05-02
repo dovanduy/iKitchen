@@ -132,6 +132,13 @@ namespace iKitchen.Web.Controllers
             }
 
             var currentUserId = User.Identity.GetUserId();
+            if (@event.UserId == currentUserId)
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message = "Failed to join... You are the host of this event.";
+                return result.ToJsonResult();
+            } 
+            
             if (db.EventUser.Any(c => c.EventId == id && c.UserId == currentUserId))
             {
                 var result = ReturnResultFactory.Failed;

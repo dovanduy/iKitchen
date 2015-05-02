@@ -49,6 +49,10 @@
                     {
                         <a href="/Account/Login/?returnurl=@Request.RawUrl" title="please sign in to join" class="btn-u btn-u-green btn-block margin-bottom-10">Join Now</a>
                     }
+                    @*else if (@item.UserId == User.Identity.GetUserId())
+                    {
+                        <a href="#" class="btn btn-grey disabled btn-block">You are the host of this event.</a>
+                    }*@
                     else if (eventUser != null)
                     {
                         if (eventUser.IsPaid)

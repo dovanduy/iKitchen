@@ -4690,7 +4690,6 @@
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\Event\Create.cshtml" />
     <Content Include="Views\Event\Delete.cshtml" />
-    <Content Include="Views\Event\Details.cshtml" />
     <Content Include="Views\Event\Edit.cshtml" />
     <Content Include="Views\Event\MyEvents.cshtml" />
     <Content Include="Views\Event\CreateEvent.cshtml" />
