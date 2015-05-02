@@ -46,15 +46,14 @@ namespace iKitchen.Web.Controllers
         }
 
         [Login]
-        public ActionResult CreateEvent()
+        public ActionResult Create()
         {
             return View(new Event());
         }
 
-        [HttpPost]
         [Login]
-        // TODO
-        public ActionResult CreateEvent(Event @event)
+        [HttpPost]
+        public ActionResult Create(Event @event)
         {
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
@@ -81,7 +80,7 @@ namespace iKitchen.Web.Controllers
                     }
                     SetSuccessMessage("Event created!");
                     CacheHelper<Event>.Clear();
-                    return Redirect("/Event/CreateEvent");
+                    return Redirect("/Event/Create");
                 }
             }
             SetErrorMessage("Failed to create your event...");

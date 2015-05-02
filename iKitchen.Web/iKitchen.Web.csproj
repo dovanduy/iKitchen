@@ -4692,7 +4692,6 @@
     <Content Include="Views\Event\Delete.cshtml" />
     <Content Include="Views\Event\Edit.cshtml" />
     <Content Include="Views\Event\MyEvents.cshtml" />
-    <Content Include="Views\Event\CreateEvent.cshtml" />
     <Content Include="Views\Event\Detail.cshtml" />
     <Content Include="Views\Shared\_LayoutDashboard.cshtml" />
     <Content Include="Views\Account\ForgetPassword.cshtml" />

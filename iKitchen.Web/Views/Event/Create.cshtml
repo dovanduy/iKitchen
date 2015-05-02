@@ -1,140 +1,128 @@
-﻿@model iKitchen.Linq.Event
-
+﻿@model Event
 @{
-    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
+    ViewBag.Title = "Create Event";
 }
 
-<h2>Create</h2>
-
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Event</h4>
-        <hr />
-        @Html.ValidationSummary(true)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserId, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserId)
-                @Html.ValidationMessageFor(model => model.UserId)
-            </div>
+<form method="post" enctype="multipart/form-data" id="sky-form1" class="sky-form" novalidate="novalidate">
+    <header>Create a new Event</header>
+    <fieldset>
+        <div class="row">
+            <section class="col col-6">
+                <label class="input">
+                    <i class="icon-prepend fa fa-pencil-square-o"></i>
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Title" })
+                </label>
+                @Html.ValidationMessageFor(m => m.Title)
+            </section>
+            <section class="col col-6">
+                <label class="input">
+                    <i class="icon-prepend fa">$</i>
+                    @Html.TextBoxFor(m => m.Price, new { @Value = Model.Price > 0 ? Model.Price.ToString() : "", @class = "form-control", placeholder = "Unit Price" })
+                </label>
+                @Html.ValidationMessageFor(m => m.Price)
+            </section>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title)
-                @Html.ValidationMessageFor(model => model.Title)
-            </div>
+        <div class="row">
+            <section class="col col-6">
+                <label class="input">
+                    <i class="icon-prepend fa fa-calendar"></i>
+                    @Html.TextBoxFor(m => m.EventTime, "{0:dd/MM/yyyy}", new { @class = "form-control date", placeholder = "The event time" })
+                </label>
+                @Html.ValidationMessageFor(m => m.EventTime)
+            </section>
+            <section class="col col-6">
+                <div class="inline-group">
+                    <label class="radio"><input type="radio" name="IsOneTime" value="true" checked="@Model.IsOneTime ? "><i class="rounded-x"></i>One Time Event</label>
+                    <label class="radio"><input type="radio" name="IsOneTime" value="false" checked="@Model.IsOneTime"><i class="rounded-x"></i>Repeat Event</label>
+                </div>
+            </section>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Summary, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Summary)
-                @Html.ValidationMessageFor(model => model.Summary)
-            </div>
-        </div>
+        <section>
+            <label class="label">How Many Food Hunters You Want To Invite (<span id="slider-value1">3</span> - <span id="slider-value2">5</span>)</label>
+            <div id="slider"></div>
+        </section>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description)
-                @Html.ValidationMessageFor(model => model.Description)
-            </div>
-        </div>
+        <section>
+            <label class="textarea">
+                @Html.TextAreaFor(m => m.Summary, 5, 0, new { @class = "form-control", placeholder = "Summary" })
+            </label>
+            @Html.ValidationMessageFor(m => m.Summary)
+        </section>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MainImagePath, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MainImagePath)
-                @Html.ValidationMessageFor(model => model.MainImagePath)
-            </div>
-        </div>
+        <section>
+            <label class="input">
+                <i class="icon-prepend fa fa-map-marker"></i>
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
+            </label>
+            @Html.ValidationMessageFor(m => m.Address)
+        </section>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Price, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Price)
-                @Html.ValidationMessageFor(model => model.Price)
-            </div>
-        </div>
+        <section>
+            <label for="file" class="input input-file">
+                <i class="icon-prepend fa fa-upload"></i>
+                <input type="file" name="file" multiple="" value="Browse" />
+            </label>
+        </section>
+        @*<section>
+                <div class="rating">
+                    <input type="radio" name="stars-rating" id="stars-rating-5">
+                    <label for="stars-rating-5"><i class="fa fa-star"></i></label>
+                    <input type="radio" name="stars-rating" id="stars-rating-4">
+                    <label for="stars-rating-4"><i class="fa fa-star"></i></label>
+                    <input type="radio" name="stars-rating" id="stars-rating-3">
+                    <label for="stars-rating-3"><i class="fa fa-star"></i></label>
+                    <input type="radio" name="stars-rating" id="stars-rating-2">
+                    <label for="stars-rating-2"><i class="fa fa-star"></i></label>
+                    <input type="radio" name="stars-rating" id="stars-rating-1">
+                    <label for="stars-rating-1"><i class="fa fa-star"></i></label>
+                    How Spicy
+                </div>
+            </section>*@
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.EventTime, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EventTime)
-                @Html.ValidationMessageFor(model => model.EventTime)
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.IsOneTime, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.IsOneTime)
-                @Html.ValidationMessageFor(model => model.IsOneTime)
-            </div>
-        </div>
+        <section>
+            <label class="textarea">
+                <textarea rows="5" name="description" placeholder="Description"></textarea>
+            </label>
+        </section>
+    </fieldset>
+    <footer>
+        <button type="submit" class="btn-u btn-block">Create</button>
+    </footer>
+    @*<div class="message">
+            <i class="rounded-x fa fa-check"></i>
+            <p>Thanks for your sharing!<br>Food hunters will contact you very soon.</p>
+        </div>*@
+</form>
+<!--=== End Profile ===-->
+@section PageJS{
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Address, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Address)
-                @Html.ValidationMessageFor(model => model.Address)
-            </div>
-        </div>
+    <script>
+        jQuery(document).ready(function ($) {
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.GuestLimitCount, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.GuestLimitCount)
-                @Html.ValidationMessageFor(model => model.GuestLimitCount)
-            </div>
-        </div>
+            $('.contentHolder').perfectScrollbar();
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.OriginalEventId, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.OriginalEventId)
-                @Html.ValidationMessageFor(model => model.OriginalEventId)
-            </div>
-        </div>
+            // Regular datepicker
+            $('#EventTime').datepicker({
+                dateFormat: 'dd/mm/yy',
+                prevText: '<i class="fa fa-angle-left"></i>',
+                nextText: '<i class="fa fa-angle-right"></i>'
+            });
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.State, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.State)
-                @Html.ValidationMessageFor(model => model.State)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreateOn, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateOn)
-                @Html.ValidationMessageFor(model => model.CreateOn)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdateOn, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdateOn)
-                @Html.ValidationMessageFor(model => model.UpdateOn)
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+            // Range slider
+            $('#slider').slider({
+                min: 1,
+                max: 20,
+                range: true,
+                values: [3, 5],
+                slide: function (event, ui) {
+                    $('#slider-value1').text(ui.values[0]);
+                    $('#slider-value2').text(ui.values[1]);
+                }
+            });
+        });
+    </script>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
