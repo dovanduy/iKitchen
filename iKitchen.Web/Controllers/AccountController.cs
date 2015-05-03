@@ -222,9 +222,9 @@ namespace iKitchen.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser() { UserName = model.UserName };
-                user.Email = "zihao.chen31@gmail.com";
+                user.Email = model.Email;
                 user.RoleId = 1;
-                user.Mobile = "13899032456";
+                user.Mobile = "";
                 user.Sex = 0;
                 user.CreateOn = DateTime.Now;
                 user.UpdateOn = DateTime.Now;
