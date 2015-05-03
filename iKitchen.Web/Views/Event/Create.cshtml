@@ -18,7 +18,7 @@
                         <label class="input">
                             <i class="icon-append fa fa-pencil-square-o"></i>
                             @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Title" })
-                            <b class="tooltip tooltip-bottom-right">Enter the title of your Event</b>
+                            @*<b class="tooltip tooltip-bottom-right">Enter the title of your Event</b>*@
                         </label>
                         @Html.ValidationMessageFor(m => m.Title)
                     </section>
@@ -29,7 +29,8 @@
                     <section>
                         <label class="input">
                             <i class="icon-append fa">$</i>
-                            @Html.TextBoxFor(m => m.Price, new { @Value = Model.Price > 0 ? Model.Price.ToString() : "", @class = "form-control", placeholder = "Unit Price" })
+                            @Html.TextBoxFor(m => m.Price, new { @class = "form-control", placeholder = "Unit Price" })
+                            <b class="tooltip tooltip-bottom-right">Enter the price. 0 for free Event.</b>
                         </label>
                         @Html.ValidationMessageFor(m => m.Price)
                     </section>
@@ -40,7 +41,7 @@
                     <section>
                         <label class="input">
                             <i class="icon-append fa fa-calendar"></i>
-                            @Html.TextBoxFor(m => m.EventTime, new { @class = "form-control date", placeholder = "The event time" })
+                            @Html.TextBoxFor(m => m.EventTime, "{0:dd/MM/yyyy}", new { @class = "form-control date", placeholder = "The event time" })
                         </label>
                         @Html.ValidationMessageFor(m => m.EventTime)
                     </section>
@@ -158,6 +159,21 @@
                 prevText: '<i class="fa fa-angle-left"></i>',
                 nextText: '<i class="fa fa-angle-right"></i>',
             });
+            $.validator.addMethod('date',
+                function (value, element, params) {
+                    if (this.optional(element)) {
+                        return true;
+                    }
+
+                    var ok = true;
+                    try {
+                        $.datepicker.parseDate('dd/mm/yy', value);
+                    }
+                    catch (err) {
+                        ok = false;
+                    }
+                    return ok;
+                });
 
             // Range slider
             $('#slider').slider({
