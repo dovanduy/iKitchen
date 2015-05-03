@@ -49,12 +49,12 @@ namespace iKitchen.Web.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public ActionResult Contact(ContactUsViewModel model)
-        //{
-        //    SendMailMessage(model.Email, "zihao.chen@iKitchen.nz", "Customer Contact Message FROM: " + model.UserName, model.Message);
-        //    SetSuccessMessage("Thanks for your message, we will contact you ASAP~");
-        //    return View();
-        //}
+        [HttpPost]
+        public ActionResult Contact(ContactUsViewModel model)
+        {
+            SendMailMessage(model.Email, "zihao.chen@iKitchen.nz", "Customer Contact Message FROM: " + model.UserName, model.Message);
+            SetSuccessMessage("Thanks for your message, we will contact you ASAP~");
+            return View();
+        }
     }
 }

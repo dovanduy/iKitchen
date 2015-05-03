@@ -64,6 +64,8 @@ namespace iKitchen.Linq
 		/// <summary>
 		/// Use as expiry time for one time Events
 		/// </summary>
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
 		public System.DateTime? EventTime { get; set; }
         
 		/// <summary>

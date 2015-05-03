@@ -40,7 +40,7 @@
                     <section>
                         <label class="input">
                             <i class="icon-append fa fa-calendar"></i>
-                            @Html.TextBoxFor(m => m.EventTime, "{0:dd/MM/yyyy}", new { @class = "form-control date", placeholder = "The event time" })
+                            @Html.TextBoxFor(m => m.EventTime, new { @class = "form-control date", placeholder = "The event time" })
                         </label>
                         @Html.ValidationMessageFor(m => m.EventTime)
                     </section>
@@ -156,7 +156,7 @@
             $('#EventTime').datepicker({
                 dateFormat: 'dd/mm/yy',
                 prevText: '<i class="fa fa-angle-left"></i>',
-                nextText: '<i class="fa fa-angle-right"></i>'
+                nextText: '<i class="fa fa-angle-right"></i>',
             });
 
             // Range slider
