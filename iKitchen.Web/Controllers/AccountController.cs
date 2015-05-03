@@ -320,7 +320,8 @@ namespace iKitchen.Web.Controllers
                 string subject = "Password Reset Token";
                 string emailBody = "<b>Please find the Password Reset Token</b><br/>" + resetLink; //edit it
                 var test = SendMailMessage(user.Email, subject, emailBody);
-                SetSuccessMessage("Have sent a password reseting link to: " + user.Email);
+                var temp = user.Email.Split('@');
+                SetSuccessMessage("Have sent a password reseting link to: " + temp[0] + "@xxxxx");
             }
             catch
             {
@@ -328,8 +329,8 @@ namespace iKitchen.Web.Controllers
             }
             
             // If we got this far, something failed, redisplay form
-            
-            return View();
+
+            return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]
@@ -347,7 +348,7 @@ namespace iKitchen.Web.Controllers
                 if (requestIsAvailiable == 0)
                 {
                     SetErrorMessage("This link is not availiable");
-                    return View("Login");
+                    return RedirectToAction("Login", "Account");
                 }
                 ResetPasswordViewModel model = new ResetPasswordViewModel();
                 model.UserName = user.UserName;
@@ -376,7 +377,7 @@ namespace iKitchen.Web.Controllers
                 resetPasswordRequest.State = 0;
                 resetPasswordRequest.SaveOrUpdate();
                 SetErrorMessage("Request has expired!");
-                return View("Login");
+                return RedirectToAction("Login", "Account");
             }
 
             HTMLHelper.BindModel(user);
@@ -403,7 +404,7 @@ namespace iKitchen.Web.Controllers
                 SetErrorMessage();
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
 
