@@ -399,5 +399,24 @@ namespace iKitchen.Web.Controllers
             request.Method = Method.POST;
             return client.Execute(request);
         }
+
+        public static IRestResponse SendMailMessage(String fromRmail, String toEmail, String subject, String message)
+        {
+            RestClient client = new RestClient();
+            client.BaseUrl = new Uri("https://api.mailgun.net/v2");
+            client.Authenticator =
+                    new HttpBasicAuthenticator("api",
+                                               API_KEY);
+            RestRequest request = new RestRequest();
+            request.AddParameter("domain",
+                                 DOMAIN, ParameterType.UrlSegment);
+            request.Resource = "{domain}/messages";
+            request.AddParameter("from", fromRmail);
+            request.AddParameter("to", toEmail);
+            request.AddParameter("subject", subject);
+            request.AddParameter("text", message);
+            request.Method = Method.POST;
+            return client.Execute(request);
+        }
     }
 }

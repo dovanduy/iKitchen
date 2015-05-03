@@ -8,6 +8,7 @@
     <!--Reg Block-->
     <div class="reg-block">
         <div class="reg-block-header">
+            @Html.Partial("_MessageBox")
             <h2>Sign In</h2>
             @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginViewModel() { Action = "ExternalLogin", ReturnUrl = ViewBag.ReturnUrl })
             <p>Don't Have Account? Click <a class="color-green" href="/Account/Register">Sign Up</a> to registration.</p>

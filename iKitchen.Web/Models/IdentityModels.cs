@@ -18,22 +18,17 @@ namespace iKitchen.Web.Models
         /// <summary>
         /// 性别，0先生，1女士，2小姐
         /// </summary>
-        [Required(ErrorMessage = "{0}不能为空")]
         public System.Int32 Sex { get; set; }
 
         /// <summary>
         /// 手机
         /// </summary>
-        [Required(ErrorMessage = "{0}不能为空")]
-        [StringLength(11)]
-        [Display(Name = "手机号码")]
-        [RegularExpression("[1][3,4,5,8][0-9]{9}$", ErrorMessage = "手机号码格式不正确")]
+        [Display(Name = "Mobile number")]
         public System.String Mobile { get; set; }
 
         /// <summary>
         /// 角色，1 普通用户，2 系统管理员，3 超级管理员，4 业务员，5 客服员，7 勘察员，8 撰写员，9 审核员
         /// </summary>
-        [Required(ErrorMessage = "{0}不能为空")]
         public System.Int32 RoleId { get; set; }
 
         /// <summary>

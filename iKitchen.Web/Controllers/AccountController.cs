@@ -111,7 +111,8 @@ namespace iKitchen.Web.Controllers
         [Authorize]
         public ActionResult ProfileSettings()
         {
-            var user = AccountHelper.GetCurrentUser();
+            var db = new ApplicationDbContext();
+            var user = db.Users.FirstOrDefault(c => c.UserName == User.Identity.Name);
             ProfileSettingsViewModel model = new ProfileSettingsViewModel();
             model.UserName = user.UserName;
             model.PhoneNumber = user.Mobile;
@@ -154,14 +155,14 @@ namespace iKitchen.Web.Controllers
                 SetErrorMessage();
             }
 
-            return View("ProfileSettings");
+            return View("Overall");
         }
 
         [HttpPost]
         public ActionResult ChangeProfile(ProfileSettingsViewModel model)
         {
             var db = new ApplicationDbContext();
-            var user = AccountHelper.GetCurrentUser();
+            var user = UserManager.FindById(User.Identity.GetUserId());
             if (model.PhoneNumber != null)
                 user.Mobile = model.PhoneNumber;
             if (model.Email != null)
@@ -221,9 +222,9 @@ namespace iKitchen.Web.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser() { UserName = model.UserName };
-                user.Email = "zihao.chen31@gmail.com";
+                user.Email = model.Email;
                 user.RoleId = 1;
-                user.Mobile = "13899032456";
+                user.Mobile = "";
                 user.Sex = 0;
                 user.CreateOn = DateTime.Now;
                 user.UpdateOn = DateTime.Now;
@@ -319,7 +320,8 @@ namespace iKitchen.Web.Controllers
                 string subject = "Password Reset Token";
                 string emailBody = "<b>Please find the Password Reset Token</b><br/>" + resetLink; //edit it
                 var test = SendMailMessage(user.Email, subject, emailBody);
-                SetSuccessMessage("Have sent a password reseting link to: " + user.Email);
+                var temp = user.Email.Split('@');
+                SetSuccessMessage("Have sent a password reseting link to: " + temp[0] + "@xxxxx");
             }
             catch
             {
@@ -327,8 +329,8 @@ namespace iKitchen.Web.Controllers
             }
             
             // If we got this far, something failed, redisplay form
-            
-            return View();
+
+            return RedirectToAction("Index", "Home");
         }
 
         [AllowAnonymous]
@@ -346,7 +348,7 @@ namespace iKitchen.Web.Controllers
                 if (requestIsAvailiable == 0)
                 {
                     SetErrorMessage("This link is not availiable");
-                    return View("Login");
+                    return RedirectToAction("Login", "Account");
                 }
                 ResetPasswordViewModel model = new ResetPasswordViewModel();
                 model.UserName = user.UserName;
@@ -375,7 +377,7 @@ namespace iKitchen.Web.Controllers
                 resetPasswordRequest.State = 0;
                 resetPasswordRequest.SaveOrUpdate();
                 SetErrorMessage("Request has expired!");
-                return View("Login");
+                return RedirectToAction("Login", "Account");
             }
 
             HTMLHelper.BindModel(user);
@@ -402,7 +404,7 @@ namespace iKitchen.Web.Controllers
                 SetErrorMessage();
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Account");
         }
 
 
@@ -548,7 +550,7 @@ namespace iKitchen.Web.Controllers
         private ApplicationUser ExternalLoginUserToken(String externalProvider, String userName, ClaimsIdentity token)
         {
             ApplicationUser user = new ApplicationUser() { UserName = userName };
-            String email = "";
+            String email = "zihao.chen31@gmail.com";
             int roleId = 1;
             String mobile = "13899032456";
             int gender = 1;
@@ -558,7 +560,8 @@ namespace iKitchen.Web.Controllers
             switch(externalProvider)
             {
                 case "Facebook":
-                    email = token.Claims.First(x => x.Type.Contains("email")).Value;
+                    email = token.Claims.FirstOrDefault(x => x.Type.Contains("email")).Value;
+                    gender = token.Claims.FirstOrDefault(x => x.Type.Contains("gender")).Value == "male" ? 1 : 0;
                     break;
 
 
