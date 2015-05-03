@@ -65,14 +65,14 @@ namespace iKitchen.Web.Controllers
             return View();
         }
 
-        public virtual ActionResult Edit(int? id)
-        {
-            T entity = id > 0
-                ? table.Find(id) // 编辑
-                : new T(); // 添加
-            ViewData.Model = entity ?? new T();
-            return View();
-        }
+        //public virtual ActionResult Edit(int? id)
+        //{
+        //    T entity = id > 0
+        //        ? table.Find(id) // 编辑
+        //        : new T(); // 添加
+        //    ViewData.Model = entity ?? new T();
+        //    return View();
+        //}
 
         public virtual ActionResult Detail(int? id)
         {

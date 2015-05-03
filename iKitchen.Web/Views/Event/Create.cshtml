@@ -2,70 +2,122 @@
 @{
     Layout = "~/Views/Shared/_LayoutDashboard.cshtml";
     ViewBag.Title = "Create Event";
+    var minCount = Model.Id > 0 ? Model.GuestMinCount : 3;
+    var maxCount = Model.Id > 0 ? Model.GuestLimitCount : 5;
+    var headerText = Model.Id > 0 ? "Edit Event" : "Create a new Event";
 }
 
-<form method="post" enctype="multipart/form-data" id="sky-form1" class="sky-form" novalidate="novalidate">
-    <header>Create a new Event</header>
-    <fieldset>
-        <div class="row">
-            <section class="col col-6">
-                <label class="input">
-                    <i class="icon-prepend fa fa-pencil-square-o"></i>
-                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Title" })
-                </label>
-                @Html.ValidationMessageFor(m => m.Title)
-            </section>
-            <section class="col col-6">
-                <label class="input">
-                    <i class="icon-prepend fa">$</i>
-                    @Html.TextBoxFor(m => m.Price, new { @Value = Model.Price > 0 ? Model.Price.ToString() : "", @class = "form-control", placeholder = "Unit Price" })
-                </label>
-                @Html.ValidationMessageFor(m => m.Price)
-            </section>
+<div class="profile-body margin-bottom-20">
+    <form method="post" enctype="multipart/form-data" id="sky-form4" class="sky-form" novalidate="novalidate">
+        <header>@headerText</header>
+        <div class="profile-edit">
+            <dl class="dl-horizontal">
+                <dt>Title</dt>
+                <dd>
+                    <section>
+                        <label class="input">
+                            <i class="icon-append fa fa-pencil-square-o"></i>
+                            @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Title" })
+                            <b class="tooltip tooltip-bottom-right">Enter the title of your Event</b>
+                        </label>
+                        @Html.ValidationMessageFor(m => m.Title)
+                    </section>
+                </dd>
+
+                <dt>Price</dt>
+                <dd>
+                    <section>
+                        <label class="input">
+                            <i class="icon-append fa">$</i>
+                            @Html.TextBoxFor(m => m.Price, new { @Value = Model.Price > 0 ? Model.Price.ToString() : "", @class = "form-control", placeholder = "Unit Price" })
+                        </label>
+                        @Html.ValidationMessageFor(m => m.Price)
+                    </section>
+                </dd>
+
+                <dt>Event Time</dt>
+                <dd>
+                    <section>
+                        <label class="input">
+                            <i class="icon-append fa fa-calendar"></i>
+                            @Html.TextBoxFor(m => m.EventTime, "{0:dd/MM/yyyy}", new { @class = "form-control date", placeholder = "The event time" })
+                        </label>
+                        @Html.ValidationMessageFor(m => m.EventTime)
+                    </section>
+                </dd>
+
+
+                @*<dt>Event Type</dt>
+                    <dd>
+                        <section>
+                            <div class="inline-group">
+                                <label class="radio"><input type="radio" name="IsOneTime" value="true" checked="@Model.IsOneTime ? "><i class="rounded-x"></i>One Time Event</label>
+                                <label class="radio"><input type="radio" name="IsOneTime" value="false" checked="@Model.IsOneTime"><i class="rounded-x"></i>Repeat Event</label>
+                            </div>
+                        </section>
+                    </dd>*@
+
+                <dt>People</dt>
+                <dd>
+                    <section>
+                        <label class="label">Choose how many guest you want to invite (<span id="slider-value1">@minCount</span> - <span id="slider-value2">@maxCount</span>)</label>
+                        <div id="slider"></div>
+                        @Html.HiddenFor(c => c.GuestMinCount, new { Value = minCount })
+                        @Html.HiddenFor(c => c.GuestLimitCount, new { Value = maxCount })
+                    </section>
+                </dd>
+
+                <dt>Event Address</dt>
+                <dd>
+                    <section>
+                        <label class="input">
+                            <i class="icon-append fa fa-map-marker"></i>
+                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
+                        </label>
+                        @Html.ValidationMessageFor(m => m.Address)
+                    </section>
+                </dd>
+
+                <dt>Summary</dt>
+                <dd>
+                    <section>
+                        <label class="textarea">
+                            @Html.TextAreaFor(m => m.Summary, 5, 0, new { @class = "form-control", placeholder = "Summary" })
+                        </label>
+                        @Html.ValidationMessageFor(m => m.Summary)
+                    </section>
+                </dd>
+
+                <dt>Upload Images</dt>
+                <dd>
+                    <section>
+                        <label for="file" class="input input-file">
+                            <i class="icon-append fa fa-upload"></i>
+                            <input type="file" name="file" multiple="" value="Browse" />
+                        </label>
+
+                        @if (ViewBag.EventImages != null)
+                        {
+                            <p>
+                                @foreach (var eventImage in ViewBag.EventImages)
+                                {
+                                    <img style="display:inline" height="120" width="120" src="/Images/Upload/@eventImage.ImagePath" alt="">
+                                }
+                            </p>
+                        }
+                    </section>
+                </dd>
+
+                <dt>Descriptions</dt>
+                <dd>
+                    <section>
+                        <label class="textarea">
+                            <textarea rows="5" name="description" placeholder="Description"></textarea>
+                        </label>
+                    </section>
+                </dd>
+            </dl>
         </div>
-
-        <div class="row">
-            <section class="col col-6">
-                <label class="input">
-                    <i class="icon-prepend fa fa-calendar"></i>
-                    @Html.TextBoxFor(m => m.EventTime, "{0:dd/MM/yyyy}", new { @class = "form-control date", placeholder = "The event time" })
-                </label>
-                @Html.ValidationMessageFor(m => m.EventTime)
-            </section>
-            <section class="col col-6">
-                <div class="inline-group">
-                    <label class="radio"><input type="radio" name="IsOneTime" value="true" checked="@Model.IsOneTime ? "><i class="rounded-x"></i>One Time Event</label>
-                    <label class="radio"><input type="radio" name="IsOneTime" value="false" checked="@Model.IsOneTime"><i class="rounded-x"></i>Repeat Event</label>
-                </div>
-            </section>
-        </div>
-
-        <section>
-            <label class="label">How Many Food Hunters You Want To Invite (<span id="slider-value1">3</span> - <span id="slider-value2">5</span>)</label>
-            <div id="slider"></div>
-        </section>
-
-        <section>
-            <label class="textarea">
-                @Html.TextAreaFor(m => m.Summary, 5, 0, new { @class = "form-control", placeholder = "Summary" })
-            </label>
-            @Html.ValidationMessageFor(m => m.Summary)
-        </section>
-
-        <section>
-            <label class="input">
-                <i class="icon-prepend fa fa-map-marker"></i>
-                @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
-            </label>
-            @Html.ValidationMessageFor(m => m.Address)
-        </section>
-
-        <section>
-            <label for="file" class="input input-file">
-                <i class="icon-prepend fa fa-upload"></i>
-                <input type="file" name="file" multiple="" value="Browse" />
-            </label>
-        </section>
         @*<section>
                 <div class="rating">
                     <input type="radio" name="stars-rating" id="stars-rating-5">
@@ -83,20 +135,15 @@
             </section>*@
 
 
-        <section>
-            <label class="textarea">
-                <textarea rows="5" name="description" placeholder="Description"></textarea>
-            </label>
-        </section>
-    </fieldset>
-    <footer>
-        <button type="submit" class="btn-u btn-block">Create</button>
-    </footer>
-    @*<div class="message">
-            <i class="rounded-x fa fa-check"></i>
-            <p>Thanks for your sharing!<br>Food hunters will contact you very soon.</p>
-        </div>*@
-</form>
+        <footer>
+            <button type="submit" class="btn-u btn-block">@(Model.Id > 0 ? "Save Changes" : "Create")</button>
+        </footer>
+        @*<div class="message">
+                <i class="rounded-x fa fa-check"></i>
+                <p>Thanks for your sharing!<br>Food hunters will contact you very soon.</p>
+            </div>*@
+    </form>
+</div>
 <!--=== End Profile ===-->
 @section PageJS{
 
@@ -117,10 +164,12 @@
                 min: 1,
                 max: 20,
                 range: true,
-                values: [3, 5],
+                values: [@(minCount), @(maxCount)],
                 slide: function (event, ui) {
                     $('#slider-value1').text(ui.values[0]);
                     $('#slider-value2').text(ui.values[1]);
+                    $('#GuestMinCount').val(ui.values[0]);
+                    $('#GuestLimitCount').val(ui.values[1]);
                 }
             });
         });
