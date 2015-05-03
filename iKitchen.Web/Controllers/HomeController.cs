@@ -52,7 +52,7 @@ namespace iKitchen.Web.Controllers
         [HttpPost]
         public ActionResult Contact(ContactUsViewModel model)
         {
-            SendMailMessage(model.Email, "zihao.chen@iKitchen.nz", "Customer Contact Message FROM: " + model.UserName, model.Message);
+            SendMailMessage(model.Email, "service@iKitchen.nz", "Customer Contact Message FROM: " + model.UserName, model.Message);
             SetSuccessMessage("Thanks for your message, we will contact you ASAP~");
             return View();
         }
