@@ -24,7 +24,7 @@
                 <div class="projects">
                     <h2 title="@item.Summary"><a href="/Event/Detail/@item.Id">@item.Title</a></h2>
                     <ul class="list-unstyled list-inline blog-info-v2">
-                        <li>Hosted By <a class="color-green" href="#">@user.UserName</a></li>
+                        <li>Hosted By <a class="color-green" href="#">@user.Nickname</a></li>
                         @if(item.EventTime.HasValue)
                         { 
                         <li><i class="fa fa-clock-o"></i> @item.EventTime.Value.ToString("dd/MM/yyyy hh:mm tt")</li>

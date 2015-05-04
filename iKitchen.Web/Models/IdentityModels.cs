@@ -15,6 +15,10 @@ namespace iKitchen.Web.Models
         [StringLength(100)]
         public System.String Email { get; set; }
 
+        [Display(Name = "Nick name")]
+        [StringLength(100)]
+        public System.String Nickname { get; set; }
+
         /// <summary>
         /// 性别，0先生，1女士，2小姐
         /// </summary>

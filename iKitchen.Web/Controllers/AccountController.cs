@@ -118,6 +118,7 @@ namespace iKitchen.Web.Controllers
             model.PhoneNumber = user.Mobile;
             model.Email = user.Email;
             model.Address = user.Address;
+            model.NickName = user.Nickname;
             return View(model);
         }
 
@@ -170,6 +171,8 @@ namespace iKitchen.Web.Controllers
                 user.Email = model.Email;
             if (model.Address != null)
                 user.Address = model.Address;
+            if (model.NickName != null)
+                user.Nickname = model.NickName;
 
             var result = UserManager.Update(user);
             if (!result.Succeeded)

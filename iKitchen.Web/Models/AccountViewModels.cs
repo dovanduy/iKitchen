@@ -102,17 +102,21 @@ namespace iKitchen.Web.Models
 
     public class ProfileSettingsViewModel
     {
-        [Display(Name = "用户名")]
+        [Display(Name = "User name")]
         [StringLength(100)]
         public string UserName { get; set; }
 
+        [Display(Name = "Nick name")]
+        [StringLength(100)]
+        public string NickName { get; set; }
+
 
         [DataType(DataType.Password)]
-        [Display(Name = "初始密码")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm Password")]
+        [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "Confirm password and New password do not match")]
         public string ConfirmPassword { get; set; }
 
@@ -138,46 +142,45 @@ namespace iKitchen.Web.Models
 
     public class CreateUserViewModel
     {
-        [Required(ErrorMessage = "{0}不能为空")]
+        [Required(ErrorMessage = "{0}can not be empty")]
         [DataType(DataType.EmailAddress)]
-        [Display(Name = "用户名")]
+        [Display(Name = "User name")]
         [StringLength(100)]
         public string UserName { get; set; }
 
-        [Required(ErrorMessage = "{0}不能为空")]
+        [Required(ErrorMessage = "{0}can not be empty")]
         [StringLength(100, ErrorMessage = "{0}长度至少{2}为6个字符", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "初始密码")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
         /// <summary>
         /// Email
         /// </summary>
-        [Required(ErrorMessage = "{0}不能为空")]
+        [Required(ErrorMessage = "{0}can not be empty")]
         [DataType(DataType.EmailAddress)]
-        [EmailAddress(ErrorMessage = "无效的Email地址")]
+        [EmailAddress(ErrorMessage = "Invalid Email address")]
         [StringLength(100)]
         public string Email { get; set; }
 
         /// <summary>
         /// 入职时间
         /// </summary>
-        [Required(ErrorMessage = "{0}不能为空")]
+        [Required(ErrorMessage = "{0}can not be empty")]
         public DateTime CreateOn { get; set; }
 
         /// <summary>
         /// 手机
         /// </summary>
-        [Required(ErrorMessage = "{0}不能为空")]
+        [Required(ErrorMessage = "{0}can not be empty")]
         [StringLength(11)]
-        [Display(Name = "手机号码")]
-        [RegularExpression("[1][3,4,5,8][0-9]{9}$", ErrorMessage = "手机号码格式不正确")]
+        [Display(Name = "Mobile number")]
         public string Mobile { get; set; }
 
         /// <summary>
         /// 角色，1普管用户，2？？用户（未启用），3超管用户
         /// </summary>
-        [Required(ErrorMessage = "{0}不能为空")]
+        [Required(ErrorMessage = "{0}can not be empty")]
         public int RoleId { get; set; }
     }
 
