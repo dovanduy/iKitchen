@@ -7,6 +7,16 @@
     var isFull = CacheHelper<EventUser>.GetAll().Count(c => c.EventId == Model.Id) >= Model.GuestLimitCount;
 }
 
+<div id="fb-root"></div>
+<script>
+(function (d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=1543874179228733";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
 <!--=== Content Part ===-->
 <div class="container content">
     @if (eventUser != null && !eventUser.IsPaid)
@@ -103,6 +113,8 @@
                 <a href="#" class="text-muted margin-left-10">Quit Event</a>
                 }
             }
+            <div class="fb-send" data-href="https://iKitchen.nz"></div>
+            <div class="fb-share-button" data-href="https://www.163.com" data-layout="button_count"></div>
             <p>==== DESCRIPTION TODO ====</p>
             <p>At vero eos et accusamus et iusto odio dignissimos <a href="#">ducimus qui blanditiis</a> praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum Fusce condimentum eleifend enim a feugiat. Pellentesque viverra vehicula sem ut volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut non libero magna. Sed et quam lacus.</p>
             <p>Molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Ut non libero consectetur adipiscing elit magna. Sed et quam lacus.</p>
