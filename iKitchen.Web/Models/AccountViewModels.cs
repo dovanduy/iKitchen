@@ -120,7 +120,7 @@ namespace iKitchen.Web.Models
         /// Email
         /// </summary>
         [DataType(DataType.EmailAddress)]
-        [EmailAddress(ErrorMessage = "无效的Email地址")]
+        [EmailAddress(ErrorMessage = "Invalid Email address")]
         [StringLength(100)]
         public string Email { get; set; }
 
@@ -128,10 +128,12 @@ namespace iKitchen.Web.Models
         /// <summary>
         /// 手机
         /// </summary>
-        [StringLength(11)]
-        [Display(Name = "手机号码")]
-        [RegularExpression("[1][3,4,5,8][0-9]{9}$", ErrorMessage = "手机号码格式不正确")]
+        [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
+
+
+        [Display(Name = "Address")]
+        public string Address { get; set; }
     }
 
     public class CreateUserViewModel

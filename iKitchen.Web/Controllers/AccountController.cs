@@ -117,6 +117,7 @@ namespace iKitchen.Web.Controllers
             model.UserName = user.UserName;
             model.PhoneNumber = user.Mobile;
             model.Email = user.Email;
+            model.Address = user.Address;
             return View(model);
         }
 
@@ -167,6 +168,8 @@ namespace iKitchen.Web.Controllers
                 user.Mobile = model.PhoneNumber;
             if (model.Email != null)
                 user.Email = model.Email;
+            if (model.Address != null)
+                user.Address = model.Address;
 
             var result = UserManager.Update(user);
             if (!result.Succeeded)
@@ -181,28 +184,6 @@ namespace iKitchen.Web.Controllers
             return View("ProfileSettings", model);
         }
 
-        // POST: /Account/Register
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveProfile()
-        {
-            var db = new ApplicationDbContext();
-            var userId = AccountHelper.GetCurrentUser().Id;
-            var user = db.Users.FirstOrDefault(c => c.Id == userId);
-            if (TryUpdateModel(user))
-            {
-                db.SaveChanges();
-                Session[WebConstants.CurrentUser] = user;
-                SetSuccessMessage("保存成功");
-            }
-            else
-            {
-                SetErrorMessage("保存失败");
-            }
-
-            return RedirectToAction("EditProfile");
-        }
 
         //
         // GET: /Account/Register

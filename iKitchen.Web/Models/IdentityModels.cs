@@ -26,6 +26,9 @@ namespace iKitchen.Web.Models
         [Display(Name = "Mobile number")]
         public System.String Mobile { get; set; }
 
+        [Display(Name = "Address")]
+        public System.String Address { get; set; }
+
         /// <summary>
         /// 角色，1 普通用户，2 系统管理员，3 超级管理员，4 业务员，5 客服员，7 勘察员，8 撰写员，9 审核员
         /// </summary>
