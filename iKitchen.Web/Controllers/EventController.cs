@@ -94,7 +94,7 @@ namespace iKitchen.Web.Controllers
             var @event = db.Event.Find(id);
             if (@event == null || @event.UserId != User.Identity.GetUserId() || @event.State == -1)
             {
-                return HttpNotFound(); 
+                return HttpNotFound();
             }
             var eventImages = db.EventImage.Where(c => c.EventId == id).ToList();
             ViewBag.EventImages = eventImages;
@@ -192,8 +192,8 @@ namespace iKitchen.Web.Controllers
                 var result = ReturnResultFactory.Failed;
                 result.message = "Failed to join... You are the host of this event.";
                 return result.ToJsonResult();
-            } 
-            
+            }
+
             if (db.EventUser.Any(c => c.EventId == id && c.UserId == currentUserId))
             {
                 var result = ReturnResultFactory.Failed;
@@ -232,6 +232,36 @@ namespace iKitchen.Web.Controllers
             {
                 var result = ReturnResultFactory.Failed;
                 result.message = "Failed to join... ";
+                return result.ToJsonResult();
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public JsonResult RemoveImage(int id)
+        {
+            var eventImage = db.EventImage.Find(id);
+
+            if (eventImage == null)
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message = "Failed to delete... The image doesn't exist.";
+                return result.ToJsonResult();
+            }
+            if (eventImage.Delete(false))
+            {
+                ImageHelper.DeleteImage(eventImage.ImagePath);
+                ImageHelper.DeleteImage("360x270/" + eventImage.ImagePath); // todo: get rid of the hardcoded compress rate
+                CacheHelper<EventImage>.Clear();    // todo: refactor by introducing a better Cache machanism
+                var result = ReturnResultFactory.Success;
+                result.message = "Delete successfully!";
+                result.action = ReturnResultFactory.Reload;
+                return result.ToJsonResult();
+            }
+            else
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message = "Failed to delete... ";
                 return result.ToJsonResult();
             }
         }
