@@ -5,6 +5,7 @@
     var minCount = Model.Id > 0 ? Model.GuestMinCount : 3;
     var maxCount = Model.Id > 0 ? Model.GuestLimitCount : 5;
     var headerText = Model.Id > 0 ? "Edit Event" : "Create a new Event";
+    var joinedUsers = CacheHelper<EventUser>.GetAll().Where(c => c.EventId == Model.Id).ToList();
 }
 
 <div class="profile-body margin-bottom-20">
@@ -12,6 +13,40 @@
         <header>@headerText</header>
         <div class="profile-edit">
             <dl class="dl-horizontal">
+                @if (joinedUsers != null && joinedUsers.Count > 0)
+                {
+                    <dt>Joined Guests</dt>
+                    <dd>
+                        <section>
+                            <div class="row">
+                                @foreach (var joinedEventUser in joinedUsers)
+                                {
+                                    var joinedUser = CacheHelperApplicationUser.GetById(joinedEventUser.UserId);
+                                    var joinedUserName = string.IsNullOrEmpty(joinedUser.Nickname) ? joinedUser.UserName : joinedUser.Nickname;
+                                    <div class="col-md-3 col-xs-6">
+                                        <div class="thumbnails thumbnail-style thumbnail-kenburn">
+                                            <div class="thumbnail-img">
+                                                <div class="overflow-hidden">
+                                                    <img class="img-responsive" src="/assets/img/team/5.jpg" alt="">
+                                                </div>
+                                                @if (Model.UserId == User.Identity.GetUserId())
+                                                {
+                                                    <a class="btn-more hover-effect" href="#"
+                                                       data-href="/Event/RemoveGuest/@joinedEventUser.Id" data-toggle="modal" data-target="#confirm"
+                                                       data-confirm-message='Are you sure you want to remove "@joinedUserName" from this event?' data-confirm-title="Confirm deletion">remove -</a>
+                                                }
+                                            </div>
+                                            <div class="caption">
+                                                <h3><a class="hover-effect" href="#">@joinedUserName</a></h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </section>
+                    </dd>
+
+                }
                 <dt>Title</dt>
                 <dd>
                     <section>

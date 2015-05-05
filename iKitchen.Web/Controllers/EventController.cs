@@ -265,5 +265,43 @@ namespace iKitchen.Web.Controllers
                 return result.ToJsonResult();
             }
         }
+
+        [HttpPost]
+        [Authorize]
+        public JsonResult RemoveGuest(int id)
+        {
+            var eventUser = db.EventUser.Find(id);
+
+            if (eventUser == null)
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message = "Failed to remove guest... The guest doesn't exist.";
+                return result.ToJsonResult();
+            }
+
+            var @event = db.Event.Find(eventUser.EventId);
+            if (@event.UserId != User.Identity.GetUserId())
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message = "Failed to remove guest... Only the host has the permission.";
+                return result.ToJsonResult();
+            }
+
+            if (eventUser.Delete(false)) 
+            {
+                // todo: handle any money refund request if any
+                CacheHelper<EventUser>.Clear();    // todo: refactor by introducing a better Cache machanism
+                var result = ReturnResultFactory.Success;
+                result.message = "Guest removed successfully!";
+                result.action = ReturnResultFactory.Reload;
+                return result.ToJsonResult();
+            }
+            else
+            {
+                var result = ReturnResultFactory.Failed;
+                result.message = "Failed to remove guest... ";
+                return result.ToJsonResult();
+            }
+        }
     }
 }

@@ -3,19 +3,20 @@
     ViewBag.Title = Model.Title;
     var user = CacheHelperApplicationUser.GetById(Model.UserId);
     var eventImages = CacheHelper<EventImage>.GetAll().Where(c => c.EventId == Model.Id).ToList();
+    var joinedUsers = CacheHelper<EventUser>.GetAll().Where(c => c.EventId == Model.Id).ToList();
     var eventUser = CacheHelper<EventUser>.GetAll().FirstOrDefault(c => c.UserId == User.Identity.GetUserId() && c.EventId == Model.Id);
     var isFull = CacheHelper<EventUser>.GetAll().Count(c => c.EventId == Model.Id) >= Model.GuestLimitCount;
 }
 
 <div id="fb-root"></div>
 <script>
-(function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=1543874179228733";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=1543874179228733";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
 <!--=== Content Part ===-->
 <div class="container content">
@@ -51,8 +52,8 @@
                             <div class="item @(i == 0 ? "active" :"")">
                                 <img alt="" src="/Images/Upload/@(eventImages[i].ImagePath)" onerror="this.onerror = null; this.src = '/assets/img/no_image.gif'; this.width = 653;">
                                 @*<div class="carousel-caption">
-                                    <p>Here is the caption of the image.</p>
-                                </div>*@
+                                        <p>Here is the caption of the image.</p>
+                                    </div>*@
                             </div>
                         }
                     }
@@ -100,20 +101,20 @@
             else if (!eventUser.IsPaid)
             {
                 <a href="#" class="btn-u margin-bottom-10">Pending payment</a>
-                if(DateTime.Now < Model.EventTime)
-                { 
-                <a href="#" class="text-muted margin-left-10">Cancel request</a>
+                if (DateTime.Now < Model.EventTime)
+                {
+                    <a href="#" class="text-muted margin-left-10">Cancel request</a>
                 }
             }
             else if (eventUser.IsPaid)
             {
                 <a href="#" class="btn btn-info disabled margin-bottom-10">Already joined</a>
                 if (DateTime.Now < Model.EventTime)
-                { 
-                <a href="#" class="text-muted margin-left-10">Quit Event</a>
+                {
+                    <a href="#" class="text-muted margin-left-10">Quit Event</a>
                 }
             }
-            
+
             <div class="fb-share-button pull-right margin-left-10" data-href="https://www.163.com" data-layout="button_count"></div>
             <div class="fb-send pull-right" data-href="https://iKitchen.nz"></div>
             <p>==== DESCRIPTION TODO ====</p>
@@ -123,139 +124,36 @@
         </div>
         <!-- End Content Info -->
     </div><!--/row-->
-
-    <div class="tag-box tag-box-v2">
-        <p>Et harum quidem rerum facilis est et expedita distinctio lorem ipsum dolor sit amet consectetur adipiscing elit. Ut non libero consectetur adipiscing elit magna. Sed et quam lacus. Fusce condimentum eleifend enim a feugiat. Pellentesque viverra vehicula sem ut volutpat.</p>
-    </div>
-
-    <div class="margin-bottom-20 clearfix"></div>
-
-    <!-- Recent Works -->
-    <div class="owl-carousel-v1 owl-work-v1 margin-bottom-40">
-        <div class="headline">
-            <h2 class="pull-left">Feedback</h2>
-            <div class="owl-navigation">
-                <div class="customNavigation">
-                    <a class="owl-btn prev-v2"><i class="fa fa-angle-left"></i></a>
-                    <a class="owl-btn next-v2"><i class="fa fa-angle-right"></i></a>
+    @if (joinedUsers != null && joinedUsers.Count > 0)
+    {
+        <div class="headline"><h2>Joined guests</h2></div>
+        <div class="row">
+            @foreach (var joinedEventUser in joinedUsers)
+            {
+                var joinedUser = CacheHelperApplicationUser.GetById(joinedEventUser.UserId);
+                var joinedUserName = string.IsNullOrEmpty(joinedUser.Nickname) ? joinedUser.UserName : joinedUser.Nickname;
+                <div class="col-md-3 col-xs-6">
+                    <div class="thumbnails thumbnail-style thumbnail-kenburn">
+                        <div class="thumbnail-img">
+                            <div class="overflow-hidden">
+                                <img class="img-responsive" src="/assets/img/team/5.jpg" alt="">
+                            </div>
+                            @if (Model.UserId == User.Identity.GetUserId())
+                            {
+                                <a class="btn-more hover-effect" href="#"
+                                   data-href="/Event/RemoveGuest/@joinedEventUser.Id" data-toggle="modal" data-target="#confirm"
+                                   data-confirm-message='Are you sure you want to remove "@joinedUserName" from this event?' data-confirm-title="Confirm deletion">remove -</a>
+                            }
+                        </div>
+                        <div class="caption">
+                            <h3><a class="hover-effect" href="#">@joinedUserName</a></h3>
+                            <p>Hello everyone, I am @joinedUserName.</p>
+                        </div>
+                    </div>
                 </div>
-            </div><!--/navigation-->
+            }
         </div>
-
-        <div class="owl-recent-works-v1">
-            <div class="item">
-                <a href="#">
-                    <em class="overflow-hidden">
-                        <img class="img-responsive" src="/assets/img/main/1.jpg" alt="">
-                    </em>
-                    <span>
-                        <strong>Happy New Year</strong>
-                        <i>Anim pariatur cliche reprehenderit</i>
-                    </span>
-                </a>
-            </div>
-            <div class="item">
-                <a href="#">
-                    <em class="overflow-hidden">
-                        <img class="img-responsive" src="/assets/img/main/2.jpg" alt="">
-                    </em>
-                    <span>
-                        <strong>Award Winning Agency</strong>
-                        <i>Responsive Bootstrap Template</i>
-                    </span>
-                </a>
-            </div>
-            <div class="item">
-                <a href="#">
-                    <em class="overflow-hidden">
-                        <img class="img-responsive" src="/assets/img/main/3.jpg" alt="">
-                    </em>
-                    <span>
-                        <strong>Wolf Moon Officia</strong>
-                        <i>Pariatur prehe cliche reprehrit</i>
-                    </span>
-                </a>
-            </div>
-            <div class="item">
-                <a href="#">
-                    <em class="overflow-hidden">
-                        <img class="img-responsive" src="/assets/img/main/4.jpg" alt="">
-                    </em>
-                    <span>
-                        <strong>Food Truck Quinoa Nesciunt</strong>
-                        <i>Craft labore wes anderson cred</i>
-                    </span>
-                </a>
-            </div>
-            <div class="item">
-                <a href="#">
-                    <em class="overflow-hidden">
-                        <img class="img-responsive" src="/assets/img/main/5.jpg" alt="">
-                    </em>
-                    <span>
-                        <strong>Happy New Year</strong>
-                        <i>Anim pariatur cliche reprehenderit</i>
-                    </span>
-                </a>
-            </div>
-            <div class="item">
-                <a href="#">
-                    <em class="overflow-hidden">
-                        <img class="img-responsive" src="/assets/img/main/1.jpg" alt="">
-                    </em>
-                    <span>
-                        <strong>Happy New Year</strong>
-                        <i>Anim pariatur cliche reprehenderit</i>
-                    </span>
-                </a>
-            </div>
-            <div class="item">
-                <a href="#">
-                    <em class="overflow-hidden">
-                        <img class="img-responsive" src="/assets/img/main/2.jpg" alt="">
-                    </em>
-                    <span>
-                        <strong>Award Winning Agency</strong>
-                        <i>Responsive Bootstrap Template</i>
-                    </span>
-                </a>
-            </div>
-            <div class="item">
-                <a href="#">
-                    <em class="overflow-hidden">
-                        <img class="img-responsive" src="/assets/img/main/3.jpg" alt="">
-                    </em>
-                    <span>
-                        <strong>Wolf Moon Officia</strong>
-                        <i>Pariatur prehe cliche reprehrit</i>
-                    </span>
-                </a>
-            </div>
-            <div class="item">
-                <a href="#">
-                    <em class="overflow-hidden">
-                        <img class="img-responsive" src="/assets/img/main/4.jpg" alt="">
-                    </em>
-                    <span>
-                        <strong>Food Truck Quinoa Nesciunt</strong>
-                        <i>Craft labore wes anderson cred</i>
-                    </span>
-                </a>
-            </div>
-            <div class="item">
-                <a href="#">
-                    <em class="overflow-hidden">
-                        <img class="img-responsive" src="/assets/img/main/5.jpg" alt="">
-                    </em>
-                    <span>
-                        <strong>Happy New Year</strong>
-                        <i>Anim pariatur cliche reprehenderit</i>
-                    </span>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- End Recent Works -->
+    }
 </div><!--/container-->
 @Html.Partial("_Confirm")
 <!--=== End Content Part ===-->
