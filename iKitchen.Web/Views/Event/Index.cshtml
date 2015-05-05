@@ -54,7 +54,7 @@
                     }
                     else if (@item.UserId == User.Identity.GetUserId())
                     {
-                        <a href="#" class="btn btn-grey disabled btn-block">You are the host of this event.</a>
+                        <a href="/Event/Edit/@item.Id" class="btn btn-info btn-block"><i class="fa fa-edit"></i> Edit this event</a>
                     }
                     else if (eventUser != null)
                     {
