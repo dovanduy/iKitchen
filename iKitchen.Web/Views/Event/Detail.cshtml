@@ -49,10 +49,10 @@
                         for (int i = 0; i < eventImages.Count; i++)
                         {
                             <div class="item @(i == 0 ? "active" :"")">
-                                <img alt="" src="/Images/Upload/@(eventImages[i].ImagePath)">
-                                <div class="carousel-caption">
+                                <img alt="" src="/Images/Upload/@(eventImages[i].ImagePath)" onerror="this.onerror = null; this.src = '/assets/img/no_image.gif'; this.width = 653;">
+                                @*<div class="carousel-caption">
                                     <p>Here is the caption of the image.</p>
-                                </div>
+                                </div>*@
                             </div>
                         }
                     }

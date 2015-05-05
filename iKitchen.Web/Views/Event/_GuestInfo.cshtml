@@ -15,14 +15,26 @@
         <span>Joined</span>
     </li>
     <li>
-        <strong>@(totoalGuestCount-currentGuestCount)</strong>
+        <strong>@(totoalGuestCount - currentGuestCount)</strong>
         <span>Available</span>
     </li>
     @if (Model.EventTime.HasValue)
     {
+        var totalDays = (int)Model.EventTime.Value.Subtract(DateTime.Now).TotalDays;
         <li class="pull-right">
-            <strong>@((int)DateTime.Now.Subtract(Model.EventTime.Value).TotalDays)</strong>
-            <span>days to go</span>
+            @if (totalDays > 0)
+            {
+                <strong>@(totalDays)</strong>
+                <span>days to go</span>
+            }
+            else if (totalDays == 0)
+            {
+                <strong class="text-success">Celebrating TODAY!</strong>
+            }
+            else
+            {
+                <span class="text-muted">Closed...</span>
+            }
         </li>
     }
 </ul>
