@@ -96,15 +96,25 @@
                             <i class="icon-append fa fa-upload"></i>
                             <input type="file" name="file" multiple="" value="Browse" />
                         </label>
-
                         @if (ViewBag.EventImages != null)
                         {
-                            <p>
+                            <div class="row">
                                 @foreach (var eventImage in ViewBag.EventImages)
                                 {
-                                    <img style="display:inline" height="120" width="120" src="/Images/Upload/@eventImage.ImagePath" alt="">
+                                    <div class="col-md-4">
+                                        <div class="thumbnails thumbnail-style thumbnail-kenburn">
+                                            <div class="thumbnail-img">
+                                                <div class="overflow-hidden">
+                                                    <img class="img-responsive" src="/Images/Upload/360x270/@eventImage.ImagePath" alt="">
+                                                </div>
+                                                <a class="btn-more hover-effect" href="#"
+                                                   data-href="/Event/RemoveImage/@eventImage.Id" data-toggle="modal" data-target="#confirm"
+                                                   data-confirm-message='Are you sure you want to remove this image?' data-confirm-title="Confirm deletion">remove -</a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 }
-                            </p>
+                        </div>
                         }
                     </section>
                 </dd>
@@ -146,6 +156,7 @@
     </form>
 </div>
 <!--=== End Profile ===-->
+@Html.Partial("_Confirm")
 @section PageJS{
 
     <script>
