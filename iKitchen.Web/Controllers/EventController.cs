@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Owin.Security;
 using iKitchen.Web.Models;
-using SunTzu.Web.Login;
 using SunTzu.Core.Data;
-using SunTzu.Utility;
 using iKitchen.Linq;
 using SunTzu.Web;
-using System.Net;
 
 namespace iKitchen.Web.Controllers
 {

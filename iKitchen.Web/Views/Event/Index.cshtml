@@ -27,7 +27,7 @@
                         <li>Hosted By <a class="color-green" href="#">@user.Nickname</a></li>
                         @if(item.EventTime.HasValue)
                         { 
-                        <li><i class="fa fa-clock-o"></i> @item.EventTime.Value.ToString("dd/MM/yyyy hh:mm tt")</li>
+                        <li><i class="fa fa-clock-o"></i> @item.EventTime.Value.ToString("dd/MM/yyyy h:mm tt")</li>
                         }
                     </ul>
                     @Html.Partial("_GuestInfo", item)

@@ -282,6 +282,7 @@
     <Content Include="assets\css\pages\profile.css" />
     <Content Include="assets\css\plugins.css" />
     <Content Include="assets\css\plugins\animate.css" />
+    <Content Include="assets\css\plugins\bootstrap-datetimepicker.css" />
     <Content Include="assets\css\plugins\box-shadows.css" />
     <Content Include="assets\css\plugins\brand-buttons\brand-buttons-inversed.css" />
     <Content Include="assets\css\plugins\brand-buttons\brand-buttons.css" />
@@ -652,6 +653,7 @@
     <Content Include="assets\img\transparent\white.png" />
     <Content Include="assets\img\user.jpg" />
     <Content Include="assets\js\app.js" />
+    <Content Include="assets\js\bootstrap-datetimepicker.min.js" />
     <Content Include="assets\js\custom.js" />
     <Content Include="assets\js\forms\checkout.js" />
     <Content Include="assets\js\forms\comment.js" />
@@ -661,6 +663,8 @@
     <Content Include="assets\js\forms\order.js" />
     <Content Include="assets\js\forms\reg.js" />
     <Content Include="assets\js\forms\review.js" />
+    <Content Include="assets\js\moment.en-au.js" />
+    <Content Include="assets\js\moment.min.js" />
     <Content Include="assets\js\pages\blog-masonry.js" />
     <Content Include="assets\js\pages\index.js" />
     <Content Include="assets\js\pages\page_contacts.js" />
@@ -4745,7 +4749,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2389</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

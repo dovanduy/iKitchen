@@ -76,7 +76,7 @@
                     <section>
                         <label class="input">
                             <i class="icon-append fa fa-calendar"></i>
-                            @Html.TextBoxFor(m => m.EventTime, "{0:dd/MM/yyyy}", new { @class = "form-control date", placeholder = "The event time" })
+                            @Html.TextBoxFor(m => m.EventTime, "{0:dd/MM/yyyy h:mm tt}", new { @class = "form-control date", placeholder = "The event time" })
                         </label>
                         @Html.ValidationMessageFor(m => m.EventTime)
                     </section>
@@ -149,7 +149,7 @@
                                         </div>
                                     </div>
                                 }
-                        </div>
+                            </div>
                         }
                     </section>
                 </dd>
@@ -193,6 +193,10 @@
 <!--=== End Profile ===-->
 @Html.Partial("_Confirm")
 @section PageJS{
+    <link href="~/assets/css/plugins/bootstrap-datetimepicker.css" rel="stylesheet" /> <!-- todo: move to page top -->
+    <script src="~/assets/js/moment.min.js"></script>
+    <script src="~/assets/js/moment.en-au.js"></script>
+    <script src="~/assets/js/bootstrap-datetimepicker.min.js"></script>
 
     <script>
         jQuery(document).ready(function ($) {
@@ -200,10 +204,11 @@
             $('.contentHolder').perfectScrollbar();
 
             // Regular datepicker
-            $('#EventTime').datepicker({
-                dateFormat: 'dd/mm/yy',
-                prevText: '<i class="fa fa-angle-left"></i>',
-                nextText: '<i class="fa fa-angle-right"></i>',
+            $('#EventTime').datetimepicker({
+                locale: "en-au"
+                //dateFormat: 'dd/mm/yy',
+                //prevText: '<i class="fa fa-angle-left"></i>',
+                //nextText: '<i class="fa fa-angle-right"></i>'
             });
             $.validator.addMethod('date',
                 function (value, element, params) {

@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using SunTzu.Core.Authorization;
+﻿using System.Web.Mvc;
 using SunTzu.Utility;
-using SunTzu.Web.Login;
-using SunTzu.Core.Data;
-using iKitchen.Linq;
 using iKitchen.Web.Models;
 using SunTzu.Web;
 
@@ -34,11 +26,6 @@ namespace iKitchen.Web.Controllers
         }
 
         public ActionResult AboutUs()
-        {
-            return View();
-        }
-
-        public ActionResult BootStrap()
         {
             return View();
         }
