@@ -57,6 +57,8 @@ namespace iKitchen.Web.Models
         /// 更新时间
         /// </summary>
         public System.DateTime UpdateOn { get; set; }
+
+        public System.String AvatarPath { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

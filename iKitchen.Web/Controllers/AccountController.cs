@@ -122,6 +122,33 @@ namespace iKitchen.Web.Controllers
             return View(model);
         }
 
+        [Authorize]
+        public ActionResult ProfileMe()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult ProfileMe(ProfileSettingsViewModel model)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var uploadedFile = ImageHelper.SaveImage();
+            ImageHelper.CompressImage(uploadedFile, 309, 256);
+            user.AvatarPath = uploadedFile;
+            var result = UserManager.Update(user);
+            CacheHelperApplicationUser.GetById(User.Identity.GetUserId()).AvatarPath = uploadedFile;
+            if (!result.Succeeded)
+            {
+                logger.Debug("Change profile failed！");
+                SetErrorMessage();
+            }
+            SetSuccessMessage("Profile photo has been updated");
+
+            return View(model);
+        }
+
         //[Login(RoleId = WebConstants.RoleId_Admin)]
         //public ActionResult Edit(string uid)
          //{
@@ -163,7 +190,6 @@ namespace iKitchen.Web.Controllers
         [HttpPost]
         public ActionResult ChangeProfile(ProfileSettingsViewModel model)
         {
-            var db = new ApplicationDbContext();
             var user = UserManager.FindById(User.Identity.GetUserId());
             if (model.PhoneNumber != null)
                 user.Mobile = model.PhoneNumber;
@@ -175,6 +201,7 @@ namespace iKitchen.Web.Controllers
                 user.Nickname = model.NickName;
 
             var result = UserManager.Update(user);
+            CacheHelperApplicationUser.GetById(User.Identity.GetUserId()).Nickname = model.NickName;
             if (!result.Succeeded)
             {
                 logger.Debug("Change profile failed！");

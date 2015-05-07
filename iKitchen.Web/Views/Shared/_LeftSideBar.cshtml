@@ -1,7 +1,16 @@
-﻿
-<div class="col-md-3 md-margin-bottom-40">
-    <img class="img-responsive profile-img margin-bottom-20" src="/assets/img/team/5.jpg" alt="">
+﻿@{
+    var eventImage = CacheHelperApplicationUser.GetById(User.Identity.GetUserId()).AvatarPath;
+}
 
+<div class="col-md-3 md-margin-bottom-40">
+    @if (eventImage == null)
+    {
+        <img class="img-responsive md-margin-bottom-20" src="/assets/img/no_image.gif" alt="">
+    }
+    else
+    {
+        <img class="img-responsive md-margin-bottom-20" src="/Images/Upload/@eventImage" alt="">
+    }
 
     <div class="panel-heading-v2 overflow-h margin-bottom-20">
         <a href="/Event/Create" class="btn-u btn-block"> Create Event</a>
