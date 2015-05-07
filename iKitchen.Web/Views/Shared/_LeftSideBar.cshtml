@@ -1,16 +1,13 @@
 ﻿@{
     var eventImage = CacheHelperApplicationUser.GetById(User.Identity.GetUserId()).AvatarPath;
+    if (string.IsNullOrEmpty(eventImage))
+    {
+
+    }
 }
 
 <div class="col-md-3 md-margin-bottom-40">
-    @if (eventImage == null)
-    {
-        <img class="img-responsive md-margin-bottom-20" src="/assets/img/no_image.gif" alt="">
-    }
-    else
-    {
-        <img class="img-responsive md-margin-bottom-20" src="/Images/Upload/@eventImage" alt="">
-    }
+    <img class="img-responsive profile-img margin-bottom-20" alt="" src="/Images/Upload/@eventImage" onerror="this.onerror = null;this.src = '/assets/img/no_image.gif';">
 
     <div class="panel-heading-v2 overflow-h margin-bottom-20">
         <a href="/Event/Create" class="btn-u btn-block"> Create Event</a>
