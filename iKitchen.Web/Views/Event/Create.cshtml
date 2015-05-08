@@ -31,9 +31,12 @@
                                                 </div>
                                                 @if (Model.UserId == User.Identity.GetUserId())
                                                 {
-                                                    <a class="btn-more hover-effect" href="#"
-                                                       data-href="/Event/RemoveGuest/@joinedEventUser.Id" data-toggle="modal" data-target="#confirm"
-                                                       data-confirm-message='Are you sure you want to remove "@joinedUserName" from this event?' data-confirm-title="Confirm deletion">remove -</a>
+                                                    if (joinedEventUser.UnitPrice == 0 || !joinedEventUser.IsPaid)
+                                                    {
+                                                        <a class="btn-more hover-effect" href="#"
+                                                           data-href="/Event/RemoveGuest/@joinedEventUser.Id" data-toggle="modal" data-target="#confirm"
+                                                           data-confirm-message='Are you sure you want to remove "@joinedUserName" from this event?' data-confirm-title="Confirm deletion">remove -</a>
+                                                    }
                                                 }
                                             </div>
                                             <div class="caption">
