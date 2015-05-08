@@ -3504,7 +3504,10 @@
     <Content Include="assets\plugins\revolution-slider\rs-plugin\font\revicons.svg" />
     <Content Include="assets\plugins\revolution-slider\rs-plugin\js\jquery.themepunch.revolution.min.js" />
     <Content Include="assets\plugins\revolution-slider\rs-plugin\js\jquery.themepunch.tools.min.js" />
+    <Content Include="assets\plugins\scrollbar\css\jquery.mCustomScrollbar.css" />
     <Content Include="assets\plugins\scrollbar\Gruntfile.js" />
+    <Content Include="assets\plugins\scrollbar\js\jquery.mCustomScrollbar.concat.min.js" />
+    <Content Include="assets\plugins\scrollbar\LICENSE.txt" />
     <Content Include="assets\plugins\scrollbar\min\perfect-scrollbar-0.4.10.min.css" />
     <Content Include="assets\plugins\scrollbar\min\perfect-scrollbar-0.4.10.min.js" />
     <Content Include="assets\plugins\scrollbar\min\perfect-scrollbar-0.4.10.with-mousewheel.min.js" />
