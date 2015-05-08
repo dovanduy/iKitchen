@@ -1,15 +1,15 @@
 /*!
  * Cube Portfolio - Responsive jQuery Grid Plugin
  *
- * version: 1.5.1 (29 September, 2014)
- * requires jQuery v1.7 or later
+ * version: 2.0.1 (21 January, 2015)
+ * require: jQuery v1.7+
  *
- * Copyright (c) 2014, Mihai Buricea (http://scriptpie.com)
+ * Copyright (c) 2015, Mihai Buricea (http://scriptpie.com)
  * Released under CodeCanyon License http://codecanyon.net/licenses
  *
  */
 
-(function ($, window, document, undefined) {
+(function($, window, document, undefined) {
 
     'use strict';
 
@@ -18,19 +18,17 @@
 
     // Utility
     if (typeof Object.create !== 'function') {
-        Object.create = function (obj) {
-            function F() {
-            }
-
+        Object.create = function(obj) {
+            function F() {}
             F.prototype = obj;
             return new F();
         };
     }
 
     // jquery new filter for images uncached
-    $.expr[':'].uncached = function (obj) {
+    $.expr[':'].uncached = function(obj) {
         // Ensure we are dealing with an `img` element with a valid `src` attribute.
-        if (!$(obj).is('img[src!=""]')) {
+        if (!$(obj).is('img[src][src!=""]')) {
             return false;
         }
 
@@ -48,8 +46,7 @@
          * @param cubeportfolio = cubeportfolio instance
          * @param type =  'lightbox' or 'singlePage'
          */
-        init: function (cubeportfolio, type) {
-
+        init: function(cubeportfolio, type) {
             var t = this,
                 currentBlock;
 
@@ -85,7 +82,7 @@
                     t.url = t.url.slice(0, -1);
                 }
 
-                currentBlock = t.cubeportfolio.blocksAvailable.find(t.options.singlePageDelegate).filter(function () {
+                currentBlock = t.cubeportfolio.blocksAvailable.find(t.options.singlePageDelegate).filter(function() {
                     // we split the url in half and store the second entry. If this entry is equal with current element return true
                     return (t.url.split('#cbp=')[1] === this.getAttribute('href'));
                 })[0];
@@ -105,15 +102,21 @@
         /**
          * Create markup, css and add events
          */
-        _createMarkup: function () {
+        _createMarkup: function() {
+            var t = this,
+                animationCls = '';
 
-            var t = this;
+            if (t.type === 'singlePage') {
+                if (t.options.singlePageAnimation !== 'left') {
+                    animationCls = ' cbp-popup-singlePage-' + t.options.singlePageAnimation;
+                }
+            }
 
             // wrap element
             t.wrap = $('<div/>', {
-                'class': 'cbp-popup-wrap cbp-popup-' + t.type,
+                'class': 'cbp-popup-wrap cbp-popup-' + t.type + animationCls,
                 'data-action': (t.type === 'lightbox') ? 'close' : ''
-            }).on('click' + eventNamespace, function (e) {
+            }).on('click' + eventNamespace, function(e) {
                 if (t.stopEvents) {
                     return;
                 }
@@ -154,28 +157,25 @@
                 'class': 'cbp-popup-navigation'
             }).appendTo(t.navigationWrap);
 
-            // close button
-            t.closeButton = $('<button/>', {
+            // close
+            t.closeButton = $('<div/>', {
                 'class': 'cbp-popup-close',
                 'title': 'Close (Esc arrow key)',
-                'type': 'button',
                 'data-action': 'close'
             }).appendTo(t.navigation);
 
-            // next button
-            t.nextButton = $('<button/>', {
+            // next
+            t.nextButton = $('<div/>', {
                 'class': 'cbp-popup-next',
                 'title': 'Next (Right arrow key)',
-                'type': 'button',
                 'data-action': 'next'
             }).appendTo(t.navigation);
 
 
-            // prev button
-            t.prevButton = $('<button/>', {
+            // prev
+            t.prevButton = $('<div/>', {
                 'class': 'cbp-popup-prev',
                 'title': 'Previous (Left arrow key)',
-                'type': 'button',
                 'data-action': 'prev'
             }).appendTo(t.navigation);
 
@@ -188,7 +188,7 @@
                     t.counter.text('');
                 }
 
-                t.content.on('click' + eventNamespace, t.options.singlePageDelegate, function (e) {
+                t.content.on('click' + eventNamespace, t.options.singlePageDelegate, function(e) {
                     e.preventDefault();
                     var i,
                         len = t.dataArray.length,
@@ -205,9 +205,14 @@
 
                 });
 
+                // if there are some events than overrides the default scroll behaviour don't go to them
+                t.wrap.on('mousewheel' + eventNamespace + ' DOMMouseScroll' + eventNamespace, function(e) {
+                    e.stopImmediatePropagation();
+                });
+
             }
 
-            $(document).on('keydown' + eventNamespace, function (e) {
+            $(document).on('keydown' + eventNamespace, function(e) {
 
                 // if is not open => return
                 if (!t.isOpen) {
@@ -230,20 +235,20 @@
 
         },
 
-        _createMarkupSinglePageInline: function () {
+        _createMarkupSinglePageInline: function() {
             var t = this;
 
             // wrap element
             t.wrap = $('<div/>', {
                 'class': 'cbp-popup-singlePageInline'
-            }).on('click' + eventNamespace, function (e) {
+            }).on('click' + eventNamespace, function(e) {
                 if (t.stopEvents) {
                     return;
                 }
 
                 var action = $(e.target).attr('data-action');
 
-                if (action) {
+                if (action && t[action]) {
                     t[action]();
                     e.preventDefault();
                 }
@@ -264,18 +269,16 @@
                 'class': 'cbp-popup-navigation'
             }).appendTo(t.wrap);
 
-            // close button
-            t.closeButton = $('<button/>', {
+            // close
+            t.closeButton = $('<div/>', {
                 'class': 'cbp-popup-close',
                 'title': 'Close (Esc arrow key)',
-                'type': 'button',
                 'data-action': 'close'
             }).appendTo(t.navigation);
 
         },
 
-        destroy: function () {
-
+        destroy: function() {
             var t = this,
                 body = $('body');
 
@@ -299,8 +302,7 @@
             t.wrap.remove();
         },
 
-        openLightbox: function (blocks, currentBlock) {
-
+        openLightbox: function(blocks, currentBlock) {
             var t = this,
                 i = 0,
                 currentBlockHref, tempHref = [],
@@ -308,11 +310,6 @@
 
             if (t.isOpen) {
                 return;
-            }
-
-            // check singlePageInline and close it
-            if (t.cubeportfolio.singlePageInline && t.cubeportfolio.singlePageInline.isOpen) {
-                t.cubeportfolio.singlePageInline.close();
             }
 
             // remember that the lightbox is open now
@@ -332,10 +329,11 @@
                 throw new Error('HEI! Your clicked element doesn\'t have a href attribute.');
             }
 
-            $.each(blocks, function (index, item) {
+            $.each(blocks, function(index, item) {
                 var href = item.getAttribute('href'),
                     src = href, // default if element is image
-                    type = 'isImage'; // default if element is image
+                    type = 'isImage', // default if element is image
+                    videoLink;
 
                 if ($.inArray(href, tempHref) === -1) {
 
@@ -347,15 +345,31 @@
 
                     if (/youtube/i.test(href)) {
 
+                        videoLink = href.substring(href.lastIndexOf('v=') + 2);
+
+                        if (!(/autoplay=/i.test(videoLink))) {
+                            videoLink += '&autoplay=1';
+                        }
+
+                        videoLink = videoLink.replace(/\?|&/, '?');
+
                         // create new href
-                        src = '//www.youtube.com/embed/' + href.substring(href.lastIndexOf('v=') + 2) + '?autoplay=1';
+                        src = '//www.youtube.com/embed/' + videoLink;
 
                         type = 'isYoutube';
 
                     } else if (/vimeo/i.test(href)) {
 
+                        videoLink = href.substring(href.lastIndexOf('/') + 1);
+
+                        if (!(/autoplay=/i.test(videoLink))) {
+                            videoLink += '&autoplay=1';
+                        }
+
+                        videoLink = videoLink.replace(/\?|&/, '?');
+
                         // create new href
-                        src = '//player.vimeo.com/video/' + href.substring(href.lastIndexOf('/') + 1) + '?autoplay=1';
+                        src = '//player.vimeo.com/video/' + videoLink;
 
                         type = 'isVimeo';
 
@@ -411,6 +425,8 @@
 
             t.scrollTop = $(window).scrollTop();
 
+            t.originalStyle = $('html').attr('style');
+
             $('html').css({
                 overflow: 'hidden',
                 paddingRight: window.innerWidth - $(document).width()
@@ -427,8 +443,7 @@
 
         },
 
-        openSinglePage: function (blocks, currentBlock) {
-
+        openSinglePage: function(blocks, currentBlock) {
             var t = this,
                 i = 0,
                 currentBlockHref, tempHref = [];
@@ -460,7 +475,7 @@
             }
 
 
-            $.each(blocks, function (index, item) {
+            $.each(blocks, function(index, item) {
                 var href = item.getAttribute('href');
 
                 if ($.inArray(href, tempHref) === -1) {
@@ -504,17 +519,16 @@
             // go to top of the page (reset scroll)
             t.wrap.scrollTop(0);
 
-            // register callback function
-            if ($.isFunction(t.options.singlePageCallback)) {
-                t.options.singlePageCallback.call(t, t.dataArray[t.current].url, t.dataArray[t.current].element);
-            }
-
             // show the wrapper
             t.wrap.show();
 
-            t.wrap.one(t.cubeportfolio.transitionEnd, function () {
-                var width;
+            // finish the open animation
+            t.finishOpen = 2;
 
+            // if transitionEnd is not fulfilled
+            t.navigationMobile = $();
+            t.wrap.one(t.cubeportfolio.transitionEnd, function() {
+                var width;
 
                 // make the navigation sticky
                 if (t.options.singlePageStickyNavigation) {
@@ -523,41 +537,72 @@
 
                     width = t.wrap[0].clientWidth;
                     t.navigationWrap.width(width);
-                    //t.navigation.width(width);
+
+                    if (t.cubeportfolio.browser === 'android' || t.cubeportfolio.browser === 'ios') {
+                        // wrap element
+                        t.navigationMobile = $('<div/>', {
+                            'class': 'cbp-popup-singlePage cbp-popup-singlePage-sticky'
+                        }).on('click' + eventNamespace, function(e) {
+                            if (t.stopEvents) {
+                                return;
+                            }
+
+                            var action = $(e.target).attr('data-action');
+
+                            if (t[action]) {
+                                t[action]();
+                                e.preventDefault();
+                            }
+                        });
+
+                        t.navigationMobile.appendTo(document.body).append(t.navigationWrap);
+                    }
+
+                }
+
+                t.finishOpen--;
+                if (t.finishOpen <= 0) {
+                    t.updateSinglePageIsOpen.call(t);
                 }
 
             });
 
             if (t.cubeportfolio.browser === 'ie8' || t.cubeportfolio.browser === 'ie9') {
 
-                setTimeout(function () {
-                    t.wrap.addClass('cbp-popup-singlePage-sticky');
-                }, 1000);
-
                 // make the navigation sticky
                 if (t.options.singlePageStickyNavigation) {
                     var width = t.wrap[0].clientWidth;
 
                     t.navigationWrap.width(width);
-                    //t.navigation.width(width);
+
+                    setTimeout(function() {
+                        t.wrap.addClass('cbp-popup-singlePage-sticky');
+                    }, 1000);
 
                 }
+
+                t.finishOpen--;
             }
 
-            setTimeout(function () {
-                t.wrap.addClass('cbp-popup-singlePage-open');
-            }, 20);
+            t.wrap.addClass('cbp-popup-loading');
+
+            // force reflow and then add class
+            t.cubeportfolio._forceReflow(t.wrap).addClass('cbp-popup-singlePage-open');
 
             // change link
             if (t.options.singlePageDeeplinking) {
                 location.href = t.url + '#cbp=' + t.dataArray[t.current].url;
             }
 
+            // run callback function
+            if ($.isFunction(t.options.singlePageCallback)) {
+                t.options.singlePageCallback.call(t, t.dataArray[t.current].url, t.dataArray[t.current].element);
+            }
+
         },
 
 
-        openSinglePageInline: function (blocks, currentBlock, fromOpen) {
-
+        openSinglePageInline: function(blocks, currentBlock, fromOpen) {
             var t = this,
                 i = 0,
                 start = 0,
@@ -565,9 +610,12 @@
                 currentBlockHref,
                 currentRow, rows,
                 tempCurrent,
-                cbpitem;
+                cbpitem,
+                parentElement;
 
             fromOpen = fromOpen || false;
+
+            t.fromOpen = fromOpen;
 
             t.storeBlocks = blocks;
             t.storeCurrentBlock = currentBlock;
@@ -575,9 +623,9 @@
             // check singlePageInline and close it
             if (t.isOpen) {
 
-                tempCurrent = $(currentBlock).closest('.cbp-item').index('.cbp-item');
+                tempCurrent = $(currentBlock).closest('.cbp-item').index();
 
-                if (t.dataArray[t.current].url !== currentBlock.getAttribute('href') || t.current !== tempCurrent) {
+                if ((t.dataArray[t.current].url !== currentBlock.getAttribute('href')) || (t.current !== tempCurrent)) {
                     t.cubeportfolio.singlePageInline.close('open', {
                         blocks: blocks,
                         currentBlock: currentBlock,
@@ -612,7 +660,7 @@
 
             cbpitem = $(currentBlock).closest('.cbp-item')[0];
 
-            $.each(blocks, function (index, item) {
+            $.each(blocks, function(index, item) {
 
                 if (cbpitem === item) {
                     t.current = index;
@@ -625,23 +673,12 @@
                 element: currentBlock
             };
 
-            $(t.dataArray[t.current].element).parents('.cbp-item').addClass('cbp-singlePageInline-active');
+            parentElement = $(t.dataArray[t.current].element).parents('.cbp-item').addClass('cbp-singlePageInline-active');
 
             // total numbers of elements
             t.counterTotal = blocks.length;
 
-            if (t.cubeportfolio.blocksClone) {
-
-                if (t.cubeportfolio.ulHidden === 'clone') {
-                    t.wrap.prependTo(t.cubeportfolio.$ul);
-                } else {
-                    t.wrap.prependTo(t.cubeportfolio.$ulClone);
-                }
-
-            } else {
-                // append
-                t.wrap.prependTo(t.cubeportfolio.$ul);
-            }
+            t.wrap.insertBefore(t.cubeportfolio.$ul);
 
             if (t.options.singlePageInlinePosition === 'top') {
 
@@ -696,6 +733,24 @@
 
             t.matrice = [start, end];
 
+            if (!fromOpen) {
+
+                // finish the open animation
+                t.finishOpen = 2;
+
+                t.wrap.one(t.cubeportfolio.transitionEnd, function() {
+                    t.finishOpen--;
+                    if (t.finishOpen <= 0) {
+                        t.singlePageInlineIsOpen.call(t);
+                    }
+                });
+                t._resizeSinglePageInline(false, true);
+
+                if (t.cubeportfolio.browser === 'ie8' || t.cubeportfolio.browser === 'ie9') {
+                    t.finishOpen--;
+                }
+            }
+
             // register callback function
             if ($.isFunction(t.options.singlePageInlineCallback)) {
                 t.options.singlePageInlineCallback.call(t, t.dataArray[t.current].url, t.dataArray[t.current].element);
@@ -703,12 +758,12 @@
 
         },
 
-        _resizeSinglePageInline: function (removeLoadingMask) {
-
+        _resizeSinglePageInline: function(removeLoadingMask, removeFocus) {
             var t = this,
                 customHeight;
 
             removeLoadingMask = removeLoadingMask || false;
+            removeFocus = removeFocus || false;
 
             t.height = t.content.outerHeight(true);
 
@@ -736,7 +791,7 @@
             //resize main container height
             t.cubeportfolio._resizeMainContainer(t.cubeportfolio.transition, customHeight);
 
-            if (t.options.singlePageInlineInFocus) {
+            if (t.options.singlePageInlineInFocus && removeFocus) {
 
                 t.scrollTop = $(window).scrollTop();
 
@@ -749,17 +804,57 @@
         },
 
 
-        updateSinglePage: function (html) {
-
+        appendScriptsToWrap: function(scripts) {
             var t = this,
-                selectorSlider,
-                counterMarkup;
+                index = 0,
+                loadScripts = function(item) {
+                    var script = document.createElement('script'),
+                        src = item.src;
 
-            t.content.html(html);
+                    script.type = 'text/javascript';
 
-            t.wrap.addClass('cbp-popup-ready');
+                    if (script.readyState) { // ie
+                        script.onreadystatechange = function() {
+                            if (script.readyState == 'loaded' || script.readyState == 'complete') {
+                                script.onreadystatechange = null;
+                                index++;
+                                if (scripts[index]) {
+                                    loadScripts(scripts[index]);
+                                }
+                            }
+                        };
+                    } else {
+                        script.onload = function() {
+                            index++;
+                            if (scripts[index]) {
+                                loadScripts(scripts[index]);
+                            }
+                        };
+                    }
 
-            t.wrap.removeClass('cbp-popup-loading');
+                    if (src) {
+                        script.src = src;
+                    } else {
+                        script.text = item.text;
+                    }
+
+                    t.content[0].appendChild(script);
+
+                };
+
+            loadScripts(scripts[0]);
+        },
+
+        updateSinglePage: function(html, scripts, isWrap) {
+            var t = this,
+                counterMarkup,
+                animationFinish;
+
+            t.content.addClass('cbp-popup-content').removeClass('cbp-popup-content-basic');
+
+            if (isWrap === false) {
+                t.content.removeClass('cbp-popup-content').addClass('cbp-popup-content-basic');
+            }
 
             // update counter navigation
             if (t.counter) {
@@ -767,111 +862,114 @@
                 t.counter.text(counterMarkup.text());
             }
 
-            // instantiate slider if exists
-            selectorSlider = t.content.find('.cbp-slider');
-            if (selectorSlider) {
-                t.slider = Object.create(slider);
-                t.slider._init(t, selectorSlider);
-            } else {
-                t.slider = null;
+            t.content.html(html);
+
+            if (scripts) {
+                t.appendScriptsToWrap(scripts);
             }
 
+            t.finishOpen--;
+
+            if (t.finishOpen <= 0) {
+                t.updateSinglePageIsOpen.call(t);
+            }
         },
 
-
-        updateSinglePageInline: function (html) {
-
+        updateSinglePageIsOpen: function() {
             var t = this,
                 selectorSlider;
 
-            t.content.html(html);
-
-            t._loadSinglePageInline();
+            t.wrap.addClass('cbp-popup-ready');
+            t.wrap.removeClass('cbp-popup-loading');
 
             // instantiate slider if exists
             selectorSlider = t.content.find('.cbp-slider');
             if (selectorSlider) {
-                t.slider = Object.create(slider);
-                t.slider._init(t, selectorSlider);
+                selectorSlider.find('.cbp-slider-item').addClass('cbp-item');
+                t.slider = selectorSlider.cubeportfolio({
+                    layoutMode: 'slider',
+                    mediaQueries: [{
+                        width: 1,
+                        cols: 1
+                    }],
+                    gapHorizontal: 0,
+                    gapVertical: 0,
+                    caption: ''
+                });
             } else {
                 t.slider = null;
             }
 
+            // scroll bug on android and ios
+            if (t.cubeportfolio.browser === 'android' || t.cubeportfolio.browser === 'ios') {
+                $('html').css({
+                    position: 'fixed'
+                });
+            }
+
+            // trigger public event
+            t.cubeportfolio.$obj.trigger('updateSinglePageComplete' + eventNamespace);
+
         },
 
 
-        /**
-         * Wait to load all images
-         */
-        _loadSinglePageInline: function () {
+        updateSinglePageInline: function(html, scripts) {
+            var t = this;
 
-            var t = this,
-                imgs = [],
-                i, img, propertyValue, src,
-                matchUrl = /url\((['"]?)(.*?)\1\)/g;
+            t.content.html(html);
 
-            // loading background image of plugin
-            propertyValue = t.wrap.children().css('backgroundImage');
-            if (propertyValue) {
-                var match;
-                while ((match = matchUrl.exec(propertyValue))) {
-                    imgs.push({
-                        src: match[2]
-                    });
-                }
+            if (scripts) {
+                t.appendScriptsToWrap(scripts);
             }
 
-            // get all elements
-            t.wrap.find('*').each(function () {
+            t.finishOpen--;
 
-                var elem = $(this);
+            if (t.finishOpen <= 0) {
+                t.singlePageInlineIsOpen.call(t);
+            }
 
-                if (elem.is('img:uncached')) {
-                    imgs.push({
-                        src: elem.attr('src'),
-                        element: elem[0]
+        },
+
+        singlePageInlineIsOpen: function() {
+            var t = this;
+
+            // wait to load all images
+            t.cubeportfolio._load(t.wrap, function() {
+
+                // instantiate slider if exists
+                var selectorSlider = t.content.find('.cbp-slider');
+                if (selectorSlider) {
+                    selectorSlider.find('.cbp-slider-item').addClass('cbp-item');
+                    t.slider = selectorSlider.cubeportfolio({
+                        layoutMode: 'slider',
+                        displayType: 'default',
+                        mediaQueries: [{
+                            width: 1,
+                            cols: 1
+                        }],
+                        gapHorizontal: 0,
+                        gapVertical: 0,
+                        caption: ''
                     });
+
+                    selectorSlider.on('pluginResize.cbp', function() {
+                        t._resizeSinglePageInline(true);
+                    });
+                } else {
+                    t.slider = null;
                 }
 
-                // background image
-                propertyValue = elem.css('backgroundImage');
-                if (propertyValue) {
-                    var match;
-                    while ((match = matchUrl.exec(propertyValue))) {
-                        imgs.push({
-                            src: match[2],
-                            element: elem[0]
-                        });
-                    }
-                }
+                // trigger public event
+                t.cubeportfolio.$obj.trigger('updateSinglePageInlineComplete' + eventNamespace);
+
+                t._resizeSinglePageInline(true);
+
             });
 
-            var imgsLength = imgs.length,
-                imgsLoaded = 0;
-
-            if (imgsLength === 0) {
-                t._resizeSinglePageInline(true);
-            }
-
-            var loadImage = function () {
-                imgsLoaded++;
-
-                if (imgsLoaded === imgsLength) {
-                    t._resizeSinglePageInline(true);
-                }
-            };
-
-            // load  the image and call _beforeDisplay method
-            for (i = 0; i < imgsLength; i++) {
-                img = new Image();
-                $(img).on('load' + eventNamespace + ' error' + eventNamespace, loadImage);
-                img.src = imgs[i].src;
-            }
         },
 
 
-        isImage: function (el) {
-
+        isImage: function(el) {
             var t = this,
                 img = new Image();
 
@@ -879,7 +977,7 @@
 
             if ($('<img src="' + el.src + '">').is('img:uncached')) {
 
-                $(img).on('load' + eventNamespace + ' error' + eventNamespace, function () {
+                $(img).on('load' + eventNamespace + ' error' + eventNamespace, function() {
 
                     t.updateImagesMarkup(el.src, el.title, t._getCounterMarkup(t.options.lightboxCounter, t.current + 1, t.counterTotal));
 
@@ -894,63 +992,46 @@
 
                 t.tooggleLoading(false);
             }
-
-
         },
 
-        isVimeo: function (el) {
-
+        isVimeo: function(el) {
             var t = this;
 
+            t.updateVideoMarkup(el.src, el.title, t._getCounterMarkup(t.options.lightboxCounter, t.current + 1, t.counterTotal));
+        },
+
+        isYoutube: function(el) {
+            var t = this;
             t.updateVideoMarkup(el.src, el.title, t._getCounterMarkup(t.options.lightboxCounter, t.current + 1, t.counterTotal));
 
         },
 
-        isYoutube: function (el) {
-
+        isTed: function(el) {
             var t = this;
-
             t.updateVideoMarkup(el.src, el.title, t._getCounterMarkup(t.options.lightboxCounter, t.current + 1, t.counterTotal));
-
         },
 
-        isTed: function (el) {
-
+        isSelfHosted: function(el) {
             var t = this;
-
-            t.updateVideoMarkup(el.src, el.title, t._getCounterMarkup(t.options.lightboxCounter, t.current + 1, t.counterTotal));
-
-        },
-
-        isSelfHosted: function (el) {
-
-            var t = this;
-
             t.updateSelfHostedVideo(el.src, el.title, t._getCounterMarkup(t.options.lightboxCounter, t.current + 1, t.counterTotal));
-
         },
 
-        _getCounterMarkup: function (markup, current, total) {
-
-            var mapObj;
-
+        _getCounterMarkup: function(markup, current, total) {
             if (!markup.length) {
                 return '';
             }
 
-            mapObj = {
+            var mapObj = {
                 current: current,
                 total: total
             };
 
-            return markup.replace(/\{\{current}}|\{\{total}}/gi, function (matched) {
+            return markup.replace(/\{\{current}}|\{\{total}}/gi, function(matched) {
                 return mapObj[matched.slice(2, -2)];
             });
-
         },
 
-        updateSelfHostedVideo: function (src, title, counter) {
-
+        updateSelfHostedVideo: function(src, title, counter) {
             var t = this,
                 i;
 
@@ -970,23 +1051,21 @@
             }
 
             markup += 'Your browser does not support the video tag.' +
-            '</video>' +
-            '<div class="cbp-popup-lightbox-bottom">' +
-            ((title) ? '<div class="cbp-popup-lightbox-title">' + title + '</div>' : '') +
-            counter +
-            '</div>' +
-            '</div>';
+                '</video>' +
+                '<div class="cbp-popup-lightbox-bottom">' +
+                ((title) ? '<div class="cbp-popup-lightbox-title">' + title + '</div>' : '') +
+                counter +
+                '</div>' +
+                '</div>';
 
             t.content.html(markup);
 
             t.wrap.addClass('cbp-popup-ready');
 
             t.preloadNearbyImages();
-
         },
 
-        updateVideoMarkup: function (src, title, counter) {
-
+        updateVideoMarkup: function(src, title, counter) {
             var t = this;
             t.wrap.addClass('cbp-popup-lightbox-isIframe');
 
@@ -999,15 +1078,11 @@
                 '</div>';
 
             t.content.html(markup);
-
             t.wrap.addClass('cbp-popup-ready');
-
             t.preloadNearbyImages();
-
         },
 
-        updateImagesMarkup: function (src, title, counter) {
-
+        updateImagesMarkup: function(src, title, counter) {
             var t = this;
 
             t.wrap.removeClass('cbp-popup-lightbox-isIframe');
@@ -1027,27 +1102,19 @@
             t.resizeImage();
 
             t.preloadNearbyImages();
-
         },
 
-        next: function () {
-
+        next: function() {
             var t = this;
-
             t[t.type + 'JumpTo'](1);
-
         },
 
-        prev: function () {
-
+        prev: function() {
             var t = this;
-
             t[t.type + 'JumpTo'](-1);
-
         },
 
-        lightboxJumpTo: function (index) {
-
+        lightboxJumpTo: function(index) {
             var t = this,
                 el;
 
@@ -1058,12 +1125,10 @@
 
             // call function if current element is image or video (iframe)
             t[el.type](el);
-
         },
 
 
-        singlePageJumpTo: function (index) {
-
+        singlePageJumpTo: function(index) {
             var t = this;
 
             t.current = t.getIndex(t.current + index);
@@ -1084,18 +1149,15 @@
             }
         },
 
-        resetWrap: function () {
-
+        resetWrap: function() {
             var t = this;
 
             if (t.type === 'singlePage' && t.options.singlePageDeeplinking) {
                 location.href = t.url + '#';
             }
-
         },
 
-        getIndex: function (index) {
-
+        getIndex: function(index) {
             var t = this;
 
             // go to interval [0, (+ or -)this.counterTotal.length - 1]
@@ -1107,11 +1169,9 @@
             }
 
             return index;
-
         },
 
-        close: function (method, data) {
-
+        close: function(method, data) {
             var t = this;
 
             // now the popup is closed
@@ -1163,7 +1223,7 @@
 
                     } else {
 
-                        t.wrap.one(t.cubeportfolio.transitionEnd, function () {
+                        t.wrap.one(t.cubeportfolio.transitionEnd, function() {
 
                             // reset content
                             t.content.html('');
@@ -1194,10 +1254,22 @@
 
                 t.resetWrap();
 
+                t.wrap.removeClass('cbp-popup-ready');
+
+                // scroll bug on android and ios
+                if (t.cubeportfolio.browser === 'android' || t.cubeportfolio.browser === 'ios') {
+                    $('html').css({
+                        position: ''
+                    });
+
+                    t.navigationWrap.appendTo(t.wrap);
+                    t.navigationMobile.remove();
+                }
+
                 $(window).scrollTop(t.scrollTop);
 
                 // weird bug on mozilla. fixed with setTimeout
-                setTimeout(function () {
+                setTimeout(function() {
                     t.stopScroll = true;
 
                     t.navigationWrap.css({
@@ -1215,7 +1287,8 @@
 
                         $('html').css({
                             overflow: '',
-                            paddingRight: ''
+                            paddingRight: '',
+                            position: ''
                         });
 
                         t.navigationWrap.removeAttr('style');
@@ -1223,7 +1296,7 @@
 
                 }, 0);
 
-                t.wrap.one(t.cubeportfolio.transitionEnd, function () {
+                t.wrap.one(t.cubeportfolio.transitionEnd, function() {
 
                     // reset content
                     t.content.html('');
@@ -1233,7 +1306,8 @@
 
                     $('html').css({
                         overflow: '',
-                        paddingRight: ''
+                        paddingRight: '',
+                        position: ''
                     });
 
                     t.navigationWrap.removeAttr('style');
@@ -1242,10 +1316,14 @@
 
             } else {
 
-                $('html').css({
-                    overflow: '',
-                    paddingRight: ''
-                });
+                if (t.originalStyle) {
+                    $('html').attr('style', t.originalStyle);
+                } else {
+                    $('html').css({
+                        overflow: '',
+                        paddingRight: ''
+                    });
+                }
 
                 $(window).scrollTop(t.scrollTop);
 
@@ -1256,35 +1334,29 @@
                 t.wrap.detach();
 
             }
-
         },
 
-        tooggleLoading: function (state) {
-
+        tooggleLoading: function(state) {
             var t = this;
 
             t.stopEvents = state;
             t.wrap[(state) ? 'addClass' : 'removeClass']('cbp-popup-loading');
-
         },
 
-        resizeImage: function () {
-
+        resizeImage: function() {
             // if lightbox is not open go out
             if (!this.isOpen) {
                 return;
             }
 
             var height = $(window).height(),
-                img = $('.cbp-popup-content').find('img'),
+                img = this.content.find('img'),
                 padding = parseInt(img.css('margin-top'), 10) + parseInt(img.css('margin-bottom'), 10);
 
             img.css('max-height', (height - padding) + 'px');
-
         },
 
-        preloadNearbyImages: function () {
-
+        preloadNearbyImages: function() {
             var arr = [],
                 img, t = this,
                 src;
@@ -1297,186 +1369,25 @@
             arr.push(t.getIndex(t.current - 3));
 
             for (var i = arr.length - 1; i >= 0; i--) {
-
                 if (t.dataArray[arr[i]].type === 'isImage') {
-
                     src = t.dataArray[arr[i]].src;
-
                     img = new Image();
 
                     if ($('<img src="' + src + '">').is('img:uncached')) {
                         img.src = src;
                     }
-
                 }
-
             }
-
-        }
-
-    };
-
-    var slider = {
-
-        _init: function (tt, obj) {
-
-            var t = this;
-
-            // current item active
-            t.current = 0;
-
-            // js element
-            t.obj = obj;
-
-            // jquery element
-            t.$obj = $(obj);
-
-            // create html markup and add css to plugin
-            t._createMarkup();
-
-            // add events
-            t._events();
-
-        },
-
-        _createMarkup: function () {
-
-            var t = this,
-                arrowWrap,
-                bulletWrap;
-
-            // get ul object
-            t.$ul = t.$obj.children('.cbp-slider-wrap');
-
-            // get items
-            t.$li = t.$ul.children('.cbp-slider-item');
-
-            // add class active on first child
-            t.$li.eq(0).addClass('cbp-slider-item-current');
-
-            // get number of items
-            t.$liLength = t.$li.length;
-
-            // navigation element
-            arrowWrap = $('<div/>', {
-                'class': 'cbp-slider-arrowWrap'
-            }).appendTo(t.$obj);
-
-            // next element
-            $('<div/>', {
-                'class': 'cbp-slider-arrowNext',
-                'data-action': 'nextItem'
-            }).appendTo(arrowWrap);
-
-            // prev element
-            $('<div/>', {
-                'class': 'cbp-slider-arrowPrev',
-                'data-action': 'prevItem'
-            }).appendTo(arrowWrap);
-
-            bulletWrap = $('<div/>', {
-                'class': 'cbp-slider-bulletWrap'
-            }).appendTo(t.$obj);
-
-            for (var i = 0; i < t.$liLength; i++) {
-
-                var firstItem = (i === 0) ? ' cbp-slider-bullet-current' : '';
-
-                $('<div/>', {
-                    'class': 'cbp-slider-bullet' + firstItem,
-                    'data-action': 'jumpToItem'
-                }).appendTo(bulletWrap);
-            }
-
-        },
-
-        _events: function () {
-
-            var t = this;
-
-            t.$obj.on('click' + eventNamespace, function (e) {
-                var action = $(e.target).attr('data-action');
-
-                if (t[action]) {
-                    t[action](e);
-                    e.preventDefault();
-                }
-            });
-
-        },
-
-        nextItem: function () {
-
-            this.jumpTo(1);
-
-        },
-
-        prevItem: function () {
-
-            this.jumpTo(-1);
-
-        },
-
-        jumpToItem: function (e) {
-
-            var target = $(e.target);
-
-            var index = target.index();
-
-            this.jumpTo(index - this.current);
-        },
-
-        jumpTo: function (index) {
-
-            var t = this,
-                item2,
-                item1 = this.$li.eq(this.current);
-
-            // update item2
-            this.current = this.getIndex(this.current + index);
-            item2 = this.$li.eq(this.current);
-            item2.addClass('cbp-slider-item-next');
-
-
-            item2.animate({
-                opacity: 1
-            }, function () {
-                item1.removeClass('cbp-slider-item-current');
-                item2.removeClass('cbp-slider-item-next')
-                    .addClass('cbp-slider-item-current')
-                    .removeAttr('style');
-
-                var bullets = $('.cbp-slider-bullet');
-                bullets.removeClass('cbp-slider-bullet-current');
-
-                bullets.eq(t.current).addClass('cbp-slider-bullet-current');
-            });
-
-        },
-
-        getIndex: function (index) {
-
-            // go to interval [0, (+ or -)this.counterTotal.length - 1]
-            index = index % this.$liLength;
-
-            // if index is less then 0 then go to interval (0, this.counterTotal - 1]
-            if (index < 0) {
-                index = this.$liLength + index;
-            }
-
-            return index;
-
         }
 
     };
 
     var pluginObject = {
-
         /**
          * cubeportfolio initialization
          *
          */
-        _main: function (obj, options, callbackFunction) {
+        _main: function(obj, options, callbackFunction) {
             var t = this;
 
             // reset style queue
@@ -1511,8 +1422,11 @@
             // add loading class and .cbp on container
             t.$obj.addClass('cbp cbp-loading');
 
-            // jquery ul element
-            //noinspection JSValidateTypes
+            if (t.$obj.children().first().hasClass('cbp-item')) {
+                t.$obj.wrapInner('<div/>');
+            }
+
+            // jquery wrapper element
             t.$ul = t.$obj.children();
 
             // add class to ul
@@ -1542,8 +1456,8 @@
             t._prepareBlocks();
 
             // is lazyLoading is enable wait to load all images and then show the main container. Otherwise show directly the main container
-            if (t.options.displayType === 'lazyLoading' || t.options.displayType === 'sequentially' || t.options.displayType === 'bottomToTop' || t.options.displayType === 'fadeInToTop') {
-                t._load();
+            if ($.inArray(t.options.displayType, ['lazyLoading', 'sequentially', 'bottomToTop', 'fadeInToTop']) !== -1) {
+                t._load(t.$obj, t._beforeDisplay);
             } else {
                 t._beforeDisplay();
             }
@@ -1553,19 +1467,18 @@
         /**
          * Extend default options and deal with the deprecated options
          */
-        _extendOptions: function (options) {
-
+        _extendOptions: function(options) {
             var t = this;
 
             // if lightboxCounter is not defined and lightboxShowCounter is false, put lightboxCounter to ''
             /** @namespace options.lightboxShowCounter */
-            if (!options.hasOwnProperty('lightboxCounter') && options.lightboxShowCounter === false) {
+            if (options && !options.hasOwnProperty('lightboxCounter') && options.lightboxShowCounter === false) {
                 options.lightboxCounter = '';
             }
 
             // if singlePageCounter is not defined and singlePageShowCounter is false, put singlePageCounter to ''
             /** @namespace options.singlePageShowCounter */
-            if (!options.hasOwnProperty('singlePageCounter') && options.singlePageShowCounter === false) {
+            if (options && !options.hasOwnProperty('singlePageCounter') && options.singlePageShowCounter === false) {
                 options.singlePageCounter = '';
             }
 
@@ -1576,8 +1489,7 @@
         /**
          * Get info about client browser
          */
-        _browserInfo: function () {
-
+        _browserInfo: function() {
             var t = this,
                 appVersion = navigator.appVersion,
                 transition, animation;
@@ -1612,6 +1524,7 @@
             t.transition = t.transitionByFilter = (transition) ? 'css' : 'animate';
 
             if (t.transition === 'animate') {
+                t.supportTransform = '_withCSS2';
                 return;
             }
 
@@ -1635,18 +1548,19 @@
             if (t.supportCSSTransform) {
                 // add cssHooks to jquery css function
                 t._cssHooks();
+                t.supportTransform = '_withCSS3';
+            } else {
+                t.supportTransform = '_withCSS2';
             }
-
         },
 
 
         /**
          * Feature testing for css3
          */
-        _styleSupport: function (prop) {
-
+        _styleSupport: function(prop) {
             var vendorProp, supportedProp, i,
-            // capitalize first character of the prop to test vendor prefix
+                // capitalize first character of the prop to test vendor prefix
                 capProp = prop.charAt(0).toUpperCase() + prop.slice(1),
                 prefixes = ['Moz', 'Webkit', 'O', 'ms'],
                 div = document.createElement('div');
@@ -1674,21 +1588,20 @@
         /**
          * Add hooks for jquery.css
          */
-        _cssHooks: function () {
-
+        _cssHooks: function() {
             var t = this,
                 transformCSS3;
 
             if (t._has3d()) { // 3d transform
 
                 transformCSS3 = {
-                    translate: function (x) {
+                    translate: function(x) {
                         return 'translate3d(' + x[0] + 'px, ' + x[1] + 'px, 0) ';
                     },
-                    scale: function (x) {
+                    scale: function(x) {
                         return 'scale3d(' + x + ', ' + x + ', 1) ';
                     },
-                    skew: function (x) {
+                    skew: function(x) {
                         return 'skew(' + x[0] + 'deg, ' + x[1] + 'deg) ';
                     }
                 };
@@ -1696,13 +1609,13 @@
             } else { // 2d transform
 
                 transformCSS3 = {
-                    translate: function (x) {
+                    translate: function(x) {
                         return 'translate(' + x[0] + 'px, ' + x[1] + 'px) ';
                     },
-                    scale: function (x) {
+                    scale: function(x) {
                         return 'scale(' + x + ') ';
                     },
-                    skew: function (x) {
+                    skew: function(x) {
                         return 'skew(' + x[0] + 'deg, ' + x[1] + 'deg) ';
                     }
                 };
@@ -1748,7 +1661,7 @@
             $.cssNumber.scale = true;
 
             $.cssHooks.scale = {
-                set: function (elem, value) {
+                set: function(elem, value) {
 
                     if (typeof value === 'string') {
                         value = parseFloat(value);
@@ -1757,7 +1670,7 @@
                     setTransformFn(elem, value, 'scale');
 
                 },
-                get: function (elem) {
+                get: function(elem) {
 
                     var transform = $.data(elem, 'transformFn');
                     return (transform && transform.scale) ? transform.scale : 1;
@@ -1765,7 +1678,7 @@
 
             };
 
-            $.fx.step.scale = function (fx) {
+            $.fx.step.scale = function(fx) {
                 $.cssHooks.scale.set(fx.elem, fx.now + fx.unit);
             };
 
@@ -1774,13 +1687,13 @@
             $.cssNumber.translate = true;
 
             $.cssHooks.translate = {
-                set: function (elem, value) {
+                set: function(elem, value) {
 
                     setTransformFn(elem, value, 'translate');
 
                 },
 
-                get: function (elem) {
+                get: function(elem) {
 
                     var transform = $.data(elem, 'transformFn');
                     return (transform && transform.translate) ? transform.translate : [0, 0];
@@ -1792,13 +1705,13 @@
             $.cssNumber.skew = true;
 
             $.cssHooks.skew = {
-                set: function (elem, value) {
+                set: function(elem, value) {
 
                     setTransformFn(elem, value, 'skew');
 
                 },
 
-                get: function (elem) {
+                get: function(elem) {
 
                     var transform = $.data(elem, 'transformFn');
                     return (transform && transform.skew) ? transform.skew : [0, 0];
@@ -1813,7 +1726,7 @@
          * Testing for CSS 3D Transforms Support
          * https://gist.github.com/lorenzopolidori/3794226
          */
-        _has3d: function () {
+        _has3d: function() {
             var i,
                 has3d,
                 el = document.createElement('p'),
@@ -1846,8 +1759,7 @@
         /**
          * Prepare and store the blocks
          */
-        _prepareBlocks: function () {
-
+        _prepareBlocks: function() {
             var t = this;
 
             // cache the blocks
@@ -1855,10 +1767,9 @@
 
             t.blocksAvailable = t.blocks;
 
-            t.blocks.wrapInner('<div class="cbp-item-wrapper"></div>');
-
             // if caption is active
             if (t.options.caption) {
+                t.blocks.wrapInner('<div class="cbp-item-wrapper"></div>');
                 t._captionInit();
             }
         },
@@ -1867,750 +1778,23 @@
         /**
          * Init function for all captions
          */
-        _captionInit: function () {
-
+        _captionInit: function() {
             var t = this;
 
+            if (t.browser === 'ie8' || t.browser === 'ie9') {
+                t.options.caption = 'minimal';
+            }
+
             t.$obj.addClass('cbp-caption-' + t.options.caption);
-
-            t['_' + t.options.caption + 'Caption']();
-
         },
 
 
         /**
          * Destroy function for all captions
          */
-        _captionDestroy: function () {
-
+        _captionDestroy: function() {
             var t = this;
-
             t.$obj.removeClass('cbp-caption-' + t.options.caption);
-
-            t['_' + t.options.caption + 'CaptionDestroy']();
-
-        },
-
-
-        _noneCaption: function () {
-        },
-
-        _noneCaptionDestroy: function () {
-        },
-
-
-        /**
-         * Push Top hover effect
-         */
-        _pushTopCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        hover = me.find('.cbp-caption-activeWrap');
-
-                    normal.animate({
-                        bottom: '100%'
-                    }, 'fast');
-                    hover.animate({
-                        bottom: 0
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        hover = me.find('.cbp-caption-activeWrap');
-
-                    normal.animate({
-                        bottom: 0
-                    }, 'fast');
-                    hover.animate({
-                        bottom: '-100%'
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Push Top hover effect destroy
-         */
-        _pushTopCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-defaultWrap').removeAttr('style');
-                caption.find('.cbp-caption-activeWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Push Down hover effect
-         */
-        _pushDownCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        hover = me.find('.cbp-caption-activeWrap');
-
-                    normal.animate({
-                        bottom: '-100%'
-                    }, 'fast');
-                    hover.animate({
-                        bottom: 0
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        hover = me.find('.cbp-caption-activeWrap');
-
-                    normal.animate({
-                        bottom: 0
-                    }, 'fast');
-                    hover.animate({
-                        bottom: '100%'
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Push Down hover effect destroy
-         */
-        _pushDownCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-defaultWrap').removeAttr('style');
-                caption.find('.cbp-caption-activeWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Reveal Bottom hover effect
-         */
-        _revealBottomCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap');
-
-                    normal.animate({
-                        bottom: '100%'
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap');
-
-                    normal.animate({
-                        bottom: 0
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Reveal Bottom hover effect destroy
-         */
-        _revealBottomCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-defaultWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Reveal Top hover effect
-         */
-        _revealTopCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap');
-
-                    normal.animate({
-                        bottom: '-100%'
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap');
-
-                    normal.animate({
-                        bottom: 0
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Reveal Top hover effect destroy
-         */
-        _revealTopCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-defaultWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Overlay Bottom Reveal hover effect
-         */
-        _overlayBottomRevealCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        height = me.find('.cbp-caption-activeWrap').height();
-
-                    normal.animate({
-                        bottom: height
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap');
-
-                    normal.animate({
-                        bottom: 0
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Overlay Bottom Reveal hover effect destroy
-         */
-        _overlayBottomRevealCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-defaultWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Overlay Bottom Push hover effect
-         */
-        _overlayBottomPushCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        hover = me.find('.cbp-caption-activeWrap'),
-                        height = hover.height();
-
-                    normal.animate({
-                        bottom: height
-                    }, 'fast');
-                    hover.animate({
-                        bottom: 0
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        hover = me.find('.cbp-caption-activeWrap'),
-                        height = hover.height();
-
-                    normal.animate({
-                        bottom: 0
-                    }, 'fast');
-                    hover.animate({
-                        bottom: -height
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Push Up hover effect destroy
-         */
-        _overlayBottomPushCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-defaultWrap').removeAttr('style');
-                caption.find('.cbp-caption-activeWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Overlay Bottom hover effect
-         */
-        _overlayBottomCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    $(this).find('.cbp-caption-activeWrap').animate({
-                        bottom: 0
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var hover = $(this).find('.cbp-caption-activeWrap');
-                    hover.animate({
-                        bottom: -hover.height()
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-        /**
-         * Overlay Bottom hover effect destroy
-         */
-        _overlayBottomCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-activeWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Move Right hover effect
-         */
-        _moveRightCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    $(this).find('.cbp-caption-activeWrap').animate({
-                        left: 0
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var hover = $(this).find('.cbp-caption-activeWrap');
-                    hover.animate({
-                        left: -hover.width()
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-        /**
-         * Move Right hover effect destroy
-         */
-        _moveRightCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-activeWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Reveal Left hover effect
-         */
-        _revealLeftCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    $(this).find('.cbp-caption-activeWrap').animate({
-                        left: 0
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var hover = $(this).find('.cbp-caption-activeWrap');
-                    hover.animate({
-                        left: hover.width()
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Reveal Left hover effect destroy
-         */
-        _revealLeftCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-activeWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Minimal hover effect
-         */
-        _minimalCaption: function () {
-        },
-
-
-        /**
-         * Minimal hover effect destroy
-         */
-        _minimalCaptionDestroy: function () {
-        },
-
-
-        /**
-         * Fade hover effect
-         */
-        _fadeInCaption: function () {
-
-            var t = this,
-                opacity;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                opacity = (t.browser === 'ie9') ? 1 : 0.8;
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    $(this).find('.cbp-caption-activeWrap').animate({
-                        opacity: opacity
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    $(this).find('.cbp-caption-activeWrap').animate({
-                        opacity: 0
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Fade hover effect destroy
-         */
-        _fadeInCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-activeWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Move Left hover effect
-         */
-        _overlayRightAlongCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        hover = me.find('.cbp-caption-activeWrap');
-
-                    normal.animate({
-                        left: hover.width() / 2
-                    }, 'fast');
-                    hover.animate({
-                        left: 0
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        hover = me.find('.cbp-caption-activeWrap');
-
-                    normal.animate({
-                        left: 0
-                    }, 'fast');
-                    hover.animate({
-                        left: -hover.width()
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Move Left hover effect destroy
-         */
-        _overlayRightAlongCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-defaultWrap').removeAttr('style');
-                caption.find('.cbp-caption-activeWrap').removeAttr('style');
-            }
-
-        },
-
-
-        /**
-         * Overlay Bottom Along hover effect
-         */
-        _overlayBottomAlongCaption: function () {
-
-            var t = this;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        hover = me.find('.cbp-caption-activeWrap');
-
-                    normal.animate({
-                        bottom: hover.height() / 2
-                    }, 'fast');
-                    hover.animate({
-                        bottom: 0
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    var me = $(this),
-                        normal = me.find('.cbp-caption-defaultWrap'),
-                        hover = me.find('.cbp-caption-activeWrap');
-
-                    normal.animate({
-                        bottom: 0
-                    }, 'fast');
-                    hover.animate({
-                        bottom: -hover.height()
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Overlay Bottom Along hover effect destroy
-         */
-        _overlayBottomAlongCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-defaultWrap').removeAttr('style');
-                caption.find('.cbp-caption-activeWrap').removeAttr('style');
-            }
-
-
-        },
-
-
-        /**
-         * Zoom hover effect
-         */
-        _zoomCaption: function () {
-
-            var t = this,
-                opacity;
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                opacity = (t.browser === 'ie9') ? 1 : 0.8;
-
-                $('.cbp-caption').on('mouseenter' + eventNamespace, function () {
-
-                    $(this).find('.cbp-caption-activeWrap').animate({
-                        opacity: opacity
-                    }, 'fast');
-
-                }).on('mouseleave' + eventNamespace, function () {
-
-                    $(this).find('.cbp-caption-activeWrap').animate({
-                        opacity: 0
-                    }, 'fast');
-
-                });
-
-            }
-
-        },
-
-
-        /**
-         * Zoom hover effect destroy
-         */
-        _zoomCaptionDestroy: function () {
-
-            var t = this,
-                caption = $('.cbp-caption');
-
-            // is legacy browser
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                caption.off('mouseenter' + eventNamespace + ' mouseleave' + eventNamespace);
-                caption.find('.cbp-caption-activeWrap').removeAttr('style');
-            }
 
         },
 
@@ -2618,30 +1802,27 @@
         /**
          * Init main components for plugin
          */
-        _initCSSandEvents: function () {
-
+        _initCSSandEvents: function() {
             var t = this,
-                n, width, currentWidth, windowWidth;
+                $window = $(window),
+                currentWidth = $window.width(),
+                n, width,
+                windowWidth;
 
             // resize
-            $(window).on('resize' + eventNamespace, function () {
-
+            $window.on('resize' + eventNamespace, function() {
                 if (n) {
                     clearTimeout(n);
                 }
 
-                n = setTimeout(function () {
+                n = setTimeout(function() {
+                    windowWidth = $window.width();
 
-                    if (t.browser === 'ie8') {
-                        windowWidth = $(window).width();
-
-                        if (currentWidth === undefined || currentWidth !== windowWidth) {
-                            currentWidth = windowWidth;
-                        } else {
-                            return;
-                        }
-
+                    if (currentWidth === windowWidth) {
+                        return;
                     }
+
+                    currentWidth = windowWidth;
 
                     t.$obj.removeClass('cbp-no-transition cbp-appendItems-loading');
 
@@ -2663,6 +1844,10 @@
                         t.lightbox.resizeImage();
                     }
 
+                    if (t.options.layoutMode === 'slider') {
+                        t._updateSlider();
+                    }
+
                     if (t.singlePage) {
 
                         if (t.singlePage.options.singlePageStickyNavigation) {
@@ -2672,7 +1857,7 @@
                             if (width > 0) {
                                 t.singlePage.navigationWrap.width(width);
 
-                                // set navigation width='window width' to center the buttons
+                                // set navigation width='window width' to center the divs
                                 t.singlePage.navigation.width(width);
                             }
 
@@ -2693,82 +1878,56 @@
         /**
          * Wait to load all images
          */
-        _load: function () {
-
+        _load: function(obj, callback, args) {
             var t = this,
                 imgs = [],
-                i, img, propertyValue, src,
-                matchUrl = /url\((['"]?)(.*?)\1\)/g;
-
-            // loading background image of plugin
-            propertyValue = t.$obj.children().css('backgroundImage');
-            if (propertyValue) {
-                var match;
-                while ((match = matchUrl.exec(propertyValue))) {
-                    imgs.push({
-                        src: match[2]
-                    });
-                }
-            }
-
-            // get all elements
-            t.$obj.find('*').each(function () {
-
-                var elem = $(this);
-
-                if (elem.is('img:uncached')) {
-                    imgs.push({
-                        src: elem.attr('src'),
-                        element: elem[0]
-                    });
-                }
-
-                // background image
-                propertyValue = elem.css('backgroundImage');
-                if (propertyValue) {
-                    var match;
-                    while ((match = matchUrl.exec(propertyValue))) {
-                        imgs.push({
-                            src: match[2],
-                            element: elem[0]
-                        });
-                    }
-                }
-            });
-
-            var imgsLength = imgs.length,
+                imgsLength,
                 imgsLoaded = 0;
 
+            args = args || [];
+
+            obj.find('img:uncached').each(function() {
+                imgs.push(this.src);
+            });
+
+            imgsLength = imgs.length;
+
             if (imgsLength === 0) {
-                t._beforeDisplay();
+                callback.apply(t, args);
             }
 
-            var loadImage = function () {
-                imgsLoaded++;
+            $.each(imgs, function(i, src) {
+                var img = new Image();
 
-                if (imgsLoaded === imgsLength) {
-                    t._beforeDisplay();
-                    return false;
-                }
-            };
+                $(img).one('load.cbp error.cbp', function() {
+                    $(this).off('load.cbp error.cbp');
 
-            // load  the image and call _beforeDisplay method
-            for (i = 0; i < imgsLength; i++) {
-                img = new Image();
-                $(img).on('load' + eventNamespace + ' error' + eventNamespace, loadImage);
-                img.src = imgs[i].src;
-            }
+                    imgsLoaded++;
+                    if (imgsLoaded === imgsLength) {
+                        callback.apply(t, args);
+                        return false;
+                    }
+
+                });
+
+                img.src = src;
+            });
+
         },
 
 
         /**
          * Before display make some work
          */
-        _beforeDisplay: function () {
-
+        _beforeDisplay: function() {
             var t = this;
 
-            if (t.options.animationType) {
+            if (t.options.animationType && t.options.layoutMode === 'grid') {
+
+                if (t.browser === 'ie8' || t.browser === 'ie9') {
+                    t.options.animationType = 'fadeOut';
+                }
+
                 // if filter need some initialization to be done before displaying the plugin
                 if (t['_' + t.options.animationType + 'Init']) {
 
@@ -2778,22 +1937,21 @@
 
                 // add filter class to plugin
                 t.$obj.addClass('cbp-animation-' + t.options.animationType);
+            }
 
-                // set column width one time
-                t.localColumnWidth = t.blocks.eq(0).outerWidth() + t.options.gapVertical;
+            // set column width one time
+            t.localColumnWidth = t.blocks.eq(0).outerWidth() + t.options.gapVertical;
 
-                // set default filter if is present in url
-                t._filterFromUrl();
+            // set default filter if is present in url
+            t._filterFromUrl();
 
-                if (t.options.defaultFilter === '' || t.options.defaultFilter === '*') {
+            if (t.options.defaultFilter === '' || t.options.defaultFilter === '*') {
+                t._display();
+            } else {
+
+                t.filter(t.options.defaultFilter, function() {
                     t._display();
-                } else {
-
-                    t.filter(t.options.defaultFilter, function () {
-                        t._display();
-                    }, t);
-
-                }
+                }, t);
 
             }
 
@@ -2803,8 +1961,7 @@
         /**
          * Check if filters is present in url
          */
-        _filterFromUrl: function () {
-
+        _filterFromUrl: function() {
             var t = this,
                 match = /#cbpf=(.*?)([#|?&]|$)/gi.exec(location.href);
 
@@ -2818,16 +1975,20 @@
         /**
          * Show the plugin
          */
-        _display: function () {
-
+        _display: function() {
             var t = this,
                 body = $(document.body),
                 i, item;
+
+            t.getColumnsType = ($.isArray(t.options.mediaQueries)) ? '_getColumnsBreakpoints' : '_getColumnsAuto';
 
             // if responsive
             if (t.options.gridAdjustment === 'responsive') {
                 t._responsiveLayout();
             }
+
+            // create mark-up for layout mode
+            t['_' + t.options.layoutMode + 'Markup']();
 
             // make layout
             t._layout();
@@ -2837,7 +1998,6 @@
 
             // resize main container height
             t._resizeMainContainer('css');
-
 
             // show the plugin
             if (t.options.displayType === 'lazyLoading' || t.options.displayType === 'fadeIn') {
@@ -2850,13 +2010,16 @@
                 t.$ul.animate({
                     opacity: 1,
                     marginTop: 0
-                }, t.options.displayTypeSpeed, function () {
+                }, t.options.displayTypeSpeed, function() {
                     t.$ul.css({
                         marginTop: 0
                     });
-                    t.$ulClone.css({
-                        marginTop: 0
-                    });
+
+                    if (t.$ulClone) {
+                        t.$ulClone.css({
+                            marginTop: 0
+                        });
+                    }
                 });
             }
 
@@ -2905,21 +2068,10 @@
                 })();
             }
 
+            // force a reflow
+            t._forceReflow(t.$obj).removeClass('cbp-loading');
             // show main container
-            setTimeout(function () {
-
-                // remove loading class
-                t.$obj.removeClass('cbp-loading');
-
-                t._triggerEvent('initFinish');
-
-                // trigger public event initComplete
-                t.$obj.trigger('initComplete');
-
-                // the plugin is ready to show
-                t.$obj.addClass('cbp-ready');
-
-            }, 0);
+            t.$obj.addClass('cbp-ready'); // the plugin is ready to show
 
             // default value for lightbox
             t.lightbox = null;
@@ -2931,8 +2083,14 @@
 
                 t.lightbox.init(t, 'lightbox');
 
-                t.$obj.on('click' + eventNamespace, t.options.lightboxDelegate, function (e) {
+                t.$obj.on('click' + eventNamespace, t.options.lightboxDelegate, function(e) {
                     e.preventDefault();
+
+                    var self = $(this);
+
+                    if (self.closest($('.cbp-popup-singlePageInline')).length) {
+                        return;
+                    }
 
                     t.lightbox.openLightbox(t.blocksAvailable.find(t.options.lightboxDelegate), this);
                 });
@@ -2947,7 +2105,7 @@
                     var self = $(this),
                         dataCbpLightbox = self.data('cbpLightbox');
 
-                    if (self.closest($('.cbp')).length) {
+                    if (self.closest($('.cbp-wrapper')).length) {
                         return;
                     }
 
@@ -2972,7 +2130,7 @@
 
                 t.singlePage.init(t, 'singlePage');
 
-                t.$obj.on('click' + eventNamespace, t.options.singlePageDelegate, function (e) {
+                t.$obj.on('click' + eventNamespace, t.options.singlePageDelegate, function(e) {
                     e.preventDefault();
 
                     t.singlePage.openSinglePage(t.blocksAvailable.find(t.options.singlePageDelegate), this);
@@ -3014,27 +2172,548 @@
 
                 t.singlePageInline.init(t, 'singlePageInline');
 
-                t.$obj.on('click' + eventNamespace, t.options.singlePageInlineDelegate, function (e) {
+                t.$obj.on('click' + eventNamespace, t.options.singlePageInlineDelegate, function(e) {
                     e.preventDefault();
 
                     t.singlePageInline.openSinglePageInline(t.blocksAvailable, this);
                 });
 
             }
+
+            t._triggerEvent('initFinish');
+            t.$obj.trigger('initComplete' + eventNamespace); // trigger public event initComplete
         },
 
+        /**
+         * Force a reflow for current obj
+         */
+        _forceReflow: function(obj) {
+            obj.offset();
+            return obj;
+        },
 
         /**
          * Build the layout
          */
-        _layout: function () {
-
+        _layout: function() {
             var t = this;
 
-            // reset layout
-            t._layoutReset();
+            t['_' + t.options.layoutMode + 'LayoutReset']();
 
-            t.blocksAvailable.each(function (index, el) {
+            t['_' + t.options.layoutMode + 'Layout']();
+
+            t.$obj.removeClass(function(index, css) {
+                return (css.match(/\bcbp-cols-\d+/gi) || []).join(' ');
+            });
+
+            t.$obj.addClass('cbp-cols-' + t.cols);
+
+        },
+
+        // create mark
+        _sliderMarkup: function() {
+            var t = this;
+
+            t.sliderStopEvents = false;
+
+            t.sliderActive = 0;
+
+            t.$obj.addClass('cbp-mode-slider');
+
+            t.$ul.wrap('<div class="cbp-wrapper-outer"></div>');
+
+            t.nav = $('<div/>', {
+                'class': 'cbp-nav'
+            });
+
+            t.nav.on('click' + eventNamespace, '[data-slider-action]', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                e.stopPropagation();
+
+                if (t.sliderStopEvents) {
+                    return;
+                }
+
+                var el = $(this),
+                    action = el.attr('data-slider-action');
+
+                if (t['_' + action + 'Slider']) {
+                    t['_' + action + 'Slider'](el);
+                }
+
+            });
+
+            if (t.options.showNavigation) {
+                t.controls = $('<div/>', {
+                    'class': 'cbp-nav-controls'
+                });
+
+                t.navPrev = $('<div/>', {
+                    'class': 'cbp-nav-prev',
+                    'data-slider-action': 'prev'
+                }).appendTo(t.controls);
+
+                t.navNext = $('<div/>', {
+                    'class': 'cbp-nav-next',
+                    'data-slider-action': 'next'
+                }).appendTo(t.controls);
+
+
+                t.controls.appendTo(t.nav);
+            }
+
+            if (t.options.showPagination) {
+                t.navPagination = $('<div/>', {
+                    'class': 'cbp-nav-pagination'
+                }).appendTo(t.nav);
+            }
+
+            if (t.controls || t.navPagination) {
+                t.nav.appendTo(t.$obj);
+            }
+
+            t._updateSliderPagination();
+
+            if (t.options.auto) {
+                if (t.options.autoPauseOnHover) {
+                    t.mouseIsEntered = false;
+                    t.$obj.on('mouseenter' + eventNamespace, function(e) {
+                        t.mouseIsEntered = true;
+                        t._stopSliderAuto();
+                    }).on('mouseleave' + eventNamespace, function(e) {
+                        t.mouseIsEntered = false;
+                        t._startSliderAuto();
+                    });
+                }
+
+                t._startSliderAuto();
+            }
+
+            if (t.options.drag && !(t.browser === 'ie8' || t.browser === 'ie9')) {
+                t._dragSlider();
+            }
+
+        },
+
+        _updateSlider: function() {
+            var t = this;
+
+            t._updateSliderPosition();
+
+            t._updateSliderPagination();
+
+        },
+
+        _updateSliderPagination: function() {
+            var t = this,
+                pages,
+                i;
+
+            if (t.options.showPagination) {
+
+                // get number of pages
+                pages = Math.ceil(t.blocksAvailable.length / t.cols);
+                t.navPagination.empty();
+
+                for (i = pages - 1; i >= 0; i--) {
+                    $('<div/>', {
+                        'class': 'cbp-nav-pagination-item',
+                        'data-slider-action': 'jumpTo'
+                    }).appendTo(t.navPagination);
+                }
+
+                t.navPaginationItems = t.navPagination.children();
+            }
+
+            // enable disable the nav
+            t._enableDisableNavSlider();
+        },
+
+        _destroySlider: function() {
+            var t = this;
+
+            if (t.options.layoutMode !== 'slider') {
+                return;
+            }
+
+            t.$obj.off('click' + eventNamespace);
+
+            if (t.navNext) {
+                t.navNext.remove();
+            }
+
+            if (t.navPrev) {
+                t.navPrev.remove();
+            }
+
+            if (t.navPagination) {
+                t.navPagination.remove();
+            }
+
+        },
+
+        _nextSlider: function(el) {
+            var t = this;
+
+            if (t._isEndSlider()) {
+                if (t.options.rewindNav) {
+                    t.sliderActive = 0;
+                } else {
+                    return;
+                }
+            } else {
+                if (t.options.scrollByPage) {
+                    t.sliderActive = Math.min(t.sliderActive + t.cols, t.blocksAvailable.length - t.cols);
+                } else {
+                    t.sliderActive += 1;
+                }
+            }
+
+            t._goToSlider();
+        },
+
+        _prevSlider: function(el) {
+            var t = this;
+
+            if (t._isStartSlider()) {
+                if (t.options.rewindNav) {
+                    t.sliderActive = t.blocksAvailable.length - t.cols;
+                } else {
+                    return;
+                }
+            } else {
+                if (t.options.scrollByPage) {
+                    t.sliderActive = Math.max(0, t.sliderActive - t.cols);
+                } else {
+                    t.sliderActive -= 1;
+                }
+            }
+
+            t._goToSlider();
+        },
+
+        _jumpToSlider: function(el) {
+            var t = this,
+                index = Math.min(el.index() * t.cols, t.blocksAvailable.length - t.cols);
+
+            if (index === t.sliderActive) {
+                return;
+            }
+
+            t.sliderActive = index;
+
+            t._goToSlider();
+        },
+
+        _jumpDragToSlider: function(pos) {
+            var t = this,
+                jumpWidth,
+                offset,
+                condition,
+                index,
+                dragLeft = (pos > 0) ? true : false;
+
+            if (t.options.scrollByPage) {
+                jumpWidth = t.cols * t.localColumnWidth;
+                offset = t.cols;
+            } else {
+                jumpWidth = t.localColumnWidth;
+                offset = 1;
+            }
+
+            pos = Math.abs(pos);
+            index = Math.floor(pos / jumpWidth) * offset;
+            if (pos % jumpWidth > 20) {
+                index += offset;
+            }
+
+            if (dragLeft) { // drag to left
+                t.sliderActive = Math.min(t.sliderActive + index, t.blocksAvailable.length - t.cols);
+            } else { // drag to right
+                t.sliderActive = Math.max(0, t.sliderActive - index);
+            }
+
+            t._goToSlider();
+        },
+
+        _isStartSlider: function() {
+            return this.sliderActive === 0;
+        },
+
+        _isEndSlider: function() {
+            var t = this;
+            return (t.sliderActive + t.cols) > t.blocksAvailable.length - 1;
+        },
+
+        _goToSlider: function() {
+            var t = this;
+
+            // enable disable the nav
+            t._enableDisableNavSlider();
+
+            t._updateSliderPosition();
+
+        },
+
+        _startSliderAuto: function() {
+            var t = this;
+
+            if (t.isDrag) {
+                t._stopSliderAuto();
+                return;
+            }
+
+            t.timeout = setTimeout(function() {
+
+                // go to next slide
+                t._nextSlider();
+
+                // start auto
+                t._startSliderAuto();
+
+            }, t.options.autoTimeout);
+        },
+
+        _stopSliderAuto: function() {
+            clearTimeout(this.timeout);
+        },
+
+        _enableDisableNavSlider: function() {
+            var t = this,
+                page,
+                method;
+
+            if (t.options.showNavigation) {
+                // if slider loop is enabled don't add classes to `next` and `prev` buttons
+                if (!t.options.rewindNav) {
+                    method = (t._isStartSlider()) ? 'addClass' : 'removeClass';
+                    t.navPrev[method]('cbp-nav-stop');
+
+                    method = (t._isEndSlider()) ? 'addClass' : 'removeClass';
+                    t.navNext[method]('cbp-nav-stop');
+                }
+            }
+
+            if (t.options.showPagination) {
+
+                if (t.options.scrollByPage) {
+                    page = Math.ceil(t.sliderActive / t.cols);
+                } else {
+                    if (t._isEndSlider()) {
+                        page = t.navPaginationItems.length - 1;
+                    } else {
+                        page = Math.floor(t.sliderActive / t.cols);
+                    }
+                }
+
+                // add class active on pagination's items
+                t.navPaginationItems.removeClass('cbp-nav-pagination-active')
+                    .eq(page)
+                    .addClass('cbp-nav-pagination-active');
+            }
+
+        },
+
+        /**
+         * Arrange the items in a slider layout
+         */
+        _sliderLayout: function() {
+            var t = this;
+
+            t.blocksAvailable.each(function(index, item) {
+
+                var $item = $(item),
+                    itemHeight = 0;
+
+                // add block to queue
+                t.styleQueue.push({
+                    $el: $item,
+                    style: t[t.supportTransform](t.localColumnWidth * index, 0)
+                });
+
+                itemHeight += $item.outerHeight(true) + t.options.gapHorizontal;
+                t.colVert.push(itemHeight);
+
+            });
+
+            t.sliderColVert = t.colVert.slice(t.sliderActive, t.sliderActive + t.cols);
+
+            t.ulWidth = t.localColumnWidth * t.blocksAvailable.length - t.options.gapVertical;
+            t.$ul.width(t.ulWidth);
+
+        },
+
+        _updateSliderPosition: function() {
+            var t = this,
+                value = -t.sliderActive * t.localColumnWidth,
+                obj = t[t.supportTransform](value, 0);
+
+            t.$ul[t.transition](obj);
+
+            t.sliderColVert = t.colVert.slice(t.sliderActive, t.sliderActive + t.cols);
+            t._resizeMainContainer(t.transition);
+
+        },
+
+        _dragSlider: function() {
+            var t = this,
+                $document = $(document),
+                func = t[t.supportTransform],
+                posInitial,
+                pos,
+                target,
+                ulPosition,
+                ulMaxWidth,
+                isAnimating = false,
+                events = {},
+                isTouch = false,
+                touchStartEvent,
+                isHover = false;
+
+            t.isDrag = false;
+
+            if (('ontouchstart' in window) ||
+                (navigator.maxTouchPoints > 0) ||
+                (navigator.msMaxTouchPoints > 0)) {
+
+                events = {
+                    start: 'touchstart' + eventNamespace,
+                    move: 'touchmove' + eventNamespace,
+                    end: 'touchend' + eventNamespace
+                };
+
+                isTouch = true;
+            } else {
+                events = {
+                    start: 'mousedown' + eventNamespace,
+                    move: 'mousemove' + eventNamespace,
+                    end: 'mouseup' + eventNamespace
+                };
+            }
+
+            function dragStart(e) {
+                if (!isTouch) {
+                    e.preventDefault();
+                } else {
+                    touchStartEvent = e;
+                }
+
+                if (t.options.auto) {
+                    t._stopSliderAuto();
+                }
+
+                if (isAnimating) {
+                    $(target).one('click' + eventNamespace, function() {
+                        return false;
+                    });
+                    return;
+                }
+
+                target = $(e.target);
+                posInitial = pointerEventToXY(e).x;
+                pos = 0;
+                ulPosition = -t.sliderActive * t.localColumnWidth;
+                ulMaxWidth = t.localColumnWidth * (t.blocksAvailable.length - t.cols);
+
+                $document.on(events.move, dragMove);
+                $document.on(events.end, dragEnd);
+
+                t.$obj.addClass('cbp-mode-slider-dragStart');
+            }
+
+            function dragEnd(e) {
+                t.$obj.removeClass('cbp-mode-slider-dragStart');
+
+                // put the state to animate
+                isAnimating = true;
+
+                if (pos !== 0) {
+                    target.one('click' + eventNamespace, function() {
+                        return false;
+                    });
+
+                    t._jumpDragToSlider(pos);
+
+                    t.$ul.one(t.transitionEnd, afterDragEnd);
+                } else {
+                    afterDragEnd.call(t);
+                }
+
+                $document.off(events.move);
+                $document.off(events.end);
+            }
+
+            function dragMove(e) {
+                pos = posInitial - pointerEventToXY(e).x;
+
+                if (pos > 8 || pos < -8) {
+                    e.preventDefault();
+                }
+
+                t.isDrag = true;
+
+                var leftPosition = ulPosition - pos;
+
+                if (pos < 0 && pos < ulPosition) { // to right
+                    leftPosition = (ulPosition - pos) / 5;
+                } else if (pos > 0 && (ulPosition - pos) < -ulMaxWidth) { // to left
+                    leftPosition = -ulMaxWidth + (ulMaxWidth + ulPosition - pos) / 5;
+                }
+
+                var obj = func(leftPosition, 0);
+
+                t.$ul[t.transition](obj);
+
+            }
+
+            function afterDragEnd() {
+                isAnimating = false;
+                t.isDrag = false;
+
+                if (t.options.auto) {
+
+                    if (t.mouseIsEntered) {
+                        return;
+                    }
+
+                    t._startSliderAuto();
+
+                }
+            }
+
+            function pointerEventToXY(e) {
+                return {
+                    x: e.pageX || e.originalEvent.touches[0].pageX,
+                    y: e.pageY || e.originalEvent.touches[0].pageY
+                };
+            }
+
+            t.$ul.on(events.start, dragStart);
+
+        },
+
+
+        /**
+         * Reset the slider layout
+         */
+        _sliderLayoutReset: function() {
+            var t = this;
+            t.colVert = [];
+        },
+
+        // create mark
+        _gridMarkup: function() {
+
+        },
+
+        /**
+         * Arrange the items in a grid layout
+         */
+        _gridLayout: function() {
+            var t = this;
+
+            t.blocksAvailable.each(function(index, el) {
 
                 var $me = $(el),
                     colNr = Math.ceil($me.outerWidth() / t.localColumnWidth),
@@ -3069,21 +2748,12 @@
                 }
 
             });
-
-            t.$obj.removeClass(function (index, css) {
-                return (css.match(/\bcbp-cols-\d+/gi) || []).join(' ');
-            });
-
-            t.$obj.addClass('cbp-cols-' + t.cols);
-
         },
 
-
         /**
-         * Reset the layout
+         * Reset the grid layout
          */
-        _layoutReset: function () {
-
+        _gridLayoutReset: function() {
             var c, t = this;
 
             // @options gridAdjustment = alignCenter
@@ -3108,25 +2778,21 @@
 
             }
 
-
             t.colVert = [];
-
             c = t.cols;
 
             while (c--) {
                 t.colVert.push(0);
             }
-
         },
-
 
         /**
          * Make this plugin responsive
          */
-        _responsiveLayout: function () {
-
+        _responsiveLayout: function() {
             var t = this,
-                procent, widthWithoutGap;
+                widthWithoutGap,
+                itemWidth;
 
             if (!t.columnWidthCache) {
                 t.columnWidthCache = t.localColumnWidth;
@@ -3138,73 +2804,88 @@
             t.width = t.$obj.outerWidth() + t.options.gapVertical;
 
             // calculate numbers of cols
-            t.cols = Math.max(Math.round(t.width / t.localColumnWidth), 1);
+            t.cols = t[t.getColumnsType]();
 
             // calculate the with of items without the gaps between them
             widthWithoutGap = t.width - t.options.gapVertical * t.cols;
 
-            // caluclate column with based on widthWithoutGap plus the gap
+            // calculate column with based on widthWithoutGap plus the gap
             t.localColumnWidth = parseInt(widthWithoutGap / t.cols, 10) + t.options.gapVertical;
 
-            procent = t.localColumnWidth / t.columnWidthCache;
+            itemWidth = (t.localColumnWidth - t.options.gapVertical) + 'px';
 
-            t.blocks.each(function () {
+            t.blocks.each(function(index, el) {
+                // set new width for current element
+                el.style.width = itemWidth;
 
-                var me = $(this),
-                    data = $.data(this, 'cbp-wxh');
-
-                if (!data) {
-                    data = $.data(this, 'cbp-wxh', {
-                        width: me.outerWidth(),
-                        height: me.outerHeight()
-                    });
+                // set new width for element clone
+                if (t.blocksClone) {
+                    t.blocksClone.eq(index)[0].style.width = itemWidth;
                 }
+            });
+
+        },
 
 
-                me.css('width', t.localColumnWidth - t.options.gapVertical);
-                me.css('height', Math.floor(data.height * procent));
+        /**
+         * Get numbers of columns when t.options.mediaQueries is not an array
+         */
+        _getColumnsAuto: function() {
+            var t = this;
+            return Math.max(Math.round(t.width / t.localColumnWidth), 1);
+        },
+
+        /**
+         * Get numbers of columns where t.options.mediaQueries is an array
+         */
+        _getColumnsBreakpoints: function() {
+            var t = this,
+                gridWidth = t.width - t.options.gapVertical,
+                cols;
+
+            $.each(t.options.mediaQueries, function(index, val) {
+
+                if (gridWidth >= val.width) {
+                    cols = val.cols;
+                    return false;
+                }
 
             });
 
-            if (t.blocksClone) {
-
-                t.blocksClone.each(function () {
-
-                    var me = $(this),
-                        data = $.data(this, 'cbp-wxh');
-
-                    if (!data) {
-                        data = $.data(this, 'cbp-wxh', {
-                            width: me.outerWidth(),
-                            height: me.outerHeight()
-                        });
-                    }
-
-                    me.css('width', t.localColumnWidth - t.options.gapVertical);
-                    me.css('height', Math.floor(data.height * procent));
-
-                });
-
+            if (cols === undefined) {
+                cols = t.options.mediaQueries[t.options.mediaQueries.length - 1].cols;
             }
 
+            return cols;
         },
 
 
         /**
          * Resize main container vertically
          */
-        _resizeMainContainer: function (transition, customHeight) {
-
-            var t = this;
+        _resizeMainContainer: function(transition, customHeight) {
+            var t = this,
+                cols = t.sliderColVert || t.colVert,
+                height;
 
             customHeight = customHeight || 0;
 
             // set container height for `overflow: hidden` to be applied
-            t.height = Math.max.apply(Math, t.colVert) + customHeight;
+            height = Math.max.apply(Math, cols) + customHeight;
+
+            if (height === t.height) {
+                return;
+            }
 
             t.$obj[transition]({
-                height: t.height - t.options.gapHorizontal
+                height: height - t.options.gapHorizontal
             }, 400);
+
+            t.height = height;
+
+            t.$obj.one(t.transitionEnd, function() {
+                t.$obj.trigger('pluginResize.cbp');
+            });
 
         },
 
@@ -3212,25 +2893,23 @@
         /**
          * Process style queue
          */
-        _processStyle: function (transition) {
+        _processStyle: function(transition) {
+            var t = this,
+                i;
 
-            var t = this;
-
-            for (var i = t.styleQueue.length - 1; i >= 0; i--) {
+            for (i = t.styleQueue.length - 1; i >= 0; i--) {
 
                 t.styleQueue[i].$el[transition](t.styleQueue[i].style);
             }
 
             t.styleQueue = [];
-
         },
 
 
         /**
          * Place the blocks in the correct order
          */
-        _placeBlocks: function ($block, vert, singlePageInlineGap) {
-
+        _placeBlocks: function($block, vert, singlePageInlineGap) {
             var t = this,
                 minVert = Math.min.apply(Math, vert),
                 coll = 0,
@@ -3257,7 +2936,7 @@
             // add block to queue
             t.styleQueue.push({
                 $el: $block,
-                style: (t.supportCSSTransform) ? t._withCSS3(x, y) : t._withCSS2(x, y)
+                style: t[t.supportTransform](x, y)
             });
 
             setHeight = minVert + $block.outerHeight() + t.options.gapHorizontal;
@@ -3266,14 +2945,13 @@
             for (i = 0; i < colsLen; i++) {
                 t.colVert[coll + i] = setHeight;
             }
-
         },
 
 
         /**
          * Use position absolute with left and top
          */
-        _withCSS2: function (x, y) {
+        _withCSS2: function(x, y) {
             return {
                 left: x,
                 top: y
@@ -3284,7 +2962,7 @@
         /**
          * Use css3 translate function
          */
-        _withCSS3: function (x, y) {
+        _withCSS3: function(x, y) {
             return {
                 translate: [x, y]
             };
@@ -3298,8 +2976,7 @@
         /**
          * Duplicate the blocks in a new `ul`
          */
-        _duplicateContent: function (cssObj) {
-
+        _duplicateContent: function(cssObj) {
             var t = this;
 
             t.$ulClone = t.$ul.clone();
@@ -3311,15 +2988,13 @@
             t.ulHidden = 'clone';
 
             t.$obj.append(t.$ulClone);
-
         },
 
 
         /**
          * FadeOut filter
          */
-        _fadeOutFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _fadeOutFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this;
 
             if (filter !== '*') {
@@ -3334,7 +3009,6 @@
 
             // remove hidden class
             off2onBlocks.removeClass('cbp-item-hidden');
-
 
             t.blocksAvailable = t.blocks.filter(filter);
 
@@ -3370,18 +3044,16 @@
             t._resizeMainContainer(t.transition);
 
             // filter had finished his job
-            setTimeout(function () {
+            setTimeout(function() {
                 t._filterFinish();
             }, 400);
-
         },
 
 
         /**
          * Quicksand filter
          */
-        _quicksandFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _quicksandFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this;
 
             if (filter !== '*') {
@@ -3432,18 +3104,16 @@
             // resize main container height
             t._resizeMainContainer(t.transition);
 
-            setTimeout(function () {
+            setTimeout(function() {
                 t._filterFinish();
             }, 400);
-
         },
 
 
         /**
          * flipOut filter
          */
-        _flipOutFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _flipOutFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this;
 
             if (filter !== '*') {
@@ -3462,34 +3132,12 @@
             t.blocksAvailable = t.blocks.filter(filter);
 
             if (on2offBlocks.length) {
-
-                if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                    t.styleQueue.push({
-                        $el: on2offBlocks,
-                        style: {
-                            opacity: 0
-                        }
-                    });
-
-                } else {
-                    on2offBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-flipOut-in').addClass('cbp-animation-flipOut-out');
-                }
+                on2offBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-flipOut-in').addClass('cbp-animation-flipOut-out');
 
             }
 
             if (off2onBlocks.length) {
-
-                if (t.browser === 'ie8' || t.browser === 'ie9') {
-                    t.styleQueue.push({
-                        $el: off2onBlocks,
-                        style: {
-                            opacity: 1
-                        }
-                    });
-                } else {
-                    off2onBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-flipOut-out').addClass('cbp-animation-flipOut-in');
-                }
+                off2onBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-flipOut-out').addClass('cbp-animation-flipOut-in');
             }
 
             // call layout
@@ -3501,18 +3149,16 @@
             // resize main container height
             t._resizeMainContainer(t.transition);
 
-            setTimeout(function () {
+            setTimeout(function() {
                 t._filterFinish();
             }, 400);
-
         },
 
 
         /**
          * flipBottom filter
          */
-        _flipBottomFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _flipBottomFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this;
 
             if (filter !== '*') {
@@ -3531,35 +3177,11 @@
             t.blocksAvailable = t.blocks.filter(filter);
 
             if (on2offBlocks.length) {
-
-                if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                    t.styleQueue.push({
-                        $el: on2offBlocks,
-                        style: {
-                            opacity: 0
-                        }
-                    });
-
-                } else {
-                    on2offBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-flipBottom-in').addClass('cbp-animation-flipBottom-out');
-                }
-
+                on2offBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-flipBottom-in').addClass('cbp-animation-flipBottom-out');
             }
 
             if (off2onBlocks.length) {
-
-                if (t.browser === 'ie8' || t.browser === 'ie9') {
-                    t.styleQueue.push({
-                        $el: off2onBlocks,
-                        style: {
-                            opacity: 1
-                        }
-                    });
-                } else {
-                    off2onBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-flipBottom-out').addClass('cbp-animation-flipBottom-in');
-                }
-
+                off2onBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-flipBottom-out').addClass('cbp-animation-flipBottom-in');
             }
 
             // call layout
@@ -3571,18 +3193,16 @@
             // resize main container height
             t._resizeMainContainer(t.transition);
 
-            setTimeout(function () {
+            setTimeout(function() {
                 t._filterFinish();
             }, 400);
-
         },
 
 
         /**
          * scaleSides filter
          */
-        _scaleSidesFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _scaleSidesFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this;
 
             if (filter !== '*') {
@@ -3601,35 +3221,11 @@
             t.blocksAvailable = t.blocks.filter(filter);
 
             if (on2offBlocks.length) {
-
-                if (t.browser === 'ie8' || t.browser === 'ie9') {
-
-                    t.styleQueue.push({
-                        $el: on2offBlocks,
-                        style: {
-                            opacity: 0
-                        }
-                    });
-
-                } else {
-                    on2offBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-scaleSides-in').addClass('cbp-animation-scaleSides-out');
-                }
-
+                on2offBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-scaleSides-in').addClass('cbp-animation-scaleSides-out');
             }
 
             if (off2onBlocks.length) {
-
-                if (t.browser === 'ie8' || t.browser === 'ie9') {
-                    t.styleQueue.push({
-                        $el: off2onBlocks,
-                        style: {
-                            opacity: 1
-                        }
-                    });
-                } else {
-                    off2onBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-scaleSides-out').addClass('cbp-animation-scaleSides-in');
-                }
-
+                off2onBlocks.find('.cbp-item-wrapper').removeClass('cbp-animation-scaleSides-out').addClass('cbp-animation-scaleSides-in');
             }
 
             // call layout
@@ -3641,18 +3237,16 @@
             // resize main container height
             t._resizeMainContainer(t.transition);
 
-            setTimeout(function () {
+            setTimeout(function() {
                 t._filterFinish();
             }, 400);
-
         },
 
 
         /**
          * skew filter
          */
-        _skewFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _skewFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this;
 
             if (filter !== '*') {
@@ -3705,28 +3299,24 @@
             // resize main container height
             t._resizeMainContainer(t.transition);
 
-            setTimeout(function () {
+            setTimeout(function() {
                 t._filterFinish();
             }, 400);
-
         },
 
 
         /**
          *  Slide Up Sequentially custom init
          */
-        _sequentiallyInit: function () {
-
+        _sequentiallyInit: function() {
             this.transitionByFilter = 'css';
-
         },
 
 
         /**
          * Slide Up Sequentially filter
          */
-        _sequentiallyFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _sequentiallyFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this,
                 oldBlocksAvailable = t.blocksAvailable;
 
@@ -3734,19 +3324,12 @@
 
             t.$obj.addClass('cbp-no-transition');
 
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                oldBlocksAvailable[t.transition]({
-                    top: '-=30',
-                    opacity: 0
-                }, 300);
-            } else {
-                oldBlocksAvailable[t.transition]({
-                    top: -30,
-                    opacity: 0
-                });
-            }
+            oldBlocksAvailable[t.transition]({
+                top: -30,
+                opacity: 0
+            });
 
-            setTimeout(function () {
+            setTimeout(function() {
 
                 if (filter !== '*') {
 
@@ -3788,11 +3371,6 @@
                 // resize main container height
                 t._resizeMainContainer(t.transition);
 
-                // ie8 & ie9 trick
-                if (t.browser === 'ie8' || t.browser === 'ie9') {
-                    t.blocksAvailable.css('top', '-=30');
-                }
-
                 var i = 0,
                     item;
                 (function displayItems() {
@@ -3800,21 +3378,15 @@
 
                     if (item.length) {
 
-                        if (t.browser === 'ie8' || t.browser === 'ie9') {
-                            item[t.transition]({
-                                top: '+=30',
-                                opacity: 1
-                            });
-                        } else {
-                            item[t.transition]({
-                                top: 0,
-                                opacity: 1
-                            });
-                        }
+                        item[t.transition]({
+                            top: 0,
+                            opacity: 1
+                        });
+
 
                         setTimeout(displayItems, 130);
                     } else {
-                        setTimeout(function () {
+                        setTimeout(function() {
                             t._filterFinish();
                         }, 600);
                     }
@@ -3822,44 +3394,35 @@
                 })();
 
             }, 600);
-
         },
 
 
         /**
          *  Fade Out Top custom init
          */
-        _fadeOutTopInit: function () {
-
+        _fadeOutTopInit: function() {
             this.transitionByFilter = 'css';
-
         },
 
 
         /**
          * Slide Up filter
          */
-        _fadeOutTopFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _fadeOutTopFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this;
 
             t.blocksAvailable = t.blocks.filter(filter);
 
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                t.$ul[t.transition]({
-                    top: -30,
-                    opacity: 0
-                }, 350);
-            } else {
-                t.$ul[t.transition]({
-                    top: -30,
-                    opacity: 0
-                });
-            }
+
+            t.$ul[t.transition]({
+                top: -30,
+                opacity: 0
+            });
+
 
             t.$obj.addClass('cbp-no-transition');
 
-            setTimeout(function () {
+            setTimeout(function() {
 
                 if (filter !== '*') {
 
@@ -3899,50 +3462,32 @@
                 // resize main container height
                 t._resizeMainContainer(t.transition);
 
+                t.$ul[t.transition]({
+                    top: 0,
+                    opacity: 1
+                });
 
-                if (t.browser === 'ie8' || t.browser === 'ie9') {
-                    t.$ul[t.transition]({
-                        top: 0,
-                        opacity: 1
-                    }, 350);
-                } else {
-                    t.$ul[t.transition]({
-                        top: 0,
-                        opacity: 1
-                    });
-                }
-
-                setTimeout(function () {
+                setTimeout(function() {
                     t._filterFinish();
                 }, 400);
 
             }, 400);
-
-
         },
 
 
         /**
          *  Box Shadow custom init
          */
-        _boxShadowInit: function () {
-
+        _boxShadowInit: function() {
             var t = this;
-
-            if (t.browser === 'ie8' || t.browser === 'ie9') {
-                t.options.animationType = 'fadeOut';
-            } else {
-                t.blocksAvailable.append('<div class="cbp-animation-boxShadowMask"></div>');
-            }
-
+            t.blocksAvailable.append('<div class="cbp-animation-boxShadowMask"></div>');
         },
 
 
         /**
          * boxShadow filter
          */
-        _boxShadowFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _boxShadowFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this;
 
             if (filter !== '*') {
@@ -4000,7 +3545,7 @@
             t._layout();
 
             if (toAnimate.length) {
-                toAnimate.one(t.transitionEnd, function () {
+                toAnimate.one(t.transitionEnd, function() {
                     boxShadowMask.removeClass('cbp-animation-boxShadowShow');
                     t._filterFinish();
                 });
@@ -4014,15 +3559,13 @@
 
             // resize main container height
             t._resizeMainContainer(t.transition);
-
         },
 
 
         /**
          *  Mover left custom init
          */
-        _bounceLeftInit: function () {
-
+        _bounceLeftInit: function() {
             var t = this;
 
             t._duplicateContent({
@@ -4033,15 +3576,13 @@
             t.transitionByFilter = 'css';
 
             t.$ul.addClass('cbp-wrapper-front');
-
         },
 
 
         /**
          *  Mover left custom filter type
          */
-        _bounceLeftFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _bounceLeftFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this,
                 ul, ulChildren, ulTohide;
 
@@ -4103,18 +3644,16 @@
             // resize main container height
             t._resizeMainContainer(t.transition);
 
-            setTimeout(function () {
+            setTimeout(function() {
                 t._filterFinish();
             }, 400);
-
         },
 
 
         /**
          *  Bounce Top init
          */
-        _bounceTopInit: function () {
-
+        _bounceTopInit: function() {
             var t = this;
 
             t._duplicateContent({
@@ -4125,15 +3664,13 @@
             t.transitionByFilter = 'css';
 
             t.$ul.addClass('cbp-wrapper-front');
-
         },
 
 
         /**
          *  Bounce Top filter type
          */
-        _bounceTopFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _bounceTopFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this,
                 ul, ulChildren, ulTohide;
 
@@ -4195,18 +3732,16 @@
             // resize main container height
             t._resizeMainContainer(t.transition);
 
-            setTimeout(function () {
+            setTimeout(function() {
                 t._filterFinish();
             }, 400);
-
         },
 
 
         /**
          *  Bounce Bottom init
          */
-        _bounceBottomInit: function () {
-
+        _bounceBottomInit: function() {
             var t = this;
 
             t._duplicateContent({
@@ -4215,15 +3750,13 @@
             });
 
             t.transitionByFilter = 'css';
-
         },
 
 
         /**
          *  Bounce Bottom filter type
          */
-        _bounceBottomFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _bounceBottomFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this,
                 ul, ulChildren, ulTohide;
 
@@ -4285,7 +3818,7 @@
             // resize main container height
             t._resizeMainContainer(t.transition);
 
-            setTimeout(function () {
+            setTimeout(function() {
                 t._filterFinish();
             }, 400);
         },
@@ -4294,8 +3827,7 @@
         /**
          *  Move Left init
          */
-        _moveLeftInit: function () {
-
+        _moveLeftInit: function() {
             var t = this;
 
             t._duplicateContent({
@@ -4306,15 +3838,13 @@
             t.$ulClone.addClass('no-trans');
 
             t.transitionByFilter = 'css';
-
         },
 
 
         /**
          *  Move Left filter type
          */
-        _moveLeftFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _moveLeftFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this,
                 ul, ulChildren, ulTohide;
 
@@ -4379,7 +3909,7 @@
                 });
 
 
-                ulTohide.one(t.transitionEnd, function () {
+                ulTohide.one(t.transitionEnd, function() {
 
                     ulTohide.addClass('no-trans').css({
                         left: '100%',
@@ -4395,7 +3925,7 @@
                 ul[t.transition]({
                     left: 0,
                     opacity: 1
-                }, function () {
+                }, function() {
 
                     ulTohide.addClass('no-trans').css({
                         left: '100%',
@@ -4413,15 +3943,13 @@
 
             // resize main container height
             t._resizeMainContainer(t.transition);
-
         },
 
 
         /**
          *  Slide Left init
          */
-        _slideLeftInit: function () {
-
+        _slideLeftInit: function() {
             var t = this;
 
             t._duplicateContent({});
@@ -4431,15 +3959,13 @@
             t.$ulClone.css('opacity', 0);
 
             t.transitionByFilter = 'css';
-
         },
 
 
         /**
          *  Slide Left filter type
          */
-        _slideLeftFilter: function (on2offBlocks, off2onBlocks, filter) {
-
+        _slideLeftFilter: function(on2offBlocks, off2onBlocks, filter) {
             var t = this,
                 ulChildren, slideOut, slideIn, toAnimate;
 
@@ -4521,7 +4047,7 @@
                 toAnimate = slideOut.find('.cbp-item-wrapper').last();
 
                 if (toAnimate.length) {
-                    toAnimate.one(t.animationEnd, function () {
+                    toAnimate.one(t.animationEnd, function() {
                         t._filterFinish();
                     });
                 } else {
@@ -4533,7 +4059,8 @@
                 slideOut.find('.cbp-item-wrapper').animate({
                         left: '-100%'
                     },
-                    400, function () {
+                    400,
+                    function() {
                         t._filterFinish();
                     });
 
@@ -4559,7 +4086,7 @@
         /**
          *  Slide Delay init
          */
-        _slideDelayInit: function () {
+        _slideDelayInit: function() {
             this._wrapperFilterInit();
         },
 
@@ -4567,7 +4094,7 @@
         /**
          *  Slide Delay filter type
          */
-        _slideDelayFilter: function (on2offBlocks, off2onBlocks, filter) {
+        _slideDelayFilter: function(on2offBlocks, off2onBlocks, filter) {
             this._wrapperFilter(on2offBlocks, off2onBlocks, filter, 'slideDelay', true);
         },
 
@@ -4575,7 +4102,7 @@
         /**
          *  3d Flip init
          */
-        _3dflipInit: function () {
+        _3dflipInit: function() {
             this._wrapperFilterInit();
         },
 
@@ -4583,7 +4110,7 @@
         /**
          *  3d Flip filter type
          */
-        _3dflipFilter: function (on2offBlocks, off2onBlocks, filter) {
+        _3dflipFilter: function(on2offBlocks, off2onBlocks, filter) {
             this._wrapperFilter(on2offBlocks, off2onBlocks, filter, '3dflip', true);
         },
 
@@ -4591,7 +4118,7 @@
         /**
          *  Rotate Sides init
          */
-        _rotateSidesInit: function () {
+        _rotateSidesInit: function() {
             this._wrapperFilterInit();
         },
 
@@ -4599,7 +4126,7 @@
         /**
          *  Rotate Sides filter type
          */
-        _rotateSidesFilter: function (on2offBlocks, off2onBlocks, filter) {
+        _rotateSidesFilter: function(on2offBlocks, off2onBlocks, filter) {
             this._wrapperFilter(on2offBlocks, off2onBlocks, filter, 'rotateSides', true);
         },
 
@@ -4607,7 +4134,7 @@
         /**
          *  Flip Out Delay init
          */
-        _flipOutDelayInit: function () {
+        _flipOutDelayInit: function() {
             this._wrapperFilterInit();
         },
 
@@ -4615,7 +4142,7 @@
         /**
          *  Flip Out Delay filter type
          */
-        _flipOutDelayFilter: function (on2offBlocks, off2onBlocks, filter) {
+        _flipOutDelayFilter: function(on2offBlocks, off2onBlocks, filter) {
             this._wrapperFilter(on2offBlocks, off2onBlocks, filter, 'flipOutDelay', false);
         },
 
@@ -4623,7 +4150,7 @@
         /**
          *  Fold Left init
          */
-        _foldLeftInit: function () {
+        _foldLeftInit: function() {
             this._wrapperFilterInit();
         },
 
@@ -4631,7 +4158,7 @@
         /**
          *  Fold Left filter type
          */
-        _foldLeftFilter: function (on2offBlocks, off2onBlocks, filter) {
+        _foldLeftFilter: function(on2offBlocks, off2onBlocks, filter) {
             this._wrapperFilter(on2offBlocks, off2onBlocks, filter, 'foldLeft', true);
         },
 
@@ -4639,7 +4166,7 @@
         /**
          *  Unfold init
          */
-        _unfoldInit: function () {
+        _unfoldInit: function() {
             this._wrapperFilterInit();
         },
 
@@ -4647,7 +4174,7 @@
         /**
          *  Unfold filter type
          */
-        _unfoldFilter: function (on2offBlocks, off2onBlocks, filter) {
+        _unfoldFilter: function(on2offBlocks, off2onBlocks, filter) {
             this._wrapperFilter(on2offBlocks, off2onBlocks, filter, 'unfold', true);
         },
 
@@ -4655,7 +4182,7 @@
         /**
          *  Scale Down init
          */
-        _scaleDownInit: function () {
+        _scaleDownInit: function() {
             this._wrapperFilterInit();
         },
 
@@ -4663,7 +4190,7 @@
         /**
          *  Scale Down filter type
          */
-        _scaleDownFilter: function (on2offBlocks, off2onBlocks, filter) {
+        _scaleDownFilter: function(on2offBlocks, off2onBlocks, filter) {
             this._wrapperFilter(on2offBlocks, off2onBlocks, filter, 'scaleDown', true);
         },
 
@@ -4671,7 +4198,7 @@
         /**
          *  Front Row init
          */
-        _frontRowInit: function () {
+        _frontRowInit: function() {
             this._wrapperFilterInit();
         },
 
@@ -4679,7 +4206,7 @@
         /**
          *  Front Row filter type
          */
-        _frontRowFilter: function (on2offBlocks, off2onBlocks, filter) {
+        _frontRowFilter: function(on2offBlocks, off2onBlocks, filter) {
             this._wrapperFilter(on2offBlocks, off2onBlocks, filter, 'frontRow', true);
         },
 
@@ -4687,7 +4214,7 @@
         /**
          *  Rotate Room init
          */
-        _rotateRoomInit: function () {
+        _rotateRoomInit: function() {
             this._wrapperFilterInit();
         },
 
@@ -4695,7 +4222,7 @@
         /**
          *  Rotate Room filter type
          */
-        _rotateRoomFilter: function (on2offBlocks, off2onBlocks, filter) {
+        _rotateRoomFilter: function(on2offBlocks, off2onBlocks, filter) {
             this._wrapperFilter(on2offBlocks, off2onBlocks, filter, 'rotateRoom', true);
         },
 
@@ -4703,8 +4230,7 @@
         /**
          *  Wrapper Filter Init
          */
-        _wrapperFilterInit: function () {
-
+        _wrapperFilterInit: function() {
             var t = this;
 
             t._duplicateContent({});
@@ -4714,15 +4240,13 @@
             t.$ulClone.css('opacity', 0);
 
             t.transitionByFilter = 'css';
-
         },
 
 
         /**
          *  Wrapper Filter
          */
-        _wrapperFilter: function (on2offBlocks, off2onBlocks, filter, name, fadeOut) {
-
+        _wrapperFilter: function(on2offBlocks, off2onBlocks, filter, name, fadeOut) {
             var t = this,
                 ulChildren, slideOut, slideIn, toAnimate;
 
@@ -4731,13 +4255,8 @@
             t.blocksClone.show();
 
             if (filter !== '*') {
-
                 // get elements that are hidden and will be visible
                 off2onBlocks = off2onBlocks.filter(filter);
-
-                // get visible elements that will pe hidden
-                //on2offBlocks = t.blocks.not('.cbp-item-hidden').not(filter).addClass('cbp-item-hidden');
-
             }
 
             // remove hidden class
@@ -4759,9 +4278,6 @@
 
                 t.ulHidden = 'first';
 
-                //slideOut = t.blocks;
-                //slideIn = t.blocksClone;
-
                 ulChildren = t.blocksClone;
 
                 t.$ul.removeClass('cbp-wrapper-front');
@@ -4770,9 +4286,6 @@
             } else {
 
                 t.ulHidden = 'clone';
-
-                //slideOut = t.blocksClone;
-                //slideIn = t.blocks;
 
                 ulChildren = t.blocks;
 
@@ -4803,14 +4316,14 @@
                 var iii = 0,
                     kkk = 0;
 
-                slideIn.each(function (index, el) {
+                slideIn.each(function(index, el) {
                     $(el).find('.cbp-item-wrapper').addClass('cbp-animation-' + name + '-in').css('animation-delay', (kkk / 20) + 's');
                     kkk++;
 
                 });
 
 
-                slideOut.each(function (index, el) {
+                slideOut.each(function(index, el) {
 
                     if (kkk <= iii && fadeOut) {
                         $(el).find('.cbp-item-wrapper').addClass('cbp-animation-' + name + '-fadeOut');
@@ -4825,12 +4338,12 @@
                 toAnimate = slideOut.find('.cbp-item-wrapper').first();
 
                 if (toAnimate.length) {
-                    toAnimate.one(t.animationEnd, function () {
+                    toAnimate.one(t.animationEnd, function() {
                         t._filterFinish();
 
                         // ie10, ie11 bug
                         if (t.browser === 'ie10' || t.browser === 'ie11') {
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 $('.cbp-item-wrapper').removeClass('cbp-animation-' + name + '-in');
                             }, 300);
                         }
@@ -4840,7 +4353,7 @@
 
                     // ie10, ie11 bug
                     if (t.browser === 'ie10' || t.browser === 'ie11') {
-                        setTimeout(function () {
+                        setTimeout(function() {
                             $('.cbp-item-wrapper').removeClass('cbp-animation-' + name + '-in');
                         }, 300);
                     }
@@ -4851,7 +4364,8 @@
                 slideOut.find('.cbp-item-wrapper').animate({
                         left: '-100%'
                     },
-                    400, function () {
+                    400,
+                    function() {
                         t._filterFinish();
                     });
 
@@ -4876,56 +4390,53 @@
         /**
          *  Trigger when a filter is finished
          */
-        _filterFinish: function () {
-
+        _filterFinish: function() {
             var t = this;
 
             t.isAnimating = false;
 
             t._triggerEvent('filterFinish');
 
-            t.$obj.trigger('filterComplete');
+            t.$obj.trigger('filterComplete' + eventNamespace);
         },
 
 
         /**
          *  Register event
          */
-        _registerEvent: function (name, callbackFunction, oneTime) {
-
+        _registerEvent: function(name, callbackFunction, oneTime) {
             var t = this;
 
             if (!t.registeredEvents[name]) {
-
                 t.registeredEvents[name] = [];
-
-                t.registeredEvents.push(name);
             }
 
             t.registeredEvents[name].push({
                 func: callbackFunction,
                 oneTime: oneTime || false
             });
-
-
         },
 
 
         /**
          *  Trigger event
          */
-        _triggerEvent: function (name) {
-
-            var t = this;
+        _triggerEvent: function(name) {
+            var t = this,
+                i, len;
 
             if (t.registeredEvents[name]) {
-                for (var i = t.registeredEvents[name].length - 1; i >= 0; i--) {
+                for (i = 0, len = t.registeredEvents[name].length; i < len; i++) {
 
                     t.registeredEvents[name][i].func.call(t);
 
                     if (t.registeredEvents[name][i].oneTime) {
-
                         t.registeredEvents[name].splice(i, 1);
+                        // function splice change the t.registeredEvents[name] array
+                        // if event is one time you must set the i to the same value
+                        // next time and set the length lower
+                        i--;
+                        len--;
                     }
 
                 }
@@ -4941,12 +4452,11 @@
         /*
          * Initializate the plugin
          */
-        init: function (options, callbackFunction) {
-
+        init: function(options, callbackFunction) {
             var t = $.data(this, 'cubeportfolio');
 
             if (t) {
-                throw new Error('cubeportfolio is already initialized. Please destroy it before initialize again!');
+                throw new Error('cubeportfolio is already initialized. Destroy it before initialize again!');
             }
 
             // create new object attached to this element
@@ -4954,18 +4464,17 @@
 
             // call private _main method
             t._main(this, options, callbackFunction);
-
         },
 
 
         /*
          * Destroy the plugin
          */
-        destroy: function (callbackFunction) {
-
+        destroy: function(callbackFunction) {
             var t = $.data(this, 'cubeportfolio');
+
             if (!t) {
-                throw new Error('cubeportfolio is not initialized. Please initialize before calling destroy method!');
+                throw new Error('cubeportfolio is not initialized. Initialize it before calling destroy method!');
             }
 
             // register callback function
@@ -4977,7 +4486,7 @@
             $.removeData(this, 'cubeportfolio');
 
             // remove data from blocks
-            $.each(t.blocks, function () {
+            $.each(t.blocks, function() {
 
                 $.removeData(this, 'transformFn');
 
@@ -4990,6 +4499,10 @@
 
             // remove class from ul
             t.$ul.removeClass('cbp-wrapper-front cbp-wrapper-back cbp-wrapper no-trans').removeAttr('style');
+
+            if (t.options.layoutMode === 'slider') {
+                t.$ul.unwrap();
+            }
 
             // remove attr style
             t.$obj.removeAttr('style');
@@ -5004,6 +4517,9 @@
 
             // remove off resize event
             $(window).off('resize' + eventNamespace);
+
+            t.$obj.off('.cbp');
+            $(document).off('.cbp');
 
             // destroy lightbox if enabled
             if (t.lightbox) {
@@ -5039,21 +4555,21 @@
 
             }
 
-            t._triggerEvent('destroyFinish');
+            t._destroySlider();
 
+            t._triggerEvent('destroyFinish');
         },
 
 
         /*
          * Filter the plugin by filterName
          */
-        filter: function (filterName, callbackFunction, context) {
-
+        filter: function(filterName, callbackFunction, context) {
             var t = context || $.data(this, 'cubeportfolio'),
                 off2onBlocks, on2offBlocks, url;
 
             if (!t) {
-                throw new Error('cubeportfolio is not initialized. Please initialize before calling filter method!');
+                throw new Error('cubeportfolio is not initialized. Initialize it before calling filter method!');
             }
 
             filterName = (filterName === '*' || filterName === '') ? '*' : filterName;
@@ -5086,7 +4602,7 @@
 
             if (t.singlePageInline && t.singlePageInline.isOpen) {
                 t.singlePageInline.close('promise', {
-                    callback: function () {
+                    callback: function() {
                         t['_' + t.options.animationType + 'Filter'](on2offBlocks, off2onBlocks, filterName);
                     }
                 });
@@ -5112,17 +4628,16 @@
         /*
          * Show counter for filters
          */
-        showCounter: function (elems, callbackFunction) {
-
+        showCounter: function(elems, callbackFunction) {
             var t = $.data(this, 'cubeportfolio');
 
             if (!t) {
-                throw new Error('cubeportfolio is not initialized. Please initialize before calling showCounter method!');
+                throw new Error('cubeportfolio is not initialized. Initialize it before calling showCounter method!');
             }
 
             t.elems = elems;
 
-            $.each(elems, function () {
+            $.each(elems, function() {
 
                 var me = $(this),
                     filterName = me.data('filter'),
@@ -5140,39 +4655,37 @@
             if ($.isFunction(callbackFunction)) {
                 callbackFunction.call(t);
             }
-
         },
 
 
         /*
          * ApendItems elements
          */
-        appendItems: function (items, callbackFunction) {
-
+        appendItems: function(items, callbackFunction) {
             var me = this,
                 t = $.data(me, 'cubeportfolio');
 
             if (!t) {
-                throw new Error('cubeportfolio is not initialized. Please initialize before calling appendItems method!');
+                throw new Error('cubeportfolio is not initialized. Initialize it before calling appendItems method!');
             }
 
             if (t.singlePageInline && t.singlePageInline.isOpen) {
                 t.singlePageInline.close('promise', {
-                    callback: function () {
+                    callback: function() {
                         pluginObject._addItems.call(me, items, callbackFunction);
                     }
                 });
             } else {
                 pluginObject._addItems.call(me, items, callbackFunction);
             }
-
-
         },
 
-        _addItems: function (items, callbackFunction) {
+
+        _addItems: function(items, callbackFunction) {
 
             var t = $.data(this, 'cubeportfolio'),
-                defaultFilter, children, cloneItems, fewItems;
+                defaultFilter, children, cloneItems, fewItems,
+                $this = this;
 
             // register callback function
             if ($.isFunction(callbackFunction)) {
@@ -5239,67 +4752,77 @@
 
             children.not('.cbp-item-hidden').not(defaultFilter).addClass('cbp-item-hidden');
 
-            //make responsive
-            if (t.options.gridAdjustment === 'responsive') {
-                t._responsiveLayout();
-            }
+            t._load(t.$obj, function() {
 
-            // call layout
-            t._layout();
+                //make responsive
+                if (t.options.gridAdjustment === 'responsive') {
+                    t._responsiveLayout();
+                }
 
-            // trigger style queue and the animations
-            t._processStyle(t.transitionByFilter);
+                // call layout
+                t._layout();
 
-            // resize main container height (firefox <=25 bug)
-            t._resizeMainContainer('animate');
+                // trigger style queue and the animations
+                t._processStyle(t.transitionByFilter);
 
-            var hiddenItem = items.filter('.cbp-item-hidden');
-            switch (t.options.animationType) {
-                case 'flipOut':
-                    hiddenItem.find('.cbp-item-wrapper')
-                        .addClass('cbp-animation-flipOut-out');
-                    break;
+                // resize main container height (firefox <=25 bug)
+                t._resizeMainContainer('animate');
 
-                case 'scaleSides':
-                    hiddenItem.find('.cbp-item-wrapper')
-                        .addClass('cbp-animation-scaleSides-out');
-                    break;
+                if (t.options.layoutMode === 'slider') {
+                    t._updateSlider();
 
-                case 'flipBottom':
-                    hiddenItem.find('.cbp-item-wrapper')
-                        .addClass('cbp-animation-flipBottom-out');
-                    break;
-            }
+                    t.$obj.removeClass('cbp-no-transition');
+                }
 
-            fewItems.animate({
-                opacity: 1
-            }, 800, function () {
-
+                var hiddenItem = items.filter('.cbp-item-hidden');
                 switch (t.options.animationType) {
-
-                    case 'bounceLeft':
-                    case 'bounceTop':
-                    case 'bounceBottom':
-                        t.blocks.css('opacity', 1);
-                        t.blocksClone.css('opacity', 1);
+                    case 'flipOut':
+                        hiddenItem.find('.cbp-item-wrapper')
+                            .addClass('cbp-animation-flipOut-out');
                         break;
 
-                    case 'flipOut':
                     case 'scaleSides':
+                        hiddenItem.find('.cbp-item-wrapper')
+                            .addClass('cbp-animation-scaleSides-out');
+                        break;
+
                     case 'flipBottom':
-                        hiddenItem.css('opacity', 1);
+                        hiddenItem.find('.cbp-item-wrapper')
+                            .addClass('cbp-animation-flipBottom-out');
                         break;
                 }
+
+                fewItems.animate({
+                    opacity: 1
+                }, 800, function() {
+
+                    switch (t.options.animationType) {
+
+                        case 'bounceLeft':
+                        case 'bounceTop':
+                        case 'bounceBottom':
+                            t.blocks.css('opacity', 1);
+                            t.blocksClone.css('opacity', 1);
+                            break;
+
+                        case 'flipOut':
+                        case 'scaleSides':
+                        case 'flipBottom':
+                            hiddenItem.css('opacity', 1);
+                            break;
+                    }
+                });
+
+                // if show count whas actived, call show count function again
+                if (t.elems) {
+                    pluginObject.showCounter.call($this, t.elems);
+                }
+
+                setTimeout(function() {
+                    t._triggerEvent('appendItemsFinish');
+                }, 700);
+
             });
-
-            // if show count whas actived, call show count function again
-            if (t.elems) {
-                pluginObject.showCounter.call(this, t.elems);
-            }
-
-            setTimeout(function () {
-                t._triggerEvent('appendItemsFinish');
-            }, 900);
 
         }
     };
@@ -5308,11 +4831,10 @@
     /**
      * jQuery plugin initializer
      */
-    $.fn.cubeportfolio = function (method) {
-
+    $.fn.cubeportfolio = function(method) {
         var args = arguments;
 
-        return this.each(function () {
+        return this.each(function() {
 
             // public method calling
             if (pluginObject[method]) {
@@ -5325,10 +4847,8 @@
 
             } else {
 
-                throw new Error('Method ' + method + ' does not exist on jQuery.cubeportfolio.js');
+                throw new Error('Method ' + method + ' does not exist on jquery.cubeportfolio.js');
             }
-
-
         });
 
     };
@@ -5338,22 +4858,86 @@
     $.fn.cubeportfolio.options = {
 
         /**
+         *  Layout Mode for this plugin
+         *  Values: 'grid' or 'slider'
+         */
+        layoutMode: 'grid',
+
+        /**
+         *  Mouse and touch drag support
+         *  Option available only for `layoutMode: 'slider'`
+         *  Values: true or false
+         */
+        drag: true,
+
+        /**
+         *  Autoplay the slider
+         *  Option available only for `layoutMode: 'slider'`
+         *  Values: true or false
+         */
+        auto: false,
+
+        /**
+         *  Autoplay interval timeout. Time is set in milisecconds
+         *  1000 milliseconds equals 1 second.
+         *  Option available only for `layoutMode: 'slider'`
+         *  Values: only integers (ex: 1000, 2000, 5000)
+         */
+        autoTimeout: 5000,
+
+        /**
+         *  Stops autoplay when user hover the slider
+         *  Option available only for `layoutMode: 'slider'`
+         *  Values: true or false
+         */
+        autoPauseOnHover: true,
+
+        /**
+         *  Show `next` and `prev` buttons for slider
+         *  Option available only for `layoutMode: 'slider'`
+         *  Values: true or false
+         */
+        showNavigation: true,
+
+        /**
+         *  Show pagination for slider
+         *  Option available only for `layoutMode: 'slider'`
+         *  Values: true or false
+         */
+        showPagination: true,
+
+        /**
+         *  Enable slide to first item (last item)
+         *  Option available only for `layoutMode: 'slider'`
+         *  Values: true or false
+         */
+        rewindNav: true,
+
+        /**
+         *  Scroll by page and not by item. This option affect next/prev buttons and drag support
+         *  Option available only for `layoutMode: 'slider'`
+         *  Values: true or false
+         */
+        scrollByPage: false,
+
+        /**
          *  Default filter for plugin
+         *  Option available only for `layoutMode: 'grid'`
          *  Values: strings that represent the filter name(ex: *, .logo, .web-design, .design)
          */
         defaultFilter: '*',
 
-
         /**
          *  Enable / disable the deeplinking feature when you click on filters
+         *  Option available only for `layoutMode: 'grid'`
          *  Values: true or false
          */
         filterDeeplinking: false,
 
-
         /**
          *  Defines which animation to use for items that will be shown or hidden after a filter has been activated.
-         *  The plugin use the best browser features when available (css3 transition and transform, GPU acceleration) and fallback to simple animations (javascript animations) for legacy browsers.
+         *  Option available only for `layoutMode: 'grid'`
+         *  The plugin use the best browser features available (css3 transitions and transform, GPU acceleration).
          *  Values: - fadeOut
          *          - quicksand
          *          - boxShadow
@@ -5385,7 +4969,25 @@
          *          - alignCenter (align the grid on center of the page)
          *          - responsive (use a fluid grid to resize the grid)
          */
-        gridAdjustment: 'default',
+        gridAdjustment: 'responsive',
+
+        /**
+         * Define `media queries` for columns layout.
+         * Format: [{width: a, cols: d}, {width: b, cols: e}, {width: c, cols: f}],
+         * where a, b, c are the grid width and d, e, f are the columns displayed.
+         * e.g. [{width: 1100, cols: 4}, {width: 800, cols: 3}, {width: 480, cols: 2}] means
+         * if (gridWidth >= 1100) => show 4 columns,
+         * if (gridWidth >= 800 && gridWidth < 1100) => show 3 columns,
+         * if (gridWidth >= 480 && gridWidth < 800) => show 2 columns,
+         * if (gridWidth < 480) => show 2 columns
+         * Keep in mind that a > b > c
+         * This option is available only when `gridAdjustment: 'responsive'`
+         * Values:  - array of objects of format: [{width: a, cols: d}, {width: b, cols: e}]
+         *          - you can define as many objects as you want
+         *          - if this option is `false` Cube Portfolio will adjust the items
+         *            width automatically (default option for backward compatibility)
+         */
+        mediaQueries: false,
 
         /**
          *  Horizontal gap between items
@@ -5401,6 +5003,7 @@
 
         /**
          *  Caption - the overlay that is shown when you put the mouse over an item
+         *  NOTE: If you don't want to have captions set this option to an empty string ( caption: '')
          *  Values: - pushTop
          *          - pushDown
          *          - revealBottom
@@ -5415,6 +5018,7 @@
          *          - minimal
          *          - fadeIn
          *          - zoom
+         *          - opacity
          */
         caption: 'pushTop',
 
@@ -5427,7 +5031,7 @@
          *          - sequentially (the plugin will fully preload the images before displaying the items with a sequentially effect)
          *          - bottomToTop (the plugin will fully preload the images before displaying the items with an animation from bottom to top)
          */
-        displayType: 'default',
+        displayType: 'lazyLoading',
 
         /**
          *  Defines the speed of displaying the items (when `displayType == default` this option will have no effect)
@@ -5483,6 +5087,13 @@
          */
         singlePageCounter: '<div class="cbp-popup-singlePage-counter">{{current}} of {{total}}</div>',
 
+        /**
+         *  Defines which animation to use when singlePage appear
+         *  Values: - left
+         *          - fade
+         *          - right
+         */
+        singlePageAnimation: 'left',
 
         /**
          *  Use this callback to update singlePage content.
@@ -5491,10 +5102,8 @@
          *  @param element = the item clicked
          *  Values: function
          */
-        singlePageCallback: function (url, element) {
-
+        singlePageCallback: function(url, element) {
             // to update singlePage content use the following method: this.updateSinglePage(yourContent)
-
         },
 
         /**
@@ -5525,10 +5134,8 @@
          *  @param element = the item clicked
          *  Values: function
          */
-        singlePageInlineCallback: function (url, element) {
-
+        singlePageInlineCallback: function(url, element) {
             // to update singlePage Inline content use the following method: this.updateSinglePageInline(yourContent)
-
         }
 
     };
