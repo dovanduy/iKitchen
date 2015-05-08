@@ -131,11 +131,12 @@
             {
                 var joinedUser = CacheHelperApplicationUser.GetById(joinedEventUser.UserId);
                 var joinedUserName = string.IsNullOrEmpty(joinedUser.Nickname) ? joinedUser.UserName : joinedUser.Nickname;
+                var eventImage = CacheHelperApplicationUser.GetById(joinedEventUser.UserId).AvatarPath;
                 <div class="col-md-3 col-xs-6">
                     <div class="thumbnails thumbnail-style thumbnail-kenburn">
                         <div class="thumbnail-img">
                             <div class="overflow-hidden">
-                                <img class="img-responsive" src="/assets/img/team/5.jpg" alt="">
+                                <img class="img-responsive" src="/Images/Upload/@eventImage" onerror="this.onerror = null;this.src = '/assets/img/no_image.gif';" alt="">
                             </div>
                             @if (Model.UserId == User.Identity.GetUserId())
                             {
