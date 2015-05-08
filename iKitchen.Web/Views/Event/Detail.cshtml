@@ -140,9 +140,16 @@
                             </div>
                             @if (Model.UserId == User.Identity.GetUserId())
                             {
+                                if (joinedEventUser.UnitPrice == 0 || !joinedEventUser.IsPaid)
+                                { 
                                 <a class="btn-more hover-effect" href="#"
                                    data-href="/Event/RemoveGuest/@joinedEventUser.Id" data-toggle="modal" data-target="#confirm"
                                    data-confirm-message='Are you sure you want to remove "@joinedUserName" from this event?' data-confirm-title="Confirm deletion">remove -</a>
+                                }
+                                else if (joinedEventUser.UnitPrice > 0 && joinedEventUser.IsPaid)
+                                {
+                                    @*<a class="btn-more hover-effect" href="#">paid</a>*@
+                                }
                             }
                         </div>
                         <div class="caption">

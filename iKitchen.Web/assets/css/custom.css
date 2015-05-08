@@ -1,9 +1,9 @@
 /* Add here all your css styles (customizations) */
-/* 
-.field-validation-error {
-    color: #ff0000;
-}
 
+.field-validation-error {
+    color: #e74c3c;
+}
+/* 
 .field-validation-valid {
     display: none;
 }
@@ -29,4 +29,7 @@
 .btn-grey {
     background-color: #ddd;
     color: #999;
+}
+.rgba-green {
+  background-color: rgba(114,192,44,0.8);
 }
