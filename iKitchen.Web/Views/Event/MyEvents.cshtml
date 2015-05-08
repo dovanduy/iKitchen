@@ -25,23 +25,44 @@
                             <img class="rounded-x" src="/assets/img/testimonials/img1.jpg" alt="">
                         </td>*@
                         <td class="td-width">
-                            <h3><a href="/Event/Edit/@item.Id">@(item.Title)</a></h3>
+                            @if (item.UserId != User.Identity.GetUserId())
+                            {
+                                <h3><a href="/Event/Detail/@item.Id">@(item.Title)</a></h3>
+                            }
+                            else
+                            {
+                                <h3><a href="/Event/Edit/@item.Id">@(item.Title)</a></h3>
+                            }
                             <p>@item.Summary</p>
                             <p>
                                 @foreach (var eventImage in eventImages)
                                 {
-                                    <img style="display:inline" src="/Images/Upload/@eventImage.ImagePath" alt="">
+                                    <img style="display: inline" src="/Images/Upload/@eventImage.ImagePath" alt="">
                                 }
                             </p>
-                            <small class="hex">@item.EventTime.ToString()</small> 
+                            <small class="hex">@item.EventTime.ToString()</small>
                         </td>
                         <td>
-                            <span class="label label-success"> 4 people booked</span>
+                            @if (item.UserId != User.Identity.GetUserId())
+                            {
+                                <span class="label label-warning"> Joined</span>
+                            }
+                            else
+                            {
+                                <span class="label label-success"> Host</span>
+                            }
                         </td>
                         <td>
-                            <a href="/Event/Detail/@item.Id" title="View event details"><i class="fa fa-list"></i> Detail</a> | 
-                            <a href="/Event/Edit/@item.Id" title="Edit event"><i class="fa fa-edit"></i> Edit</a> | 
-                            <a href="#" data-href="/Event/Remove/@item.Id" data-toggle="modal" data-target="#confirm" title="Delete event"><i class="fa fa-remove"></i> Delete</a>
+                            @if (item.UserId != User.Identity.GetUserId())
+                            {
+                                <a href="/Event/Detail/@item.Id" title="View event details"><i class="fa fa-list"></i> Detail</a>
+                            }
+                            else
+                            {
+                                <a href="/Event/Detail/@item.Id" title="View event details"><i class="fa fa-list"></i> Detail</a><text> | </text>
+                                <a href="/Event/Edit/@item.Id" title="Edit event"><i class="fa fa-edit"></i> Edit</a><text> | </text>
+                                <a href="#" data-href="/Event/Remove/@item.Id" data-toggle="modal" data-target="#confirm" title="Delete event"><i class="fa fa-remove"></i> Delete</a>
+                            }
                         </td>
                     </tr>
 

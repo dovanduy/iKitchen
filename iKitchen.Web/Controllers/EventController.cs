@@ -31,6 +31,8 @@ namespace iKitchen.Web.Controllers
                                             .Where(c => c.UserId == currentUserId && c.State != -1)
                                             .OrderByDescending(c => c.Id)
                                             .ToPagedList(pageIndex.GetValueOrDefault());
+            var joinedEventList = CacheHelper<EventUser>.GetAll().Where(c => c.UserId == currentUserId);
+            events.AddRange(joinedEventList.Select(joinedEventId => CacheHelper<Event>.GetById(joinedEventId.EventId)));
             ViewData.Model = events;
             return View();
         }
