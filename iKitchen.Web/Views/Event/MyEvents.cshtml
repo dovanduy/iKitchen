@@ -7,141 +7,90 @@
 <div class="profile-body">
     <!--Table Search v2-->
     <div class="table-search-v2 margin-bottom-20">
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>My Events</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        var eventImages = CacheHelper<EventImage>.GetAll().Where(c=>c.EventId == item.Id).ToList();
-                    <tr>
-                        @*<td>
-                            <img class="rounded-x" src="/assets/img/testimonials/img1.jpg" alt="">
-                        </td>*@
-                        <td class="td-width">
-                            @if (item.UserId != User.Identity.GetUserId())
-                            {
-                                <h3><a href="/Event/Detail/@item.Id">@(item.Title)</a></h3>
-                            }
-                            else
-                            {
-                                <h3><a href="/Event/Edit/@item.Id">@(item.Title)</a></h3>
-                            }
-                            <p>@item.Summary</p>
-                            <p>
-                                @foreach (var eventImage in eventImages)
+        <div class="tab-v1">
+            <ul class="nav nav-justified nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#profile">Hosting Events</a></li>
+                <li><a data-toggle="tab" href="#passwordTab">Joined Events</a></li>
+                <!--<li><a data-toggle="tab" href="#payment">Payment Options</a></li>
+            <li><a data-toggle="tab" href="#settings">Notification Settings</a></li>-->
+            </ul>
+            <div class="tab-content">
+                <div id="profile" class="profile-edit tab-pane fade in active">
+                    <h2 class="heading-md">My Events</h2>
+                    <p>Below are the events which I am hosting.</p>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tbody>
+                                @foreach (var item in Model)
                                 {
-                                    <img style="display: inline" src="/Images/Upload/@eventImage.ImagePath" alt="">
+                                    var eventImages = CacheHelper<EventImage>.GetAll().Where(c => c.EventId == item.Id).ToList();
+                                    <tr>
+                                        <td class="td-width">
+                                            <h3>
+                                                <a href="/Event/Edit/@item.Id">@(item.Title)</a>
+                                            </h3>
+                                            <p>@item.Summary</p>
+                                            <p>
+                                                @foreach (var eventImage in eventImages)
+                                                {
+                                                    <img style="display: inline" src="/Images/Upload/@eventImage.ImagePath" alt="">
+                                                }
+                                            </p>
+                                            <small class="hex">@item.EventTime.ToString()</small>
+                                        </td>
+                                        <td>
+                                            <span class="label label-success"> Host</span>
+                                        </td>
+                                        <td>
+                                            <a href="/Event/Detail/@item.Id" title="View event details"><i class="fa fa-list"></i> Detail</a><text> | </text>
+                                            <a href="/Event/Edit/@item.Id" title="Edit event"><i class="fa fa-edit"></i> Edit</a><text> | </text>
+                                            <a href="#" data-href="/Event/Remove/@item.Id" data-toggle="modal" data-target="#confirm" title="Delete event"><i class="fa fa-remove"></i> Delete</a>
+                                        </td>
+                                    </tr>
                                 }
-                            </p>
-                            <small class="hex">@item.EventTime.ToString()</small>
-                        </td>
-                        <td>
-                            @if (item.UserId != User.Identity.GetUserId())
-                            {
-                                <span class="label label-warning"> Joined</span>
-                            }
-                            else
-                            {
-                                <span class="label label-success"> Host</span>
-                            }
-                        </td>
-                        <td>
-                            @if (item.UserId != User.Identity.GetUserId())
-                            {
-                                <a href="/Event/Detail/@item.Id" title="View event details"><i class="fa fa-list"></i> Detail</a>
-                            }
-                            else
-                            {
-                                <a href="/Event/Detail/@item.Id" title="View event details"><i class="fa fa-list"></i> Detail</a><text> | </text>
-                                <a href="/Event/Edit/@item.Id" title="Edit event"><i class="fa fa-edit"></i> Edit</a><text> | </text>
-                                <a href="#" data-href="/Event/Remove/@item.Id" data-toggle="modal" data-target="#confirm" title="Delete event"><i class="fa fa-remove"></i> Delete</a>
-                            }
-                        </td>
-                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                    }
-                    @*<tr>
-                        <td>
-                            <img class="rounded-x" src="/assets/img/testimonials/img2.jpg" alt="">
-                        </td>
-                        <td>
-                            <h3><a href="#">Kyoto Sushi</a></h3>
-                            <p>The royal Sushi, the best Sushi.</p>
-                            <small class="hex">March 2, 2014</small>
-                        </td>
-                        <td>
-                            <span class="label label-info"> In progress</span>
-                        </td>
-                        <td>
-                            <span>No vacancy</span>
-                            <span>BYO is OK</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <img class="rounded-x" src="/assets/img/testimonials/img3.jpg" alt="">
-                        </td>
-                        <td>
-                            <h3><a href="#">Sichuang trandition</a></h3>
-                            <p>You don't know the best Chinese food isn't in the middle of China, it's in Sichuang!</p>
-                            <small class="hex">March 3, 2014</small>
-                        </td>
-                        <td>
-                            <span class="label label-warning">Waiting Feedback</span>
-                        </td>
-                        <td>
+                <div id="passwordTab" class="profile-edit tab-pane fade">
+                    <h2 class="heading-md">Joined Events</h2>
+                    <p>Below are the events which I have joined.</p>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tbody>
+                                @foreach (var item in ViewBag.Joined)
+                                {
+                                    var eventImages = CacheHelper<EventImage>.GetAll().Where(c => c.EventId == item.Id).ToList();
+                                    <tr>
+                                        <td class="td-width">
+                                            <h3>
+                                                <a href="/Event/Detail/@item.Id">@(item.Title)</a>
+                                            </h3>
+                                            <p>@item.Summary</p>
+                                            <p>
+                                                @foreach (var eventImage in eventImages)
+                                                {
+                                                    <img style="display: inline" src="/Images/Upload/@eventImage.ImagePath" alt="">
+                                                }
+                                            </p>
+                                            <small class="hex">@item.EventTime.ToString()</small>
+                                        </td>
+                                        <td>
+                                            <span class="label label-warning"> Joined</span>
+                                        </td>
+                                        <td>
+                                            <a href="/Event/Detail/@item.Id" title="View event details"><i class="fa fa-list"></i> Detail</a>
+                                        </td>
+                                    </tr>
 
-                            <span><a href="#">info@example.com</a></span>
-                            <span><a href="#">www.htmlstream.com</a></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <img class="rounded-x" src="/assets/img/testimonials/img4.jpg" alt="">
-                        </td>
-                        <td>
-                            <h3><a href="#">Kiwi diet</a></h3>
-                            <p>Kelley is going to delight our vegetarian guests.</p>
-                            <small class="hex">March 4, 2014</small>
-                        </td>
-                        <td>
-                            <span class="label label-default">Cancelled</span>
-                        </td>
-                        <td>
-                            <ul class="list-inline s-icons">
-                                <li>
-                                    <a data-placement="top" data-toggle="tooltip" class="tooltips" data-original-title="Facebook" href="#">
-                                        <i class="fa fa-facebook"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a data-placement="top" data-toggle="tooltip" class="tooltips" data-original-title="Twitter" href="#">
-                                        <i class="fa fa-twitter"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a data-placement="top" data-toggle="tooltip" class="tooltips" data-original-title="Dropbox" href="#">
-                                        <i class="fa fa-dropbox"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a data-placement="top" data-toggle="tooltip" class="tooltips" data-original-title="Linkedin" href="#">
-                                        <i class="fa fa-linkedin"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                            <span>vegetarian only</span>
-                        </td>
-                    </tr>*@
-                </tbody>
-            </table>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <!--End Table Search v2-->

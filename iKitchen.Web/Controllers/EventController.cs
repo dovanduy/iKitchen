@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using iKitchen.Web.Models;
@@ -31,8 +33,16 @@ namespace iKitchen.Web.Controllers
                                             .Where(c => c.UserId == currentUserId && c.State != -1)
                                             .OrderByDescending(c => c.Id)
                                             .ToPagedList(pageIndex.GetValueOrDefault());
+            
             var joinedEventList = CacheHelper<EventUser>.GetAll().Where(c => c.UserId == currentUserId);
-            events.AddRange(joinedEventList.Select(joinedEventId => CacheHelper<Event>.GetById(joinedEventId.EventId)));
+            List<Event> joinedEvents = new List<Event>();
+
+            foreach (var user in joinedEventList)
+            {
+                joinedEvents.Add(CacheHelper<Event>.GetById(user.EventId));
+            }
+            //events.AddRange(joinedEventList.Select(joinedEventId => CacheHelper<Event>.GetById(joinedEventId.EventId)));
+            ViewBag.Joined = joinedEvents;
             ViewData.Model = events;
             return View();
         }
